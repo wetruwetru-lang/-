@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABACUS.PRO — от новичка до профи</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070B14;
+  --bg-panel:#0E1626;
+  --bg-panel-2:#131E36;
+  --border:#1E2C4A;
+  --border-soft:#162238;
+  --blue:#2F6FED;
+  --blue-bright:#5B9BFF;
+  --blue-glow:rgba(91,155,255,.35);
+  --bead-off:#233355;
+  --bead-off-2:#2C3F66;
+  --text-1:#E9EEFB;
+  --text-2:#8FA3C8;
+  --text-3:#57678C;
+  --ok:#4DD4A8;
+  --err:#FF6685;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--text-1);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.disp{font-family:'Unbounded',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px 80px}
+a{color:var(--blue-bright)}
+
+/* ---------- NAV ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(7,11,20,.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border-soft);
+}
+.topbar-in{
+  max-width:920px;margin:0 auto;padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  flex-wrap:wrap;
+}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Unbounded';font-weight:600;font-size:16px;letter-spacing:.02em}
+.logo .bead{width:14px;height:14px;background:var(--blue-bright);transform:rotate(45deg);border-radius:3px;box-shadow:0 0 10px var(--blue-glow)}
+.tabs{display:flex;gap:4px;background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:10px;padding:4px}
+.tab-btn{
+  border:none;background:transparent;color:var(--text-2);
+  font-family:'Inter';font-weight:500;font-size:13px;
+  padding:8px 14px;border-radius:7px;cursor:pointer;transition:.15s;
+}
+.tab-btn:hover{color:var(--text-1)}
+.tab-btn.active{background:var(--blue);color:#fff}
+
+/* ---------- HERO ---------- */
+.hero{padding:56px 0 28px;text-align:center}
+.eyebrow{
+  display:inline-block;font-family:'JetBrains Mono';font-size:12px;
+  color:var(--blue-bright);letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--border);padding:5px 12px;border-radius:99px;margin-bottom:20px;
+}
+.hero h1{font-size:38px;line-height:1.15;margin:0 0 14px;font-weight:600}
+.hero h1 span{color:var(--blue-bright)}
+.hero p{color:var(--text-2);font-size:16px;max-width:520px;margin:0 auto 30px;line-height:1.6}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{
+  font-family:'Inter';font-weight:600;font-size:14px;border-radius:10px;
+  padding:12px 22px;cursor:pointer;border:1px solid var(--border);
+  background:var(--bg-panel);color:var(--text-1);transition:.15s;
+}
+.btn:hover{border-color:var(--border);background:var(--bg-panel-2)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--blue-bright)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---------- SECTIONS ---------- */
+.view{display:none}
+.view.active{display:block}
+.section-title{font-size:22px;font-weight:600;margin:48px 0 6px}
+.section-sub{color:var(--text-2);font-size:14px;margin:0 0 26px;line-height:1.6}
+
+/* ---------- ABACUS ---------- */
+.abacus-stage{
+  background:var(--bg-panel);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:26px 22px 18px;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.abacus-value{font-family:'JetBrains Mono';font-weight:700;font-size:34px;letter-spacing:.02em;color:var(--blue-bright)}
+.abacus-frame{
+  position:relative;
+  background:linear-gradient(180deg,#0C1626,#0A1220);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px 10px;
+  overflow-x:auto;
+  max-width:100%;
+}
+.rods{display:flex;gap:6px;position:relative}
+.rod{position:relative;width:38px;flex:none}
+.rod-line{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--border);transform:translateX(-50%);z-index:0}
+.heaven-zone{position:relative;height:76px;z-index:1}
+.earth-zone{position:relative;height:200px;z-index:1}
+.bar{height:5px;background:linear-gradient(90deg,var(--blue),var(--blue-bright));border-radius:2px;box-shadow:0 0 12px var(--blue-glow);position:relative;z-index:2;margin:0 -1000px;width:calc(100% + 2000px)}
+.bar-wrap{position:relative}
+.bead{
+  position:absolute;left:50%;
+  width:30px;height:30px;
+  margin-left:-15px;
+  background:var(--bead-off);
+  border:1px solid var(--bead-off-2);
+  transform:rotate(45deg);
+  border-radius:5px;
+  cursor:pointer;
+  transition:top .16s cubic-bezier(.4,0,.2,1),background .16s,border-color .16s,box-shadow .16s;
+}
+.bead.active{background:var(--blue-bright);border-color:#8FC0FF;box-shadow:0 0 10px var(--blue-glow)}
+.bead:not(.on):hover{border-color:var(--blue-bright)}
+.rod.disabled .bead{cursor:default}
+.rod-label{text-align:center;font-family:'JetBrains Mono';font-size:10px;color:var(--text-3);margin-top:6px;white-space:nowrap}
+.unit-mark{position:absolute;left:50%;top:-4px;width:4px;height:4px;background:var(--blue-bright);border-radius:50%;transform:translateX(-50%);z-index:3}
+.abacus-actions{display:flex;gap:10px;margin-top:6px}
+.btn.small{padding:8px 14px;font-size:13px;border-radius:8px}
+
+/* ---------- THEORY CARDS ---------- */
+.tcard{
+  background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;
+  padding:22px 22px 24px;margin-bottom:16px;
+  display:grid;grid-template-columns:1fr;gap:18px;
+}
+@media(min-width:640px){.tcard{grid-template-columns:1fr 200px}}
+.tcard-num{font-family:'JetBrains Mono';color:var(--blue-bright);font-size:12px;letter-spacing:.1em}
+.tcard h3{font-size:17px;margin:6px 0 10px;font-weight:600}
+.tcard p{color:var(--text-2);font-size:14px;line-height:1.7;margin:0 0 8px}
+.tcard .illus{
+  background:var(--bg);border:1px solid var(--border-soft);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;padding:10px;
+}
+.chip{display:inline-block;font-family:'JetBrains Mono';font-size:12px;background:var(--bg);border:1px solid var(--border);color:var(--blue-bright);padding:2px 8px;border-radius:6px}
+
+/* ---------- ROADMAP ---------- */
+.roadmap{
+  background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;
+  padding:22px;margin-bottom:24px;overflow-x:auto;
+}
+.roadmap-track{min-width:640px}
+.roadmap-bar{position:relative;height:6px;background:var(--bead-off);border-radius:3px;margin:34px 10px 10px}
+.roadmap-fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-bright));border-radius:3px;transition:width .3s}
+.roadmap-nodes{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);display:flex;justify-content:space-between}
+.rnode{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--bg-panel);border:2px solid var(--bead-off);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:var(--text-3);
+  cursor:pointer;position:relative;transition:.15s;flex:none;
+}
+.rnode:hover{border-color:var(--blue-bright)}
+.rnode.done{background:var(--blue);border-color:var(--blue-bright);color:#fff}
+.rnode.current{border-color:var(--blue-bright);color:var(--blue-bright);box-shadow:0 0 0 4px var(--blue-glow)}
+.rnode.locked{opacity:.45;cursor:not-allowed;background:var(--bg)}
+.rnode.locked:hover{border-color:var(--bead-off)}
+.rlabels{display:flex;justify-content:space-between;margin:10px 10px 0}
+.rlabels span{font-size:11px;color:var(--text-3);width:56px;text-align:center;font-family:'JetBrains Mono'}
+
+/* ---------- TRAINER ---------- */
+.trainer-top{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:18px}
+.mode-switch{display:flex;gap:4px;background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:10px;padding:4px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 24px}
+.stat{background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:12px;padding:14px}
+.stat .lbl{font-size:12px;color:var(--text-3)}
+.stat .val{font-family:'JetBrains Mono';font-size:20px;font-weight:700;margin-top:4px}
+
+.problem-box{
+  background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;
+  padding:24px;text-align:center;margin-bottom:18px;
+}
+.problem-text{font-family:'JetBrains Mono';font-size:30px;font-weight:700;letter-spacing:.02em}
+.target-text{font-family:'JetBrains Mono';font-size:44px;font-weight:700;color:var(--blue-bright)}
+.answer-row{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:18px;flex-wrap:wrap}
+.answer-row input{
+  font-family:'JetBrains Mono';font-size:20px;text-align:center;width:150px;
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text-1);
+  padding:10px 12px;outline:none;
+}
+.answer-row input:focus{border-color:var(--blue-bright)}
+.feedback{min-height:24px;font-size:14px;margin-top:12px;font-weight:500}
+.feedback.ok{color:var(--ok)}
+.feedback.err{color:var(--err)}
+.timer-row{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:13px;color:var(--text-2)}
+.timer-row input{accent-color:var(--blue-bright)}
+
+.op-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.op-chip{
+  font-family:'JetBrains Mono';font-size:13px;font-weight:500;
+  border:1px solid var(--border);background:var(--bg-panel);color:var(--text-2);
+  padding:7px 14px;border-radius:99px;cursor:pointer;transition:.15s;user-select:none;
+}
+.op-chip:hover{border-color:var(--blue-bright)}
+.op-chip.active{background:var(--blue);border-color:var(--blue-bright);color:#fff}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 6px}
+.frac .num,.frac .den{padding:0 6px;line-height:1.3}
+.frac .num{border-bottom:2px solid currentColor}
+.frac-input{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;gap:4px}
+.frac-input input{width:64px!important}
+.answer-row .slash{font-family:'JetBrains Mono';font-size:26px;color:var(--text-3)}
+
+.help-table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono';font-size:13px}
+.help-table th,.help-table td{border:1px solid var(--border-soft);padding:7px 6px;text-align:center}
+.help-table th{background:var(--bg);color:var(--text-2);font-weight:500;font-size:11px}
+.help-table td{color:var(--text-1)}
+.help-table td.dim{color:var(--text-3)}
+.help-table.compact{width:auto;min-width:460px}
+.help-table.compact td,.help-table.compact th{padding:5px 4px;font-size:11px}
+.help-wrap{overflow-x:auto;border-radius:10px}
+.pair-table td.a{color:var(--blue-bright);font-weight:700}
+.pair-table td.b{color:var(--text-1)}
+
+.fracbar{display:flex;gap:3px;height:34px;margin:10px 0}
+.fracbar-seg{flex:1;background:var(--bead-off);border-radius:5px;transition:.15s}
+.fracbar-seg.on{background:var(--blue-bright);box-shadow:0 0 8px var(--blue-glow)}
+.fracbar-cap{font-family:'JetBrains Mono';font-size:12px;color:var(--text-2);text-align:center}
+
+.select-ctrl{
+  font-family:'JetBrains Mono';font-size:13px;color:var(--text-1);
+  background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;
+  padding:8px 10px;cursor:pointer;
+}
+.hint-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.hint-text{font-size:13px;color:var(--text-2);max-width:520px;margin:8px auto 0;line-height:1.6;display:none}
+
+.celebrate-toast{
+  position:fixed;top:16px;left:50%;
+  transform:translateX(-50%) translateY(-24px);
+  background:var(--blue);color:#fff;
+  padding:12px 22px;border-radius:12px;
+  font-family:'Unbounded';font-size:13px;font-weight:600;
+  box-shadow:0 10px 28px rgba(0,0,0,.45);
+  opacity:0;pointer-events:none;transition:.3s ease;z-index:200;
+}
+.celebrate-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.donate-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;padding:22px;margin-top:32px}
+.donate-card h3{margin:0 0 6px;font-size:16px;font-weight:600}
+.donate-card p{color:var(--text-2);font-size:13px;margin:0 0 16px;line-height:1.6}
+.donate-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--border-soft)}
+.donate-row:first-of-type{border-top:none;padding-top:0}
+.donate-label{font-family:'JetBrains Mono';font-size:12px;color:var(--blue-bright);min-width:120px}
+.donate-addr{flex:1;min-width:180px;font-family:'JetBrains Mono';font-size:12px;color:var(--text-1);background:var(--bg);padding:7px 10px;border-radius:6px;border:1px solid var(--border-soft);word-break:break-all}
+
+footer{text-align:center;color:var(--text-3);font-size:12px;padding:40px 0 10px}
+
+@media(max-width:760px){
+  .wrap{padding:0 16px 60px}
+  .topbar-in{padding:12px 16px}
+}
+
+@media(max-width:640px){
+  .hero{padding:40px 0 22px}
+  .hero h1{font-size:26px}
+  .hero p{font-size:14px}
+  .abacus-value{font-size:26px}
+  .abacus-stage{padding:20px 14px 14px}
+  .tcard{padding:18px}
+  .roadmap{padding:16px}
+  .trainer-top{gap:8px}
+  .select-ctrl{flex:1;min-width:0}
+  .op-chips{gap:6px}
+  .op-chip{padding:6px 10px;font-size:12px}
+}
+
+@media(max-width:520px){
+  .hero h1{font-size:24px}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .rlabels span{width:44px;font-size:9px}
+  .bead{width:36px;height:36px;margin-left:-18px}
+  .rod{width:44px}
+  .logo{font-size:13px;gap:6px}
+  .tabs{padding:3px}
+  .tab-btn{padding:7px 10px;font-size:12px}
+  .target-text{font-size:34px}
+  .problem-text{font-size:22px}
+  .answer-row input{width:120px;font-size:17px}
+  .donate-label{min-width:100%}
+  .donate-addr{font-size:11px}
+}
+
+@media(max-width:380px){
+  .wrap{padding:0 12px 50px}
+  .topbar-in{padding:10px 12px}
+  .logo span.bead{width:11px;height:11px}
+  .tab-btn{padding:6px 8px;font-size:11px}
+  .hero h1{font-size:21px}
+  .bead{width:32px;height:32px;margin-left:-16px}
+  .rod{width:40px}
+  .target-text{font-size:28px}
+  .frac-input input{width:52px!important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="logo"><span class="bead"></span>ABACUS.PRO</div>
+    <div class="tabs">
+      <button class="tab-btn active" data-view="overview">Обзор</button>
+      <button class="tab-btn" data-view="theory">Теория</button>
+      <button class="tab-btn" data-view="trainer">Тренажёр</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ================= OVERVIEW ================= -->
+  <section class="view active" id="view-overview">
+    <div class="hero">
+      <span class="eyebrow">Соробан · ментальная арифметика</span>
+      <h1>Счёты в голове.<br><span>От первой бусины до устного счёта.</span></h1>
+      <p>Разберитесь, как устроен абакус, потренируйтесь на живых счётах и пройдите путь от новичка до профи в тренажёре по счёту.</p>
+      <div class="hero-cta">
+        <button class="btn primary" onclick="switchView('theory')">Начать с теории</button>
+        <button class="btn" onclick="switchView('trainer')">Сразу в тренажёр</button>
+      </div>
+    </div>
+
+    <div class="abacus-stage">
+      <div class="abacus-value mono" id="hero-value">0</div>
+      <div class="abacus-frame"><div id="hero-abacus"></div></div>
+      <div class="abacus-actions">
+        <button class="btn small" onclick="heroRandom()">Случайное число</button>
+        <button class="btn small" onclick="heroAbacus.reset()">Сбросить</button>
+      </div>
+    </div>
+
+    <h2 class="section-title">Как устроена программа</h2>
+    <p class="section-sub">Три шага — от понимания механики до устного счёта в уме.</p>
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div>
+        <span class="tcard-num">01 · ТЕОРИЯ</span>
+        <h3>Как читать и собирать числа на счётах</h3>
+        <p>Устройство соробана, разряды, «маленькие» и «большие» друзья чисел — базовые приёмы устного счёта.</p>
+      </div>
+    </div>
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div>
+        <span class="tcard-num">02 · ЖИВЫЕ СЧЁТЫ</span>
+        <h3>Интерактивный абакус</h3>
+        <p>Кликайте по бусинам — они двигаются как настоящие, а число под счётами обновляется в реальном времени.</p>
+      </div>
+    </div>
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div>
+        <span class="tcard-num">03 · ТРЕНАЖЁР</span>
+        <h3>Пять уровней — от новичка до профи</h3>
+        <p>Собирайте числа на счётах и решайте примеры на скорость. Прогресс и точность сохраняются.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= THEORY ================= -->
+  <section class="view" id="view-theory">
+    <h2 class="section-title" style="margin-top:40px">Теория</h2>
+    <p class="section-sub">Соробан — японский счётный прибор. Каждый стержень — это разряд числа, а бусины на нём — его цифра.</p>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">01</span>
+        <h3>Устройство счётов</h3>
+        <p>Стержень разделён горизонтальной планкой. Сверху — одна «небесная» бусина стоимостью <span class="chip">5</span>, снизу — четыре «земных» бусины стоимостью <span class="chip">1</span> каждая. Цифра разряда — это сумма бусин, придвинутых к планке.</p>
+        <p>На картинке справа: бусина сверху и три снизу придвинуты к планке — это цифра 5+3=<span class="chip">8</span>.</p>
+      </div>
+      <div class="illus" id="illus-1"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">02</span>
+        <h3>Разряды числа</h3>
+        <p>Каждый следующий стержень слева — это разряд в 10 раз крупнее. Правый — единицы, следующий — десятки, потом сотни и так далее. Число на счётах читается слева направо, как обычно.</p>
+        <p>Справа изображено число <span class="chip">46</span>: десятки на левом стержне, единицы на правом.</p>
+      </div>
+      <div class="illus" id="illus-2"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">03</span>
+        <h3>«Маленькие друзья» — дополнение до 5</h3>
+        <p>Если на стержне не хватает бусин снизу, чтобы прибавить число, используют дополнение до пяти: вместо +4 придвигают небесную бусину (+5) и убирают одну земную (−1). Пары: 1↔4, 2↔3.</p>
+        <p>Пример: 3 + 4. Земных бусин не хватает, поэтому придвигаем небесную (+5) и убираем одну земную (−1) — получаем 7.</p>
+      </div>
+      <div class="illus" id="illus-3"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">04</span>
+        <h3>«Большие друзья» — дополнение до 10</h3>
+        <p>Когда на стержне совсем не остаётся места, используют перенос в следующий разряд: вместо +7 прибавляют +10 (бусина в соседнем разряде слева) и убирают −3 на текущем. Пары: 1↔9, 2↔8, 3↔7, 4↔6, 5↔5.</p>
+        <p>Пример: 6 + 7. Прибавляем 10 в разряд десятков и убираем 3 в разряде единиц — получаем 13.</p>
+      </div>
+      <div class="illus" id="illus-4"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">05</span>
+        <h3>Умножение — это быстрое сложение</h3>
+        <p>Когда нужно сложить одно и то же число несколько раз, проще умножить. 4 × 3 — это то же самое, что 4 + 4 + 4 = 12. На счётах умножают так: сначала вспоминают таблицу умножения (она есть ниже, в таблицах-помощниках), а результат складывают на стержнях так же, как обычное сложение.</p>
+        <p>Например, 4 × 3 = 12 — справа показано, как это число выглядит на счётах.</p>
+      </div>
+      <div class="illus" id="illus-5"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">06</span>
+        <h3>Деление — делим поровну</h3>
+        <p>Представь 12 конфет, которые нужно поделить поровну между 3 друзьями — каждому достанется по 4. Это и есть 12 ÷ 3 = 4. Деление — действие, обратное умножению: если ты помнишь, что 3 × 4 = 12, то сразу знаешь, что 12 ÷ 3 = 4 и 12 ÷ 4 = 3.</p>
+        <p>Справа те же 12 — их можно и разделить, и получить умножением.</p>
+      </div>
+      <div class="illus" id="illus-6"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">07</span>
+        <h3>Дроби — кусочек целого</h3>
+        <p>Дробь показывает, какую часть целого мы взяли. Представь шоколадку, разделённую на 4 одинаковые дольки — ты съел 3. Число снизу (знаменатель) — на сколько частей всё поделили, число сверху (числитель) — сколько частей взяли. Это и есть <span class="chip">3/4</span>.</p>
+        <p>Складывать дроби с одинаковым знаменателем просто — складываем только числители: 1/4 + 2/4 = 3/4. Если знаменатели разные, их сначала делают одинаковыми (об этом расскажет тренажёр в подсказках по мере тренировки).</p>
+        <div class="fracbar" id="fracbar-illus"></div>
+        <div class="fracbar-cap">3/4 шоколадки закрашено</div>
+      </div>
+      <div class="illus" id="illus-7"></div>
+    </div>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div>
+        <span class="tcard-num">08</span>
+        <h3>Аньзан — счёт без счётов</h3>
+        <p>После того как движения бусин доведены до автоматизма, ученики представляют счёты мысленно и «двигают» бусины воображаемого абакуса в уме — это и есть ментальная арифметика. Путь к этому начинается с обычной практики на настоящих счётах в разделе «Тренажёр».</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Таблицы-помощники</h2>
+    <p class="section-sub">Держи эти таблицы под рукой, пока тренируешься — они выручают на любом уровне.</p>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div style="width:100%">
+        <h3>Друзья числа 5</h3>
+        <p>Если не хватает земных бусин, замени их одной небесной (+5) и убери лишнее. Числа в паре всегда складываются в 5.</p>
+        <div class="help-wrap">
+          <table class="help-table pair-table" id="table-friends5"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div style="width:100%">
+        <h3>Друзья числа 10</h3>
+        <p>Когда на стержне совсем нет места — займи бусину в соседнем разряде слева (+10) и убери лишнее справа. Числа в паре всегда складываются в 10.</p>
+        <div class="help-wrap">
+          <table class="help-table pair-table" id="table-friends10"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div style="width:100%">
+        <h3>Таблица умножения</h3>
+        <p>Пригодится для режима «Умножение» и «Деление» в тренажёре.</p>
+        <div class="help-wrap">
+          <table class="help-table compact" id="table-mult"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap">
+      <h3 style="margin:0 0 4px;font-size:16px">Путь от новичка до профи</h3>
+      <p style="color:var(--text-2);font-size:13px;margin:0 0 6px">10 уровней. Каждый следующий открывается, когда предыдущий пройден (15+ верных ответов с точностью от 80%).</p>
+      <div class="roadmap-track">
+        <div class="roadmap-bar"><div class="roadmap-fill" id="theory-roadmap-fill"></div>
+          <div class="roadmap-nodes" id="theory-roadmap-nodes"></div>
+        </div>
+        <div class="rlabels" id="theory-roadmap-labels"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRAINER ================= -->
+  <section class="view" id="view-trainer">
+    <h2 class="section-title" style="margin-top:40px">Тренажёр</h2>
+    <p class="section-sub">Выберите уровень и режим. Прогресс сохраняется автоматически.</p>
+
+    <div class="roadmap" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:16px">Не знаешь, с какого уровня начать?</h3>
+          <p style="color:var(--text-2);font-size:13px;margin:0">Пройди короткий тест из 5 примеров — подберём подходящий уровень.</p>
+        </div>
+        <button class="btn primary small" onclick="startPlacement()">Определить уровень</button>
+      </div>
+    </div>
+
+    <div class="roadmap">
+      <div class="roadmap-track">
+        <div class="roadmap-bar"><div class="roadmap-fill" id="roadmap-fill"></div>
+          <div class="roadmap-nodes" id="roadmap-nodes"></div>
+        </div>
+        <div class="rlabels" id="roadmap-labels"></div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat"><div class="lbl">Решено</div><div class="val mono" id="st-solved">0</div></div>
+      <div class="stat"><div class="lbl">Точность</div><div class="val mono" id="st-acc">0%</div></div>
+      <div class="stat"><div class="lbl">Текущая серия</div><div class="val mono" id="st-streak">0</div></div>
+      <div class="stat"><div class="lbl">Лучшая серия</div><div class="val mono" id="st-best">0</div></div>
+    </div>
+
+    <div class="trainer-top">
+      <div class="mode-switch">
+        <button class="tab-btn active" data-mode="set" onclick="setMode('set')">Установи число</button>
+        <button class="tab-btn" data-mode="arith" onclick="setMode('arith')">Арифметика</button>
+        <button class="tab-btn" data-mode="frac" onclick="setMode('frac')">Дроби</button>
+      </div>
+      <select class="select-ctrl" id="rods-select" onchange="onRodsChange(this.value)">
+        <option value="auto">Косточки: как в уровне</option>
+        <option value="1">1 разряд</option>
+        <option value="2">2 разряда</option>
+        <option value="3">3 разряда</option>
+        <option value="4">4 разряда</option>
+        <option value="5">5 разрядов</option>
+        <option value="6">6 разрядов</option>
+        <option value="7">7 разрядов</option>
+      </select>
+    </div>
+    <div class="trainer-top">
+      <label class="timer-row"><input type="checkbox" id="timer-toggle" onchange="toggleTimerMode()"> режим на время (60с) <span id="timer-out" class="mono"></span></label>
+      <label class="timer-row"><input type="checkbox" id="anzan-toggle" onchange="toggleAnzanMode()"> аньзан (по памяти)</label>
+      <button class="btn small" id="sound-toggle-btn" onclick="toggleSound()">🔊 Звук</button>
+      <button class="btn small" id="review-btn" onclick="startReview()">Повторить ошибки (<span id="mistake-count">0</span>)</button>
+    </div>
+
+    <div class="op-chips" id="op-chips-arith" style="display:none">
+      <button class="op-chip active" data-op="add" onclick="toggleOp('arith','add')">+ Сложение</button>
+      <button class="op-chip active" data-op="sub" onclick="toggleOp('arith','sub')">− Вычитание</button>
+      <button class="op-chip" data-op="mul" onclick="toggleOp('arith','mul')">× Умножение</button>
+      <button class="op-chip" data-op="div" onclick="toggleOp('arith','div')">÷ Деление</button>
+    </div>
+    <div class="op-chips" id="op-chips-frac" style="display:none">
+      <button class="op-chip active" data-op="add" onclick="toggleOp('frac','add')">+ Сложение</button>
+      <button class="op-chip" data-op="sub" onclick="toggleOp('frac','sub')">− Вычитание</button>
+      <button class="op-chip" data-op="mul" onclick="toggleOp('frac','mul')">× Умножение</button>
+      <button class="op-chip" data-op="div" onclick="toggleOp('frac','div')">÷ Деление</button>
+    </div>
+
+    <div class="problem-box" id="placement-box" style="display:none">
+      <div style="color:var(--text-2);font-size:13px;margin-bottom:6px">Тест на определение уровня — вопрос <span id="placement-step" class="mono">1</span> из <span id="placement-total" class="mono">5</span></div>
+      <div class="problem-text mono" id="placement-expr">0 + 0 = ?</div>
+      <div class="answer-row">
+        <input type="text" inputmode="numeric" id="placement-input" placeholder="ответ" onkeydown="if(event.key==='Enter')checkPlacement()">
+        <button class="btn small primary" onclick="checkPlacement()">Ответить</button>
+      </div>
+      <div class="feedback" id="placement-feedback"></div>
+    </div>
+
+    <div class="problem-box">
+      <div id="problem-set" style="display:none">
+        <div style="color:var(--text-2);font-size:13px;margin-bottom:6px" id="set-instruction">Соберите на счётах число</div>
+        <div class="target-text mono" id="target-number">0</div>
+      </div>
+      <div id="problem-arith" style="display:none">
+        <div class="problem-text mono" id="problem-expr">0 + 0 = ?</div>
+        <div class="answer-row">
+          <input type="text" inputmode="numeric" id="answer-input" placeholder="ответ" onkeydown="if(event.key==='Enter')checkArith()">
+          <button class="btn small primary" onclick="checkArith()">Проверить</button>
+        </div>
+      </div>
+      <div id="problem-frac" style="display:none">
+        <div class="problem-text mono" id="frac-expr" style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap"></div>
+        <div class="answer-row">
+          <div class="frac-input">
+            <input type="text" inputmode="numeric" id="frac-num-input" placeholder="числ.">
+            <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-3)">числитель</span>
+          </div>
+          <span class="slash">/</span>
+          <div class="frac-input">
+            <input type="text" inputmode="numeric" id="frac-den-input" placeholder="знам.">
+            <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-3)">знаменатель</span>
+          </div>
+          <button class="btn small primary" onclick="checkFrac()">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="hint-row">
+        <button class="btn small" onclick="showHint()">💡 Подсказка</button>
+      </div>
+      <div class="hint-text" id="hint-text"></div>
+    </div>
+
+    <div class="abacus-stage">
+      <div class="abacus-value mono" id="trainer-value">0</div>
+      <div class="abacus-frame"><div id="trainer-abacus"></div></div>
+      <div class="abacus-actions">
+        <button class="btn small" id="check-set-btn" onclick="checkSet()">Проверить</button>
+        <button class="btn small" onclick="trainerAbacus.reset()">Сбросить счёты</button>
+        <button class="btn small" onclick="newProblem()">Другой пример</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="donate-card">
+    <h3>Поддержать проект</h3>
+    <p>Если тренажёр пригодился — можно поддержать разработку донатом.</p>
+    <div class="donate-row">
+      <span class="donate-label">USDT (TRC20)</span>
+      <code class="donate-addr">TVz7UzXv1Kcqf5uKWgHuzCpaHhd6Lvfvv9</code>
+      <button class="btn small" onclick="copyAddr(this,'TVz7UzXv1Kcqf5uKWgHuzCpaHhd6Lvfvv9')">Копировать</button>
+    </div>
+    <div class="donate-row">
+      <span class="donate-label">XLM</span>
+      <code class="donate-addr">GAQX5OJRPHUY62MDHOHC7U4XBXMBDQFWNB5XN67BRLNUNJ3TOGAUFU2B</code>
+      <button class="btn small" onclick="copyAddr(this,'GAQX5OJRPHUY62MDHOHC7U4XBXMBDQFWNB5XN67BRLNUNJ3TOGAUFU2B')">Копировать</button>
+    </div>
+    <div class="donate-row">
+      <span class="donate-label">DOGE</span>
+      <code class="donate-addr">DQMjjEAuebRrDxCicWhkb2jtUqj4HKdmDK</code>
+      <button class="btn small" onclick="copyAddr(this,'DQMjjEAuebRrDxCicWhkb2jtUqj4HKdmDK')">Копировать</button>
+    </div>
+    <div class="donate-row">
+      <span class="donate-label">SHIB (ERC20)</span>
+      <code class="donate-addr">0x50B0b1d72d007Fd0C692b2580cbA152011197CE7</code>
+      <button class="btn small" onclick="copyAddr(this,'0x50B0b1d72d007Fd0C692b2580cbA152011197CE7')">Копировать</button>
+    </div>
+  </div>
+
+  <footer>ABACUS.PRO · тренажёр устного счёта на соробане</footer>
+</div>
+
+<div class="celebrate-toast" id="celebrate-toast"></div>
+
+<script>
+/* ============ ABACUS ENGINE ============ */
+function createAbacus(container, rods, opts){
+  opts = opts || {};
+  var interactive = opts.interactive !== false;
+  var showLabels = !!opts.showLabels;
+  var state = [];
+  for(var i=0;i<rods;i++) state.push({heaven:false, earth:0});
+  var onChange = opts.onChange || function(){};
+
+  var rodsEl = document.createElement('div');
+  rodsEl.className = 'rods';
+
+  var rodEls = [];
+  var placeNames = ['ед','дес','сот','тыс','дес.тыс','сот.тыс','млн'];
+
+  for(var r=0;r<rods;r++){
+    var rod = document.createElement('div');
+    rod.className = 'rod' + (interactive ? '' : ' disabled');
+
+    var line = document.createElement('div'); line.className='rod-line'; rod.appendChild(line);
+
+    var hz = document.createElement('div'); hz.className='heaven-zone';
+    var hb = document.createElement('div'); hb.className='bead';
+    hz.appendChild(hb); rod.appendChild(hz);
+
+    var barWrap = document.createElement('div'); barWrap.className='bar-wrap';
+    if(r===0){
+      var bar = document.createElement('div'); bar.className='bar';
+      barWrap.appendChild(bar);
+    }
+    rod.appendChild(barWrap);
+
+    var ez = document.createElement('div'); ez.className='earth-zone';
+    var ebeads = [];
+    for(var i=0;i<4;i++){
+      var eb = document.createElement('div'); eb.className='bead';
+      ez.appendChild(eb); ebeads.push(eb);
+    }
+    rod.appendChild(ez);
+
+    if(showLabels){
+      var lbl = document.createElement('div'); lbl.className='rod-label';
+      var pIdx = rods-1-r;
+      lbl.textContent = pIdx < placeNames.length ? placeNames[pIdx] : ('10^'+pIdx);
+      rod.appendChild(lbl);
+    }
+
+    (function(rIdx, hb, ebeads){
+      if(interactive){
+        hb.addEventListener('click', function(){
+          state[rIdx].heaven = !state[rIdx].heaven;
+          render(); onChange(getValue()); playBeadClick();
+        });
+        ebeads.forEach(function(bead, i){
+          bead.addEventListener('click', function(){
+            var cnt = state[rIdx].earth;
+            state[rIdx].earth = (cnt > i) ? i : i+1;
+            render(); onChange(getValue()); playBeadClick();
+          });
+        });
+      }
+    })(r, hb, ebeads);
+
+    rodEls.push({hb:hb, ebeads:ebeads});
+    rodsEl.appendChild(rod);
+  }
+  container.innerHTML = '';
+  container.appendChild(rodsEl);
+
+  function render(){
+    for(var r=0;r<rods;r++){
+      var s = state[r], els = rodEls[r];
+      els.hb.style.top = s.heaven ? '40px' : '4px';
+      els.hb.classList.toggle('active', s.heaven);
+      for(var i=0;i<4;i++){
+        var top = (i < s.earth) ? i*40 : (i+1)*40;
+        els.ebeads[i].style.top = top + 'px';
+        els.ebeads[i].classList.toggle('active', i < s.earth);
+      }
+    }
+  }
+
+  function getValue(){
+    var digits = '';
+    for(var r=0;r<rods;r++){
+      var s = state[r];
+      digits += String((s.heaven?5:0) + s.earth);
+    }
+    return parseInt(digits, 10);
+  }
+
+  function setValue(n){
+    var max = Math.pow(10, rods) - 1;
+    n = Math.max(0, Math.min(max, Math.floor(n)));
+    var str = String(n).padStart(rods, '0');
+    for(var r=0;r<rods;r++){
+      var d = parseInt(str[r], 10);
+      state[r].heaven = d >= 5;
+      state[r].earth = d - (state[r].heaven ? 5 : 0);
+    }
+    render();
+  }
+
+  function reset(){
+    for(var r=0;r<rods;r++){ state[r].heaven=false; state[r].earth=0; }
+    render(); onChange(getValue());
+  }
+
+  render();
+  return {getValue:getValue, setValue:setValue, reset:reset, rods:rods};
+}
+
+/* ============ SOUND ============ */
+var soundEnabled = true;
+var audioCtx = null;
+function getAudioCtx(){
+  if(!audioCtx){
+    try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){ return null; }
+  }
+  if(audioCtx.state === 'suspended'){ audioCtx.resume(); }
+  return audioCtx;
+}
+function tone(freq, dur, type, vol){
+  if(!soundEnabled) return;
+  var ctx = getAudioCtx();
+  if(!ctx) return;
+  var osc = ctx.createOscillator();
+  var gain = ctx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.value = freq;
+  gain.gain.value = vol || 0.06;
+  osc.connect(gain); gain.connect(ctx.destination);
+  var now = ctx.currentTime;
+  gain.gain.setValueAtTime(gain.gain.value, now);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+  osc.start(now);
+  osc.stop(now + dur);
+}
+function playBeadClick(){ tone(520, 0.06, 'square', 0.03); }
+function playCorrect(){ tone(660, 0.1, 'sine', 0.07); setTimeout(function(){ tone(880, 0.14, 'sine', 0.07); }, 90); }
+function playWrong(){ tone(180, 0.22, 'sawtooth', 0.05); }
+function toggleSound(){
+  soundEnabled = !soundEnabled;
+  document.getElementById('sound-toggle-btn').textContent = soundEnabled ? '🔊 Звук' : '🔇 Звук выкл';
+  if(soundEnabled) getAudioCtx();
+}
+
+/* ============ HERO ABACUS ============ */
+var heroAbacus = createAbacus(document.getElementById('hero-abacus'), 5, {
+  interactive:true, showLabels:true,
+  onChange:function(v){ document.getElementById('hero-value').textContent = v; }
+});
+function heroRandom(){
+  heroAbacus.setValue(Math.floor(Math.random()*100000));
+  document.getElementById('hero-value').textContent = heroAbacus.getValue();
+}
+heroRandom();
+
+/* ============ THEORY ILLUSTRATIONS ============ */
+var a1 = createAbacus(document.getElementById('illus-1'), 1, {interactive:false});
+a1.setValue(8);
+var a2 = createAbacus(document.getElementById('illus-2'), 2, {interactive:false, showLabels:true});
+a2.setValue(46);
+var a3 = createAbacus(document.getElementById('illus-3'), 1, {interactive:false});
+a3.setValue(7);
+var a4 = createAbacus(document.getElementById('illus-4'), 2, {interactive:false, showLabels:true});
+a4.setValue(13);
+var a5 = createAbacus(document.getElementById('illus-5'), 2, {interactive:false, showLabels:true});
+a5.setValue(12);
+var a6 = createAbacus(document.getElementById('illus-6'), 2, {interactive:false, showLabels:true});
+a6.setValue(12);
+
+var fracBar = document.getElementById('fracbar-illus');
+for(var fb=0; fb<4; fb++){
+  var seg = document.createElement('div');
+  seg.className = 'fracbar-seg' + (fb<3 ? ' on' : '');
+  fracBar.appendChild(seg);
+}
+
+/* ---------- таблицы-помощники ---------- */
+function buildPairTable(tableId, sum){
+  var t = document.getElementById(tableId);
+  var head = '<tr><th>Число</th>';
+  var pairs = [];
+  for(var n=1; n<sum; n++){ pairs.push(n); }
+  pairs.forEach(function(n){ head += '<th>'+n+'</th>'; });
+  head += '</tr>';
+  var row = '<tr><td class="dim">Друг (до '+sum+')</td>';
+  pairs.forEach(function(n){ row += '<td class="a">'+(sum-n)+'</td>'; });
+  row += '</tr>';
+  t.innerHTML = head + row;
+}
+buildPairTable('table-friends5', 5);
+buildPairTable('table-friends10', 10);
+
+function buildMultTable(){
+  var t = document.getElementById('table-mult');
+  var html = '<tr><th>×</th>';
+  for(var c=1;c<=9;c++) html += '<th>'+c+'</th>';
+  html += '</tr>';
+  for(var r=1;r<=9;r++){
+    html += '<tr><th>'+r+'</th>';
+    for(var c2=1;c2<=9;c2++){
+      html += '<td>'+(r*c2)+'</td>';
+    }
+    html += '</tr>';
+  }
+  t.innerHTML = html;
+}
+buildMultTable();
+
+/* ============ VIEW SWITCHING ============ */
+function switchView(name){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.tab-btn[data-view]').forEach(function(b){
+    b.classList.toggle('active', b.dataset.view === name);
+  });
+  window.scrollTo({top:0, behavior:'instant'});
+}
+document.querySelectorAll('.tab-btn[data-view]').forEach(function(b){
+  b.addEventListener('click', function(){ switchView(b.dataset.view); });
+});
+
+/* ============ LEVELS ============ */
+var LEVELS = [
+  {id:1,  name:'Новичок',    rods:1, max:9,        ops:['set'],               hint:'чтение бусин'},
+  {id:2,  name:'Ученик',     rods:2, max:99,       ops:['set','add'],        hint:'без переноса'},
+  {id:3,  name:'Практик',    rods:2, max:99,       ops:['add','sub'],        hint:'маленькие друзья'},
+  {id:4,  name:'Специалист', rods:3, max:999,      ops:['add','sub'],        hint:'большие друзья'},
+  {id:5,  name:'Умножатель', rods:3, max:999,      ops:['add','sub','mul'],  hint:'таблица умножения'},
+  {id:6,  name:'Делитель',   rods:4, max:9999,     ops:['add','sub','mul','div'], hint:'деление'},
+  {id:7,  name:'Дробовик',   rods:4, max:9999,     ops:['add','sub','mul','div'], hint:'дроби'},
+  {id:8,  name:'Мастер',     rods:5, max:99999,    ops:['add','sub','mul','div'], hint:'смешанные примеры'},
+  {id:9,  name:'Эксперт',    rods:6, max:999999,   ops:['add','sub','mul','div'], hint:'крупные числа'},
+  {id:10, name:'Профи',      rods:7, max:9999999,  ops:['add','sub','mul','div'], hint:'на скорость'}
+];
+
+/* операнды для умножения/деления по уровням: [aMin,aMax,bMin,bMax] */
+var MUL_RANGES = {
+  1:[2,9,2,9],    2:[2,9,2,9],    3:[2,19,2,9],   4:[2,49,2,9],   5:[2,99,2,9],
+  6:[2,99,2,12],  7:[2,199,2,12], 8:[2,499,2,12], 9:[2,999,2,15], 10:[2,999,2,20]
+};
+var DIV_Q_RANGES = {
+  1:[1,9],  2:[2,9],  3:[2,12], 4:[2,20], 5:[2,30],
+  6:[2,50], 7:[2,70], 8:[2,90], 9:[2,120],10:[2,150]
+};
+var DIV_B_RANGES = {
+  1:[1,9],  2:[2,9],  3:[2,9],  4:[2,12], 5:[2,12],
+  6:[2,12], 7:[2,15], 8:[2,15], 9:[2,20], 10:[2,20]
+};
+/* пулы знаменателей для дробей по уровням */
+var FRAC_DENOMS = {
+  1:[2,3,4,5], 2:[2,3,4,5], 3:[2,3,4,5,6], 4:[2,3,4,5,6,8], 5:[2,3,4,5,6,8,10],
+  6:[2,3,4,5,6,8,10], 7:[2,3,4,5,6,8,10,12], 8:[2,3,4,5,6,8,10,12], 9:[2,3,4,5,6,8,9,10,12], 10:[2,3,4,5,6,8,9,10,12,15]
+};
+
+var enabledOps = {arith:{add:true,sub:true,mul:false,div:false}, frac:{add:true,sub:false,mul:false,div:false}};
+
+function toggleOp(kind, op){
+  var active = Object.keys(enabledOps[kind]).filter(function(k){return enabledOps[kind][k]});
+  if(active.length===1 && enabledOps[kind][op]) return; /* хотя бы одна операция должна остаться включённой */
+  enabledOps[kind][op] = !enabledOps[kind][op];
+  document.querySelectorAll('#op-chips-'+kind+' .op-chip').forEach(function(btn){
+    btn.classList.toggle('active', enabledOps[kind][btn.dataset.op]);
+  });
+  newProblem();
+}
+
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=b; b=a%b; a=t; } return a || 1; }
+function reduceFrac(n,d){ var g=gcd(n,d); return {num:n/g, den:d/g}; }
+function renderFraction(n,d){
+  if(d===1) return '<span class="mono">'+n+'</span>';
+  return '<span class="frac"><span class="num">'+n+'</span><span class="den">'+d+'</span></span>';
+}
+
+var progress = {};
+LEVELS.forEach(function(l){ progress[l.id] = {solved:0, correct:0, streak:0, best:0}; });
+
+var currentLevelId = 1;
+var currentMode = 'set';
+var timerMode = false;
+var timerLeft = 60;
+var timerHandle = null;
+var selectedRods = null;
+var anzanMode = false;
+var awaitingAdvance = false;
+var mistakesStore = [];
+var reviewQueue = [];
+var reviewActive = false;
+var unlockedUpTo = 1;
+var placementCheckpoints = [2,4,6,8,10];
+var placementIndex = 0;
+var placementCurrent = null;
+
+/* ---------- persistent storage ---------- */
+async function loadProgress(){
+  try{
+    var res = await window.storage.get('abacus-progress');
+    if(res && res.value){
+      var saved = JSON.parse(res.value);
+      var savedProgress = saved.progress || saved; /* поддержка старого формата */
+      LEVELS.forEach(function(l){ if(savedProgress[l.id]) progress[l.id] = savedProgress[l.id]; });
+      if(typeof saved.unlockedUpTo === 'number') unlockedUpTo = saved.unlockedUpTo;
+    }
+  }catch(e){}
+  /* подстраховка: если уровни уже пройдены по старым данным — открываем их */
+  var inferred = 1;
+  for(var i=1;i<LEVELS.length;i++){
+    if(isMastered(i)) inferred = i+1; else break;
+  }
+  unlockedUpTo = Math.max(unlockedUpTo, inferred);
+  renderRoadmaps();
+  updateStats();
+}
+async function saveProgress(){
+  try{ await window.storage.set('abacus-progress', JSON.stringify({progress:progress, unlockedUpTo:unlockedUpTo})); }catch(e){}
+}
+
+function isMastered(id){
+  var p = progress[id];
+  if(!p) return false;
+  return p.correct >= 15 && (p.correct/Math.max(1,p.solved)) >= 0.8;
+}
+function isUnlocked(id){
+  if(id === 1) return true;
+  if(id <= unlockedUpTo) return true;
+  return isMastered(id-1);
+}
+
+function renderRoadmaps(){
+  ['roadmap','theory-roadmap'].forEach(function(prefix){
+    var nodesEl = document.getElementById(prefix+'-nodes');
+    var labelsEl = document.getElementById(prefix+'-labels');
+    var fillEl = document.getElementById(prefix+'-fill');
+    nodesEl.innerHTML = ''; labelsEl.innerHTML = '';
+    var doneCount = 0;
+    LEVELS.forEach(function(l, idx){
+      var mastered = isMastered(l.id);
+      var unlocked = isUnlocked(l.id);
+      if(mastered) doneCount++;
+      var node = document.createElement('div');
+      node.className = 'rnode' + (mastered ? ' done' : '') + (l.id===currentLevelId ? ' current' : '') + (!unlocked ? ' locked' : '');
+      node.textContent = mastered ? '✓' : (unlocked ? l.id : '🔒');
+      node.title = unlocked ? l.name : (l.name+' — заблокировано, пройдите уровень '+(l.id-1));
+      node.addEventListener('click', function(){
+        if(!unlocked){
+          celebrate('Сначала пройдите уровень '+(l.id-1));
+          return;
+        }
+        switchView('trainer');
+        selectLevel(l.id);
+      });
+      nodesEl.appendChild(node);
+      var lab = document.createElement('span'); lab.textContent = l.name;
+      labelsEl.appendChild(lab);
+    });
+    fillEl.style.width = (doneCount/(LEVELS.length-1)*100) + '%';
+  });
+}
+
+function selectLevel(id){
+  if(!isUnlocked(id)) return;
+  currentLevelId = id;
+  reviewActive = false; reviewQueue = [];
+  var level = LEVELS.find(function(l){return l.id===id});
+  var rodsCount = selectedRods || level.rods;
+  document.getElementById('check-set-btn').style.display = currentMode==='set' ? '' : 'none';
+  trainerAbacus = createAbacus(document.getElementById('trainer-abacus'), rodsCount, {
+    interactive:true, showLabels:true,
+    onChange:function(v){
+      document.getElementById('trainer-value').textContent = v;
+      if(currentMode==='set' && !reviewActive && !awaitingAdvance && v===currentTarget){
+        awaitingAdvance = true;
+        checkSet();
+      }
+    }
+  });
+  document.getElementById('trainer-value').textContent = 0;
+  renderRoadmaps();
+  updateStats();
+  newProblem();
+}
+
+function onRodsChange(val){
+  selectedRods = (val === 'auto') ? null : parseInt(val, 10);
+  selectLevel(currentLevelId);
+}
+
+function setModeSilent(mode){
+  currentMode = mode;
+  document.getElementById('placement-box').style.display = 'none';
+  document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.mode===mode);
+  });
+  document.getElementById('problem-set').style.display = mode==='set' ? '' : 'none';
+  document.getElementById('problem-arith').style.display = mode==='arith' ? '' : 'none';
+  document.getElementById('problem-frac').style.display = mode==='frac' ? '' : 'none';
+  document.getElementById('check-set-btn').style.display = mode==='set' ? '' : 'none';
+  document.getElementById('op-chips-arith').style.display = mode==='arith' ? '' : 'none';
+  document.getElementById('op-chips-frac').style.display = mode==='frac' ? '' : 'none';
+}
+function setMode(mode){
+  reviewActive = false; reviewQueue = [];
+  setModeSilent(mode);
+  newProblem();
+}
+
+var trainerAbacus;
+var currentTarget = 0;
+var currentProblem = null;
+
+function newProblem(forced){
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('hint-text').style.display = 'none';
+  awaitingAdvance = false;
+  var level = LEVELS.find(function(l){return l.id===currentLevelId});
+  trainerAbacus.reset();
+  document.getElementById('trainer-value').textContent = 0;
+
+  if(forced){
+    if(forced.mode==='set'){
+      currentTarget = forced.target;
+      document.getElementById('target-number').textContent = currentTarget;
+      document.getElementById('set-instruction').textContent = 'Соберите на счётах число (повтор ошибки)';
+    } else if(forced.mode==='arith'){
+      currentProblem = forced.problem;
+      document.getElementById('problem-expr').textContent = forced.exprText;
+      document.getElementById('answer-input').value = '';
+      document.getElementById('answer-input').focus();
+    } else if(forced.mode==='frac'){
+      currentProblem = forced.problem;
+      document.getElementById('frac-expr').innerHTML = forced.exprHTML;
+      document.getElementById('frac-num-input').value = '';
+      document.getElementById('frac-den-input').value = '';
+      document.getElementById('frac-num-input').focus();
+    }
+    return;
+  }
+
+  if(currentMode==='set'){
+    var setMax = Math.pow(10, trainerAbacus.rods) - 1;
+    currentTarget = 1 + Math.floor(Math.random()*setMax);
+    document.getElementById('target-number').textContent = anzanMode ? currentTarget : currentTarget;
+    document.getElementById('set-instruction').textContent = anzanMode ? 'Запомни число — оно скоро исчезнет' : 'Соберите на счётах число';
+    if(anzanMode){
+      var delay = 900 + trainerAbacus.rods*450;
+      setTimeout(function(){
+        if(currentMode==='set' && currentTarget !== undefined){
+          document.getElementById('target-number').textContent = '?';
+        }
+      }, delay);
+    }
+  } else if(currentMode==='arith'){
+    var active = Object.keys(enabledOps.arith).filter(function(k){return enabledOps.arith[k]});
+    var op = active[Math.floor(Math.random()*active.length)];
+    var a,b,expr,answer;
+    if(op==='mul'){
+      var mr = MUL_RANGES[level.id];
+      a = mr[0] + Math.floor(Math.random()*(mr[1]-mr[0]+1));
+      b = mr[2] + Math.floor(Math.random()*(mr[3]-mr[2]+1));
+      expr = a+' \u00d7 '+b+' ='; answer = a*b;
+    } else if(op==='div'){
+      var qr = DIV_Q_RANGES[level.id], br = DIV_B_RANGES[level.id];
+      var q = qr[0] + Math.floor(Math.random()*(qr[1]-qr[0]+1));
+      b = br[0] + Math.floor(Math.random()*(br[1]-br[0]+1));
+      a = q*b; answer = q;
+      expr = a+' \u00f7 '+b+' =';
+    } else {
+      var half = Math.floor(level.max/2);
+      a = 1 + Math.floor(Math.random()*half);
+      b = 1 + Math.floor(Math.random()*half);
+      if(op==='sub'){
+        if(a<b){ var t=a; a=b; b=t; }
+        expr = a+' \u2212 '+b+' ='; answer = a-b;
+      } else {
+        expr = a+' + '+b+' ='; answer = a+b;
+      }
+    }
+    currentProblem = {a:a,b:b,op:op,answer:answer};
+    document.getElementById('problem-expr').textContent = expr + ' ?';
+    document.getElementById('answer-input').value = '';
+    document.getElementById('answer-input').focus();
+  } else if(currentMode==='frac'){
+    var active2 = Object.keys(enabledOps.frac).filter(function(k){return enabledOps.frac[k]});
+    var fop = active2[Math.floor(Math.random()*active2.length)];
+    var pool = FRAC_DENOMS[level.id];
+    var d1 = pool[Math.floor(Math.random()*pool.length)];
+    var d2 = pool[Math.floor(Math.random()*pool.length)];
+    var n1 = 1 + Math.floor(Math.random()*(d1-1));
+    var n2 = 1 + Math.floor(Math.random()*(d2-1));
+    var resNum, resDen, sym;
+    if(fop==='sub'){
+      sym = '\u2212';
+      if(n1*d2 < n2*d1){ var tn=n1,td=d1; n1=n2; d1=d2; n2=tn; d2=td; }
+      resNum = n1*d2 - n2*d1; resDen = d1*d2;
+    } else if(fop==='mul'){
+      sym = '\u00d7'; resNum = n1*n2; resDen = d1*d2;
+    } else if(fop==='div'){
+      sym = '\u00f7'; resNum = n1*d2; resDen = d1*n2;
+    } else {
+      sym = '+'; resNum = n1*d2 + n2*d1; resDen = d1*d2;
+    }
+    var reduced = reduceFrac(resNum, resDen);
+    currentProblem = {fop:fop, n1:n1,d1:d1,n2:n2,d2:d2, answer:reduced};
+    document.getElementById('frac-expr').innerHTML =
+      renderFraction(n1,d1) + ' <span style="margin:0 8px">'+sym+'</span> ' + renderFraction(n2,d2) + ' <span style="margin:0 8px">=</span> <span class="mono">?</span>';
+    document.getElementById('frac-num-input').value = '';
+    document.getElementById('frac-den-input').value = '';
+    document.getElementById('frac-num-input').focus();
+  }
+}
+
+function checkSet(){
+  var val = trainerAbacus.getValue();
+  var fb = document.getElementById('feedback');
+  var ok = val === currentTarget;
+  registerResult(ok, {mode:'set', target:currentTarget});
+  if(ok){ fb.textContent='Верно! Число собрано правильно.'; fb.className='feedback ok'; }
+  else{ fb.textContent='Пока не то — на счётах сейчас '+val+', нужно '+currentTarget+'.'; fb.className='feedback err'; }
+  var next = reviewActive ? reviewNext : newProblem;
+  setTimeout(next, ok ? 900 : 1600);
+}
+
+function checkArith(){
+  var input = document.getElementById('answer-input');
+  var val = parseInt(input.value, 10);
+  var fb = document.getElementById('feedback');
+  var ok = val === currentProblem.answer;
+  registerResult(ok, {mode:'arith', problem:currentProblem, exprText:document.getElementById('problem-expr').textContent});
+  if(ok){ fb.textContent='Верно!'; fb.className='feedback ok'; }
+  else{ fb.textContent='Неверно. Правильный ответ: '+currentProblem.answer; fb.className='feedback err'; }
+  var next = reviewActive ? reviewNext : newProblem;
+  setTimeout(next, ok ? 700 : 1400);
+}
+
+function checkFrac(){
+  var numV = parseInt(document.getElementById('frac-num-input').value, 10);
+  var denRaw = document.getElementById('frac-den-input').value.trim();
+  var denV = denRaw === '' ? 1 : parseInt(denRaw, 10);
+  var fb = document.getElementById('feedback');
+  var ok = false;
+  if(!isNaN(numV) && !isNaN(denV) && denV !== 0){
+    var userReduced = reduceFrac(numV, denV);
+    ok = userReduced.num === currentProblem.answer.num && userReduced.den === currentProblem.answer.den;
+  }
+  registerResult(ok, {mode:'frac', problem:currentProblem, exprHTML:document.getElementById('frac-expr').innerHTML});
+  var answerStr = currentProblem.answer.den===1 ? currentProblem.answer.num : (currentProblem.answer.num+'/'+currentProblem.answer.den);
+  if(ok){ fb.textContent='Верно!'; fb.className='feedback ok'; }
+  else{ fb.textContent='Неверно. Правильный ответ: '+answerStr; fb.className='feedback err'; }
+  var next = reviewActive ? reviewNext : newProblem;
+  setTimeout(next, ok ? 700 : 1600);
+}
+
+function registerResult(ok, mistakeData){
+  var p = progress[currentLevelId];
+  var wasMastered = isMastered(currentLevelId);
+  p.solved++;
+  if(ok){
+    p.correct++; p.streak++; p.best = Math.max(p.best, p.streak);
+    playCorrect();
+  } else {
+    p.streak = 0;
+    playWrong();
+    if(mistakeData && !reviewActive){ mistakesStore.push(mistakeData); updateMistakeCount(); }
+  }
+  updateStats();
+  renderRoadmaps();
+  saveProgress();
+  var level = LEVELS.find(function(l){return l.id===currentLevelId});
+  if(!wasMastered && isMastered(currentLevelId)){ celebrate('Уровень «'+level.name+'» освоен! 🎉'); }
+}
+
+function updateMistakeCount(){
+  document.getElementById('mistake-count').textContent = mistakesStore.length;
+}
+
+function startReview(){
+  if(mistakesStore.length===0) return;
+  reviewQueue = mistakesStore.slice();
+  mistakesStore = [];
+  updateMistakeCount();
+  reviewActive = true;
+  document.getElementById('feedback').textContent = 'Режим повторения ошибок: '+reviewQueue.length+' примеров.';
+  document.getElementById('feedback').className = 'feedback';
+  reviewNext();
+}
+
+function reviewNext(){
+  if(reviewQueue.length===0){
+    reviewActive = false;
+    document.getElementById('feedback').textContent = 'Все ошибки повторены, отличная работа!';
+    document.getElementById('feedback').className = 'feedback ok';
+    newProblem();
+    return;
+  }
+  var item = reviewQueue.shift();
+  setModeSilent(item.mode);
+  newProblem(item);
+}
+
+/* ---------- placement test ---------- */
+function startPlacement(){
+  reviewActive = false; reviewQueue = [];
+  placementIndex = 0;
+  document.getElementById('problem-set').style.display = 'none';
+  document.getElementById('problem-arith').style.display = 'none';
+  document.getElementById('problem-frac').style.display = 'none';
+  document.getElementById('op-chips-arith').style.display = 'none';
+  document.getElementById('op-chips-frac').style.display = 'none';
+  document.getElementById('check-set-btn').style.display = 'none';
+  document.getElementById('placement-total').textContent = placementCheckpoints.length;
+  document.getElementById('placement-box').style.display = '';
+  askPlacementQuestion();
+}
+function askPlacementQuestion(){
+  var lvlId = placementCheckpoints[placementIndex];
+  var level = LEVELS.find(function(l){return l.id===lvlId});
+  var half = Math.max(2, Math.floor(level.max/2));
+  var a = 1 + Math.floor(Math.random()*half);
+  var b = 1 + Math.floor(Math.random()*half);
+  placementCurrent = {answer:a+b};
+  document.getElementById('placement-step').textContent = placementIndex+1;
+  document.getElementById('placement-expr').textContent = a+' + '+b+' = ?';
+  document.getElementById('placement-input').value = '';
+  document.getElementById('placement-feedback').textContent = '';
+  document.getElementById('placement-input').focus();
+}
+function checkPlacement(){
+  var val = parseInt(document.getElementById('placement-input').value, 10);
+  var ok = val === placementCurrent.answer;
+  if(ok){
+    playCorrect();
+    placementIndex++;
+    if(placementIndex >= placementCheckpoints.length){ finishPlacement(10); }
+    else{ askPlacementQuestion(); }
+  } else {
+    playWrong();
+    var recommended = placementIndex===0 ? 1 : placementCheckpoints[placementIndex-1];
+    finishPlacement(recommended);
+  }
+}
+function finishPlacement(recommendedLevel){
+  document.getElementById('placement-box').style.display = 'none';
+  unlockedUpTo = Math.max(unlockedUpTo, recommendedLevel);
+  saveProgress();
+  selectLevel(recommendedLevel);
+  setMode('set');
+  var lvl = LEVELS.find(function(l){return l.id===recommendedLevel});
+  celebrate('Твой уровень: '+lvl.name+' (уровень '+recommendedLevel+' из '+LEVELS.length+')');
+}
+
+function celebrate(text){
+  var el = document.getElementById('celebrate-toast');
+  el.textContent = text;
+  el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 3000);
+}
+
+function copyAddr(btn, text){
+  var orig = btn.textContent;
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = 'Скопировано';
+    setTimeout(function(){ btn.textContent = orig; }, 1500);
+  }).catch(function(){});
+}
+
+function getHint(){
+  if(currentMode==='set'){
+    var digits = String(currentTarget).split('').map(Number);
+    var names = ['ед','дес','сот','тыс','дес.тыс','сот.тыс'];
+    var parts = [];
+    for(var i=0;i<digits.length;i++){
+      var placeIdx = digits.length-1-i;
+      parts.push((names[placeIdx] || ('10^'+placeIdx))+': '+digits[i]);
+    }
+    return parts.join(', ')+'. Начни с левого (самого крупного) разряда.';
+  }
+  if(currentMode==='arith' && currentProblem){
+    var p = currentProblem;
+    if(p.op==='add'){
+      var u1=p.a%10, u2=p.b%10;
+      if(u1+u2>=10) return 'Единицы в сумме дают 10 и больше — используй большого друга: замени +'+u2+' на +10 и −'+(10-u2)+'.';
+      if(Math.max(u1,u2)<5 && u1+u2>=5) return 'Косточек снизу не хватает — используй маленького друга: замени +'+u2+' на +5 и −'+(5-u2)+'.';
+      return 'Складывай начиная со старшего разряда.';
+    }
+    if(p.op==='sub') return 'Вычитай по разрядам, начиная со старшего. Если не хватает — займи 10 у соседнего разряда.';
+    if(p.op==='mul') return 'Разбей множитель на удобные части, например '+p.a+' × '+p.b+' = '+p.a+' × '+(p.b-1)+' + '+p.a+'.';
+    if(p.op==='div') return 'Вспомни таблицу умножения: на какое число нужно умножить '+p.b+', чтобы получить '+p.a+'?';
+  }
+  if(currentMode==='frac' && currentProblem){
+    var fp = currentProblem;
+    if(fp.d1===fp.d2) return 'Знаменатели одинаковые — просто '+(fp.fop==='sub'?'вычти':'сложи или умножь')+' числители.';
+    if(fp.fop==='mul') return 'Перемножь числители между собой и знаменатели между собой.';
+    if(fp.fop==='div') return 'Переверни вторую дробь (числитель и знаменатель местами) и умножь.';
+    return 'Приведи дроби к общему знаменателю: перемножь знаменатели '+fp.d1+' и '+fp.d2+'.';
+  }
+  return 'Подсказка появится, когда начнётся пример.';
+}
+function showHint(){
+  var el = document.getElementById('hint-text');
+  el.textContent = getHint();
+  el.style.display = 'block';
+}
+
+function updateStats(){
+  var p = progress[currentLevelId];
+  document.getElementById('st-solved').textContent = p.solved;
+  document.getElementById('st-acc').textContent = p.solved ? Math.round(p.correct/p.solved*100)+'%' : '0%';
+  document.getElementById('st-streak').textContent = p.streak;
+  document.getElementById('st-best').textContent = p.best;
+}
+
+/* ---------- anzan mode ---------- */
+function toggleAnzanMode(){
+  anzanMode = document.getElementById('anzan-toggle').checked;
+  if(anzanMode){
+    setMode('set');
+    document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = b.dataset.mode!=='set'; });
+  } else {
+    document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = false; });
+    newProblem();
+  }
+}
+
+/* ---------- timer mode ---------- */
+function toggleTimerMode(){
+  timerMode = document.getElementById('timer-toggle').checked;
+  if(timerMode){
+    setMode('arith');
+    document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = b.dataset.mode==='set'; });
+    startTimer();
+  } else {
+    document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = false; });
+    clearInterval(timerHandle);
+    document.getElementById('timer-out').textContent = '';
+  }
+}
+function startTimer(){
+  timerLeft = 60;
+  document.getElementById('timer-out').textContent = timerLeft+'с';
+  clearInterval(timerHandle);
+  timerHandle = setInterval(function(){
+    timerLeft--;
+    document.getElementById('timer-out').textContent = timerLeft+'с';
+    if(timerLeft<=0){
+      clearInterval(timerHandle);
+      document.getElementById('feedback').textContent = 'Время вышло! Серия: '+progress[currentLevelId].streak+', лучшая: '+progress[currentLevelId].best;
+      document.getElementById('feedback').className = 'feedback';
+      document.getElementById('timer-toggle').checked = false;
+      timerMode = false;
+      document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = false; });
+    }
+  }, 1000);
+}
+
+/* ============ INIT ============ */
+selectLevel(1);
+setMode('set');
+loadProgress();
+</script>
+</body>
+</html>
