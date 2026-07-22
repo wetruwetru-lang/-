@@ -1,0 +1,3275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABACUS.PRO — от новичка до профи</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070B14;
+  --bg-panel:#0E1626;
+  --bg-panel-2:#131E36;
+  --border:#1E2C4A;
+  --border-soft:#162238;
+  --blue:#2F6FED;
+  --blue-bright:#5B9BFF;
+  --blue-glow:rgba(91,155,255,.35);
+  --bead-off:#233355;
+  --bead-off-2:#2C3F66;
+  --text-1:#E9EEFB;
+  --text-2:#8FA3C8;
+  --text-3:#57678C;
+  --ok:#4DD4A8;
+  --err:#FF6685;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--text-1);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.disp{font-family:'Unbounded',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px 80px}
+a{color:var(--blue-bright)}
+
+/* ---------- NAV ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(7,11,20,.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border-soft);
+}
+.topbar-in{
+  max-width:920px;margin:0 auto;padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  flex-wrap:wrap;
+}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Unbounded';font-weight:600;font-size:16px;letter-spacing:.02em}
+.logo .bead{width:14px;height:14px;background:var(--blue-bright);transform:rotate(45deg);border-radius:3px;box-shadow:0 0 10px var(--blue-glow)}
+.tabs{display:flex;gap:4px;background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:10px;padding:4px}
+.tab-btn{
+  border:none;background:transparent;color:var(--text-2);
+  font-family:'Inter';font-weight:500;font-size:13px;
+  padding:8px 14px;border-radius:7px;cursor:pointer;transition:.15s;
+}
+.tab-btn:hover{color:var(--text-1)}
+.tab-btn.active{background:var(--blue);color:#fff}
+
+/* ---------- HERO ---------- */
+.hero{padding:56px 0 28px;text-align:center}
+.eyebrow{
+  display:inline-block;font-family:'JetBrains Mono';font-size:12px;
+  color:var(--blue-bright);letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--border);padding:5px 12px;border-radius:99px;margin-bottom:20px;
+}
+.hero h1{font-size:38px;line-height:1.15;margin:0 0 14px;font-weight:600}
+.hero h1 span{color:var(--blue-bright)}
+.hero p{color:var(--text-2);font-size:16px;max-width:520px;margin:0 auto 30px;line-height:1.6}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{
+  font-family:'Inter';font-weight:600;font-size:14px;border-radius:10px;
+  padding:12px 22px;cursor:pointer;border:1px solid var(--border);
+  background:var(--bg-panel);color:var(--text-1);transition:.15s;
+}
+.btn:hover{border-color:var(--border);background:var(--bg-panel-2)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--blue-bright)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---------- SECTIONS ---------- */
+.view{display:none}
+.view.active{display:block}
+.section-title{font-size:22px;font-weight:600;margin:48px 0 6px}
+.section-sub{color:var(--text-2);font-size:14px;margin:0 0 26px;line-height:1.6}
+
+/* ---------- ABACUS ---------- */
+.abacus-stage{
+  background:var(--bg-panel);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:26px 22px 18px;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.abacus-value{font-family:'JetBrains Mono';font-weight:700;font-size:34px;letter-spacing:.02em;color:var(--blue-bright)}
+.abacus-frame{
+  position:relative;
+  background:linear-gradient(180deg,#0C1626,#0A1220);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px 10px;
+  overflow-x:auto;
+  max-width:100%;
+}
+.rods{display:flex;gap:6px;position:relative}
+.rod{position:relative;width:38px;flex:none}
+.rod-line{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--border);transform:translateX(-50%);z-index:0}
+.heaven-zone{position:relative;height:76px;z-index:1}
+.earth-zone{position:relative;height:200px;z-index:1}
+.bar{height:5px;background:linear-gradient(90deg,var(--blue),var(--blue-bright));border-radius:2px;box-shadow:0 0 12px var(--blue-glow);position:relative;z-index:2;margin:0 -1000px;width:calc(100% + 2000px)}
+.bar-wrap{position:relative}
+.bead{
+  position:absolute;left:50%;
+  width:30px;height:30px;
+  margin-left:-15px;
+  background:var(--bead-off);
+  border:1px solid var(--bead-off-2);
+  transform:rotate(45deg);
+  border-radius:5px;
+  cursor:pointer;
+  transition:top .16s cubic-bezier(.4,0,.2,1),background .16s,border-color .16s,box-shadow .16s;
+}
+.bead.active{background:var(--blue-bright);border-color:#8FC0FF;box-shadow:0 0 10px var(--blue-glow)}
+.bead:not(.on):hover{border-color:var(--blue-bright)}
+.rod.disabled .bead{cursor:default}
+.rod-label{text-align:center;font-family:'JetBrains Mono';font-size:10px;color:var(--text-3);margin-top:6px;white-space:nowrap}
+.unit-mark{position:absolute;left:50%;top:-4px;width:4px;height:4px;background:var(--blue-bright);border-radius:50%;transform:translateX(-50%);z-index:3}
+.abacus-actions{display:flex;gap:10px;margin-top:6px}
+.btn.small{padding:8px 14px;font-size:13px;border-radius:8px}
+
+/* ---------- THEORY CARDS ---------- */
+.tcard{
+  background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;
+  padding:22px 22px 24px;margin-bottom:16px;
+  display:grid;grid-template-columns:1fr;gap:18px;
+}
+@media(min-width:640px){.tcard{grid-template-columns:1fr 200px}}
+.tcard-num{font-family:'JetBrains Mono';color:var(--blue-bright);font-size:12px;letter-spacing:.1em}
+.tcard h3{font-size:17px;margin:6px 0 10px;font-weight:600}
+.tcard p{color:var(--text-2);font-size:14px;line-height:1.7;margin:0 0 8px}
+.tcard .illus{
+  background:var(--bg);border:1px solid var(--border-soft);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;padding:10px;
+  overflow:hidden;max-width:100%;
+}
+.tcard .illus .abacus-frame{overflow:hidden}
+.chip{display:inline-block;font-family:'JetBrains Mono';font-size:12px;background:var(--bg);border:1px solid var(--border);color:var(--blue-bright);padding:2px 8px;border-radius:6px}
+
+/* ---------- ROADMAP ---------- */
+.roadmap{
+  background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;
+  padding:22px;margin-bottom:24px;overflow-x:auto;
+}
+.roadmap-track{min-width:640px}
+.roadmap-bar{position:relative;height:6px;background:var(--bead-off);border-radius:3px;margin:34px 10px 10px}
+.roadmap-fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-bright));border-radius:3px;transition:width .3s}
+.roadmap-nodes{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);display:flex;justify-content:space-between}
+.rnode{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--bg-panel);border:2px solid var(--bead-off);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:var(--text-3);
+  cursor:pointer;position:relative;transition:.15s;flex:none;
+}
+.rnode:hover{border-color:var(--blue-bright)}
+.rnode.done{background:var(--blue);border-color:var(--blue-bright);color:#fff}
+.rnode.current{border-color:var(--blue-bright);color:var(--blue-bright);box-shadow:0 0 0 4px var(--blue-glow)}
+.rnode.locked{opacity:.45;cursor:not-allowed;background:var(--bg)}
+.rnode.locked:hover{border-color:var(--bead-off)}
+.rlabels{display:flex;justify-content:space-between;margin:10px 10px 0}
+.rlabels span{font-size:11px;color:var(--text-3);width:56px;text-align:center;font-family:'JetBrains Mono'}
+
+/* ---------- TRAINER ---------- */
+.trainer-top{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:18px}
+.mode-switch{display:flex;gap:4px;background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:10px;padding:4px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 24px}
+.stat{background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:12px;padding:14px}
+.stat .lbl{font-size:12px;color:var(--text-3)}
+.stat .val{font-family:'JetBrains Mono';font-size:20px;font-weight:700;margin-top:4px}
+
+.problem-box{
+  background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;
+  padding:24px;text-align:center;margin-bottom:18px;
+}
+.problem-text{font-family:'JetBrains Mono';font-size:30px;font-weight:700;letter-spacing:.02em}
+.target-text{font-family:'JetBrains Mono';font-size:44px;font-weight:700;color:var(--blue-bright)}
+.answer-row{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:18px;flex-wrap:wrap}
+.answer-row input{
+  font-family:'JetBrains Mono';font-size:20px;text-align:center;width:150px;
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text-1);
+  padding:10px 12px;outline:none;
+}
+.answer-row input:focus{border-color:var(--blue-bright)}
+.feedback{min-height:24px;font-size:14px;margin-top:12px;font-weight:500}
+.feedback.ok{color:var(--ok)}
+.feedback.err{color:var(--err)}
+.timer-row{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:13px;color:var(--text-2)}
+.timer-row input{accent-color:var(--blue-bright)}
+
+.op-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.op-chip{
+  font-family:'JetBrains Mono';font-size:13px;font-weight:500;
+  border:1px solid var(--border);background:var(--bg-panel);color:var(--text-2);
+  padding:7px 14px;border-radius:99px;cursor:pointer;transition:.15s;user-select:none;
+}
+.op-chip:hover{border-color:var(--blue-bright)}
+.op-chip.active{background:var(--blue);border-color:var(--blue-bright);color:#fff}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 6px}
+.frac .num,.frac .den{padding:0 6px;line-height:1.3}
+.frac .num{border-bottom:2px solid currentColor}
+.frac-input{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;gap:4px}
+.frac-input input{width:64px!important}
+.answer-row .slash{font-family:'JetBrains Mono';font-size:26px;color:var(--text-3)}
+
+.help-table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono';font-size:13px}
+.help-table th,.help-table td{border:1px solid var(--border-soft);padding:7px 6px;text-align:center}
+.help-table th{background:var(--bg);color:var(--text-2);font-weight:500;font-size:11px}
+.help-table td{color:var(--text-1)}
+.help-table td.dim{color:var(--text-3)}
+.help-table.compact{width:auto;min-width:460px}
+.help-table.compact td,.help-table.compact th{padding:5px 4px;font-size:11px}
+.help-wrap{overflow-x:auto;border-radius:10px}
+.pair-table td.a{color:var(--blue-bright);font-weight:700}
+.pair-table td.b{color:var(--text-1)}
+
+.fracbar{display:flex;gap:3px;height:34px;margin:10px 0}
+.fracbar-seg{flex:1;background:var(--bead-off);border-radius:5px;transition:.15s}
+.fracbar-seg.on{background:var(--blue-bright);box-shadow:0 0 8px var(--blue-glow)}
+.fracbar-cap{font-family:'JetBrains Mono';font-size:12px;color:var(--text-2);text-align:center}
+
+.select-ctrl{
+  font-family:'JetBrains Mono';font-size:13px;color:var(--text-1);
+  background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;
+  padding:8px 10px;cursor:pointer;
+}
+.hint-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.hint-text{font-size:13px;color:var(--text-2);max-width:520px;margin:8px auto 0;line-height:1.6;display:none}
+
+/* ---------- ANZAN ---------- */
+.anzan-type-desc{color:var(--text-2);font-size:13px;margin:-10px 0 18px;line-height:1.6}
+.anzan-settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:14px}
+.anzan-settings label{display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono';font-size:11px;color:var(--text-3)}
+.anzan-settings .select-ctrl{width:100%}
+.anzan-stage{background:var(--bg-panel);border:1px solid var(--border);border-radius:18px;padding:10px;margin-bottom:16px}
+.anzan-progress{text-align:center;font-family:'JetBrains Mono';font-size:13px;color:var(--text-2);margin:4px 0 10px}
+.anzan-stage-inner{
+  position:relative;height:280px;border-radius:12px;
+  background:linear-gradient(180deg,#0C1626,#0A1220);
+  border:1px solid var(--border-soft);overflow:hidden;
+}
+.anzan-stage-inner.crazy{height:340px}
+.anzan-item{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
+.anzan-num{font-family:'JetBrains Mono';font-weight:800;font-size:56px;color:var(--blue-bright);text-shadow:0 0 20px var(--blue-glow)}
+.anzan-num.op-sub{color:var(--err);text-shadow:0 0 20px rgba(255,102,133,.35)}
+.anzan-num.op-mul{color:#F2B84B;text-shadow:0 0 20px rgba(242,184,75,.35)}
+.anzan-num.op-div{color:#B98DF2;text-shadow:0 0 20px rgba(185,141,242,.35)}
+.anzan-mini-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.anzan-sign-badge{
+  font-family:'JetBrains Mono';font-weight:700;font-size:13px;
+  width:20px;height:20px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.anzan-sign-badge.op-add{background:var(--ok);color:#06251c}
+.anzan-sign-badge.op-sub{background:var(--err);color:#2a0410}
+.anzan-sign-badge.op-mul{background:#F2B84B;color:#2a1a02}
+.anzan-sign-badge.op-div{background:#B98DF2;color:#1c0b2e}
+.anzan-frac-wrap{display:flex;align-items:center;gap:14px}
+.anzan-frac-big{font-family:'JetBrains Mono';font-weight:800;font-size:44px;color:var(--blue-bright)}
+.anzan-mini-outer{width:112px;height:128px;overflow:hidden;border-radius:8px}
+.anzan-mini-abacus{transform:scale(.42);transform-origin:top left}
+.anzan-countdown{font-family:'Unbounded';font-weight:800;font-size:72px;color:var(--blue-bright)}
+#anzan-answer-box,#anzan-frac-answer-box{text-align:center}
+
+@media(max-width:520px){
+  .anzan-num{font-size:40px}
+  .anzan-frac-big{font-size:30px}
+  .anzan-mini-outer{width:88px;height:100px}
+  .anzan-mini-abacus{transform:scale(.33)}
+  .anzan-stage-inner{height:220px}
+  .anzan-stage-inner.crazy{height:280px}
+}
+
+/* ---------- ANZAN FULLSCREEN ---------- */
+#view-anzan:fullscreen{
+  background:var(--bg);overflow-y:auto;padding:24px 20px 40px;
+}
+#view-anzan:-webkit-full-screen{
+  background:var(--bg);overflow-y:auto;padding:24px 20px 40px;
+}
+#view-anzan:fullscreen .anzan-stage-inner{height:min(60vh,520px)}
+#view-anzan:fullscreen .anzan-stage-inner.crazy{height:min(66vh,580px)}
+.fs-toggle-btn{display:flex;align-items:center;gap:6px}
+
+.celebrate-toast{
+  position:fixed;top:16px;left:50%;
+  transform:translateX(-50%) translateY(-24px);
+  background:var(--blue);color:#fff;
+  padding:12px 22px;border-radius:12px;
+  font-family:'Unbounded';font-size:13px;font-weight:600;
+  box-shadow:0 10px 28px rgba(0,0,0,.45);
+  opacity:0;pointer-events:none;transition:.3s ease;z-index:200;
+}
+.celebrate-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.donate-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;padding:22px;margin-top:32px}
+.donate-card h3{margin:0 0 6px;font-size:16px;font-weight:600}
+.donate-card p{color:var(--text-2);font-size:13px;margin:0 0 16px;line-height:1.6}
+.donate-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--border-soft)}
+.donate-row:first-of-type{border-top:none;padding-top:0}
+.donate-label{font-family:'JetBrains Mono';font-size:12px;color:var(--blue-bright);min-width:120px}
+.donate-addr{flex:1;min-width:180px;font-family:'JetBrains Mono';font-size:12px;color:var(--text-1);background:var(--bg);padding:7px 10px;border-radius:6px;border:1px solid var(--border-soft);word-break:break-all}
+
+footer{text-align:center;color:var(--text-3);font-size:12px;padding:40px 0 10px}
+
+@media(max-width:760px){
+  .wrap{padding:0 16px 60px}
+  .topbar-in{padding:12px 16px}
+}
+
+@media(max-width:640px){
+  .hero{padding:40px 0 22px}
+  .hero h1{font-size:26px}
+  .hero p{font-size:14px}
+  .abacus-value{font-size:26px}
+  .abacus-stage{padding:20px 14px 14px}
+  .tcard{padding:18px}
+  .roadmap{padding:16px}
+  .trainer-top{gap:8px}
+  .select-ctrl{flex:1;min-width:0}
+  .op-chips{gap:6px}
+  .op-chip{padding:6px 10px;font-size:12px}
+}
+
+@media(max-width:520px){
+  .hero h1{font-size:24px}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .rlabels span{width:44px;font-size:9px}
+  .bead{width:36px;height:36px;margin-left:-18px}
+  .rod{width:44px}
+  .logo{font-size:13px;gap:6px}
+  .tabs{padding:3px}
+  .tab-btn{padding:7px 10px;font-size:12px}
+  .target-text{font-size:34px}
+  .problem-text{font-size:22px}
+  .answer-row input{width:120px;font-size:17px}
+  .donate-label{min-width:100%}
+  .donate-addr{font-size:11px}
+}
+
+@media(max-width:380px){
+  .wrap{padding:0 12px 50px}
+  .topbar-in{padding:10px 12px}
+  .logo span.bead{width:11px;height:11px}
+  .tab-btn{padding:6px 8px;font-size:11px}
+  .hero h1{font-size:21px}
+  .bead{width:32px;height:32px;margin-left:-16px}
+  .rod{width:40px}
+  .target-text{font-size:28px}
+  .frac-input input{width:52px!important}
+}
+
+/* ---------- SUDOKU ---------- */
+.sudoku-diff-row{display:flex;gap:8px;flex-wrap:wrap}
+.sudoku-diff-btn{
+  padding:9px 16px;border-radius:10px;border:1px solid var(--border);
+  background:var(--bg-panel-2);color:var(--text-2);font-family:'JetBrains Mono',monospace;
+  font-size:13px;cursor:pointer;transition:.15s;
+}
+.sudoku-diff-btn:hover{border-color:var(--blue-bright);color:var(--text-1)}
+.sudoku-diff-btn.active{background:var(--blue);border-color:var(--blue-bright);color:#fff}
+.sudoku-wrap{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;justify-content:center;margin-top:16px}
+.sudoku-board{
+  --sudoku-n:9;
+  display:grid;grid-template-columns:repeat(9,1fr);
+  width:min(94vw,460px);aspect-ratio:1/1;
+  background:var(--border);border:2px solid var(--text-2);border-radius:8px;
+  gap:1px;overflow:hidden;
+}
+.sudoku-cell{
+  background:var(--bg-panel);display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:clamp(9px, calc(280px / var(--sudoku-n,9)), 20px);font-weight:600;
+  color:var(--text-1);cursor:pointer;position:relative;user-select:none;
+}
+.sudoku-cell.given{color:var(--blue-bright);cursor:default}
+.sudoku-cell.selected{background:var(--bead-off)}
+.sudoku-cell.peer{background:var(--bg-panel-2)}
+.sudoku-cell.same-num{color:var(--ok)}
+.sudoku-cell.collected{background:rgba(77,212,168,.14)}
+.sudoku-cell.conflict{color:var(--err);background:rgba(255,102,133,.14)}
+.sudoku-notes{
+  position:absolute;inset:2px;display:grid;
+  font-size:8px;font-weight:400;color:var(--text-3);pointer-events:none;
+}
+.sudoku-notes span{display:flex;align-items:center;justify-content:center}
+.sudoku-side{width:min(94vw,260px);display:flex;flex-direction:column;gap:14px}
+.sudoku-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sudoku-pad-btn{
+  padding:14px 0;border-radius:10px;border:1px solid var(--border);
+  background:var(--bg-panel-2);color:var(--text-1);font-family:'JetBrains Mono',monospace;
+  font-size:18px;font-weight:700;cursor:pointer;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.sudoku-pad-btn:hover{border-color:var(--blue-bright)}
+.sudoku-pad-btn.complete{background:rgba(77,212,168,.16);border-color:var(--ok);color:var(--ok)}
+.sudoku-check{position:absolute;top:2px;right:5px;font-size:11px;color:var(--ok)}
+.sudoku-tools{display:flex;gap:8px;flex-wrap:wrap}
+.sudoku-tools button.active{background:var(--blue);border-color:var(--blue-bright);color:#fff}
+.sudoku-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sudoku-abacus-glyph{display:flex;flex-direction:column;align-items:center;gap:2px;transform:scale(.85)}
+.sag-heaven,.sag-earth{display:flex;gap:1px}
+.sag-earth{flex-wrap:wrap;justify-content:center;max-width:16px}
+.sag-bead{width:5px;height:5px;border-radius:50%;background:var(--bead-off-2)}
+.sag-bead.on{background:var(--blue-bright)}
+#view-sudoku:fullscreen{background:var(--bg);overflow-y:auto;padding:24px 20px 40px}
+#view-sudoku:-webkit-full-screen{background:var(--bg);overflow-y:auto;padding:24px 20px 40px}
+#view-sudoku:fullscreen .sudoku-board{width:min(80vh,80vw,640px)}
+@media(max-width:640px){
+  .sudoku-wrap{flex-direction:column;align-items:center}
+  .sudoku-side{width:min(94vw,460px)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="logo"><span class="bead"></span>ABACUS.PRO</div>
+    <div class="tabs">
+      <button class="tab-btn active" data-view="overview">Обзор</button>
+      <button class="tab-btn" data-view="theory">Теория</button>
+      <button class="tab-btn" data-view="trainer">Тренажёр</button>
+      <button class="tab-btn" data-view="anzan">Анзан</button>
+      <button class="tab-btn" data-view="sudoku">Судоку</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ================= OVERVIEW ================= -->
+  <section class="view active" id="view-overview">
+    <div class="hero">
+      <span class="eyebrow">Соробан · ментальная арифметика</span>
+      <h1>Счёты в голове.<br><span>От первой бусины до устного счёта.</span></h1>
+      <p>Разберитесь, как устроен абакус, потренируйтесь на живых счётах и пройдите путь от новичка до профи в тренажёре по счёту.</p>
+      <div class="hero-cta">
+        <button class="btn primary" onclick="switchView('theory')">Начать с теории</button>
+        <button class="btn" onclick="switchView('trainer')">Сразу в тренажёр</button>
+      </div>
+    </div>
+
+    <div class="abacus-stage">
+      <div class="abacus-value mono" id="hero-value">0</div>
+      <div class="abacus-frame"><div id="hero-abacus"></div></div>
+      <div class="abacus-actions">
+        <button class="btn small" onclick="heroRandom()">Случайное число</button>
+        <button class="btn small" onclick="heroAbacus.reset()">Сбросить</button>
+      </div>
+    </div>
+
+    <h2 class="section-title">Как устроена программа</h2>
+    <p class="section-sub">Три шага — от понимания механики до устного счёта в уме.</p>
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div>
+        <span class="tcard-num">01 · ТЕОРИЯ</span>
+        <h3>Как читать и собирать числа на счётах</h3>
+        <p>Устройство соробана, разряды, «маленькие» и «большие» друзья чисел — базовые приёмы устного счёта.</p>
+      </div>
+    </div>
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div>
+        <span class="tcard-num">02 · ЖИВЫЕ СЧЁТЫ</span>
+        <h3>Интерактивный абакус</h3>
+        <p>Кликайте по бусинам — они двигаются как настоящие, а число под счётами обновляется в реальном времени.</p>
+      </div>
+    </div>
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div>
+        <span class="tcard-num">03 · ТРЕНАЖЁР</span>
+        <h3>Пять уровней — от новичка до профи</h3>
+        <p>Собирайте числа на счётах и решайте примеры на скорость. Прогресс и точность сохраняются.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= THEORY ================= -->
+  <section class="view" id="view-theory">
+    <h2 class="section-title" style="margin-top:40px">Теория</h2>
+    <p class="section-sub">Соробан — японский счётный прибор. Каждый стержень — это разряд числа, а бусины на нём — его цифра.</p>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">01</span>
+        <h3>Устройство счётов</h3>
+        <p>Стержень разделён горизонтальной планкой. Сверху — одна «небесная» бусина стоимостью <span class="chip">5</span>, снизу — четыре «земных» бусины стоимостью <span class="chip">1</span> каждая. Цифра разряда — это сумма бусин, придвинутых к планке.</p>
+        <p>На картинке справа: бусина сверху и три снизу придвинуты к планке — это цифра 5+3=<span class="chip">8</span>.</p>
+      </div>
+      <div class="illus" id="illus-1"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">02</span>
+        <h3>Разряды числа</h3>
+        <p>Каждый следующий стержень слева — это разряд в 10 раз крупнее. Правый — единицы, следующий — десятки, потом сотни и так далее. Число на счётах читается слева направо, как обычно.</p>
+        <p>Справа изображено число <span class="chip">46</span>: десятки на левом стержне, единицы на правом.</p>
+      </div>
+      <div class="illus" id="illus-2"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">03</span>
+        <h3>«Маленькие друзья» — дополнение до 5</h3>
+        <p>Если на стержне не хватает бусин снизу, чтобы прибавить число, используют дополнение до пяти: вместо +4 придвигают небесную бусину (+5) и убирают одну земную (−1). Пары: 1↔4, 2↔3.</p>
+        <p>Пример: 3 + 4. Земных бусин не хватает, поэтому придвигаем небесную (+5) и убираем одну земную (−1) — получаем 7.</p>
+      </div>
+      <div class="illus" id="illus-3"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">04</span>
+        <h3>«Большие друзья» — дополнение до 10</h3>
+        <p>Когда на стержне совсем не остаётся места, используют перенос в следующий разряд: вместо +7 прибавляют +10 (бусина в соседнем разряде слева) и убирают −3 на текущем. Пары: 1↔9, 2↔8, 3↔7, 4↔6, 5↔5.</p>
+        <p>Пример: 6 + 7. Прибавляем 10 в разряд десятков и убираем 3 в разряде единиц — получаем 13.</p>
+      </div>
+      <div class="illus" id="illus-4"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">05</span>
+        <h3>Умножение — это быстрое сложение</h3>
+        <p>Когда нужно сложить одно и то же число несколько раз, проще умножить. 4 × 3 — это то же самое, что 4 + 4 + 4 = 12. На счётах умножают так: сначала вспоминают таблицу умножения (она есть ниже, в таблицах-помощниках), а результат складывают на стержнях так же, как обычное сложение.</p>
+        <p>Например, 4 × 3 = 12 — справа показано, как это число выглядит на счётах.</p>
+      </div>
+      <div class="illus" id="illus-5"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">06</span>
+        <h3>Деление — делим поровну</h3>
+        <p>Представь 12 конфет, которые нужно поделить поровну между 3 друзьями — каждому достанется по 4. Это и есть 12 ÷ 3 = 4. Деление — действие, обратное умножению: если ты помнишь, что 3 × 4 = 12, то сразу знаешь, что 12 ÷ 3 = 4 и 12 ÷ 4 = 3.</p>
+        <p>Справа те же 12 — их можно и разделить, и получить умножением.</p>
+      </div>
+      <div class="illus" id="illus-6"></div>
+    </div>
+
+    <div class="tcard">
+      <div>
+        <span class="tcard-num">07</span>
+        <h3>Дроби — кусочек целого</h3>
+        <p>Дробь показывает, какую часть целого мы взяли. Представь шоколадку, разделённую на 4 одинаковые дольки — ты съел 3. Число снизу (знаменатель) — на сколько частей всё поделили, число сверху (числитель) — сколько частей взяли. Это и есть <span class="chip">3/4</span>.</p>
+        <p>Складывать дроби с одинаковым знаменателем просто — складываем только числители: 1/4 + 2/4 = 3/4. Если знаменатели разные, их сначала делают одинаковыми (об этом расскажет тренажёр в подсказках по мере тренировки).</p>
+        <div class="fracbar" id="fracbar-illus"></div>
+        <div class="fracbar-cap">3/4 шоколадки закрашено</div>
+      </div>
+      <div class="illus" id="illus-7"></div>
+    </div>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div>
+        <span class="tcard-num">08</span>
+        <h3>Аньзан — счёт без счётов</h3>
+        <p>После того как движения бусин доведены до автоматизма, ученики представляют счёты мысленно и «двигают» бусины воображаемого абакуса в уме — это и есть ментальная арифметика. Путь к этому начинается с обычной практики на настоящих счётах в разделе «Тренажёр».</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">10 наглядных примеров для новичка</h2>
+    <p class="section-sub">Разбери эти примеры на умножение, деление и дроби с числами от 1 до 9 вручную — на бумаге или вслух — прежде чем переходить к тренажёру и анзану. Это база, на которой строится весь устный счёт.</p>
+    <div id="beginner-examples-wrap"></div>
+
+    <h2 class="section-title">Таблицы-помощники</h2>
+    <p class="section-sub">Держи эти таблицы под рукой, пока тренируешься — они выручают на любом уровне.</p>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div style="width:100%">
+        <h3>Друзья числа 5</h3>
+        <p>Если не хватает земных бусин, замени их одной небесной (+5) и убери лишнее. Числа в паре всегда складываются в 5.</p>
+        <div class="help-wrap">
+          <table class="help-table pair-table" id="table-friends5"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div style="width:100%">
+        <h3>Друзья числа 10</h3>
+        <p>Когда на стержне совсем нет места — займи бусину в соседнем разряде слева (+10) и убери лишнее справа. Числа в паре всегда складываются в 10.</p>
+        <div class="help-wrap">
+          <table class="help-table pair-table" id="table-friends10"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <div style="width:100%">
+        <h3>Таблица умножения</h3>
+        <p>Пригодится для режима «Умножение» и «Деление» в тренажёре.</p>
+        <div class="help-wrap">
+          <table class="help-table compact" id="table-mult"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap">
+      <h3 style="margin:0 0 4px;font-size:16px">Путь от новичка до профи</h3>
+      <p style="color:var(--text-2);font-size:13px;margin:0 0 6px">14 уровней (10 и 11 — «свои», сами выбираете разрядность). Каждый следующий открывается, когда предыдущий пройден: 30+ ответов с точностью от 65%.</p>
+      <div class="roadmap-track">
+        <div class="roadmap-bar"><div class="roadmap-fill" id="theory-roadmap-fill"></div>
+          <div class="roadmap-nodes" id="theory-roadmap-nodes"></div>
+        </div>
+        <div class="rlabels" id="theory-roadmap-labels"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRAINER ================= -->
+  <section class="view" id="view-trainer">
+    <h2 class="section-title" style="margin-top:40px">Тренажёр</h2>
+    <p class="section-sub">Выберите уровень и режим. Прогресс сохраняется автоматически.</p>
+
+    <div class="roadmap" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:16px">Не знаешь, с какого уровня начать?</h3>
+          <p style="color:var(--text-2);font-size:13px;margin:0">Пройди короткий тест из 5 примеров — подберём подходящий уровень.</p>
+        </div>
+        <button class="btn primary small" onclick="startPlacement()">Определить уровень</button>
+      </div>
+    </div>
+
+    <div class="roadmap">
+      <div class="roadmap-track">
+        <div class="roadmap-bar"><div class="roadmap-fill" id="roadmap-fill"></div>
+          <div class="roadmap-nodes" id="roadmap-nodes"></div>
+        </div>
+        <div class="rlabels" id="roadmap-labels"></div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat"><div class="lbl">Решено</div><div class="val mono" id="st-solved">0</div></div>
+      <div class="stat"><div class="lbl">Точность</div><div class="val mono" id="st-acc">0%</div></div>
+      <div class="stat"><div class="lbl">Текущая серия</div><div class="val mono" id="st-streak">0</div></div>
+      <div class="stat"><div class="lbl">Лучшая серия</div><div class="val mono" id="st-best">0</div></div>
+    </div>
+
+    <div class="roadmap" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:10px">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:16px">Скорость счёта — путь к анзану</h3>
+          <p style="color:var(--text-2);font-size:13px;margin:0" id="speed-stage-desc">10 примеров без таймера — разгонитесь постепенно.</p>
+        </div>
+        <button class="btn small" id="speed-stage-stop-btn" onclick="stopSpeedStage()" style="display:none">Выйти из режима скорости</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="speed-stage-buttons"></div>
+      <div class="anzan-progress" id="speed-stage-progress" style="text-align:left;margin:10px 0 0"></div>
+    </div>
+
+    <div class="trainer-top">
+      <div class="mode-switch">
+        <button class="tab-btn active" data-mode="set" onclick="setMode('set')">Установи число</button>
+        <button class="tab-btn" data-mode="arith" onclick="setMode('arith')">Арифметика</button>
+        <button class="tab-btn" data-mode="frac" onclick="setMode('frac')">Дроби</button>
+      </div>
+      <select class="select-ctrl" id="rods-select" onchange="onRodsChange(this.value)">
+        <option value="auto">Косточки: как в уровне</option>
+        <option value="1">1 разряд</option>
+        <option value="2">2 разряда</option>
+        <option value="3">3 разряда</option>
+        <option value="4">4 разряда</option>
+        <option value="5">5 разрядов</option>
+        <option value="6">6 разрядов</option>
+        <option value="7">7 разрядов</option>
+        <option value="8">8 разрядов</option>
+        <option value="9">9 разрядов</option>
+      </select>
+    </div>
+    <div class="anzan-type-desc" id="level-note" style="display:none"></div>
+    <div class="trainer-top">
+      <label class="timer-row"><input type="checkbox" id="timer-toggle" onchange="toggleTimerMode()"> режим на время (60с) <span id="timer-out" class="mono"></span></label>
+      <label class="timer-row"><input type="checkbox" id="anzan-toggle" onchange="toggleAnzanMode()"> аньзан (по памяти)</label>
+      <button class="btn small" id="sound-toggle-btn" onclick="toggleSound()">🔊 Звук</button>
+      <button class="btn small" id="review-btn" onclick="startReview()">Повторить ошибки (<span id="mistake-count">0</span>)</button>
+    </div>
+
+    <div class="op-chips" id="op-chips-arith" style="display:none">
+      <button class="op-chip active" data-op="add" onclick="toggleOp('arith','add')">+ Сложение</button>
+      <button class="op-chip active" data-op="sub" onclick="toggleOp('arith','sub')">− Вычитание</button>
+      <button class="op-chip" data-op="mul" onclick="toggleOp('arith','mul')">× Умножение</button>
+      <button class="op-chip" data-op="div" onclick="toggleOp('arith','div')">÷ Деление</button>
+    </div>
+    <div class="op-chips" id="op-chips-frac" style="display:none">
+      <button class="op-chip active" data-op="add" onclick="toggleOp('frac','add')">+ Сложение</button>
+      <button class="op-chip" data-op="sub" onclick="toggleOp('frac','sub')">− Вычитание</button>
+      <button class="op-chip" data-op="mul" onclick="toggleOp('frac','mul')">× Умножение</button>
+      <button class="op-chip" data-op="div" onclick="toggleOp('frac','div')">÷ Деление</button>
+    </div>
+
+    <div class="problem-box" id="placement-box" style="display:none">
+      <div style="color:var(--text-2);font-size:13px;margin-bottom:6px">Тест на определение уровня — вопрос <span id="placement-step" class="mono">1</span> из <span id="placement-total" class="mono">5</span></div>
+      <div class="problem-text mono" id="placement-expr">0 + 0 = ?</div>
+      <div class="answer-row">
+        <input type="text" inputmode="numeric" id="placement-input" placeholder="ответ" onkeydown="if(event.key==='Enter')checkPlacement()">
+        <button class="btn small primary" onclick="checkPlacement()">Ответить</button>
+      </div>
+      <div class="feedback" id="placement-feedback"></div>
+    </div>
+
+    <div class="problem-box">
+      <div id="problem-set" style="display:none">
+        <div style="color:var(--text-2);font-size:13px;margin-bottom:6px" id="set-instruction">Соберите на счётах число</div>
+        <div class="target-text mono" id="target-number">0</div>
+      </div>
+      <div id="problem-arith" style="display:none">
+        <div class="problem-text mono" id="problem-expr">0 + 0 = ?</div>
+        <div class="mono" id="speed-timer-display" style="color:var(--blue-bright);font-weight:700;font-size:15px;margin-top:6px;display:none"></div>
+        <div class="answer-row">
+          <input type="text" inputmode="numeric" id="answer-input" placeholder="ответ" onkeydown="if(event.key==='Enter')checkArith()">
+          <button class="btn small primary" onclick="checkArith()">Проверить</button>
+        </div>
+      </div>
+      <div id="problem-frac" style="display:none">
+        <div class="problem-text mono" id="frac-expr" style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap"></div>
+        <div class="answer-row">
+          <div class="frac-input">
+            <input type="text" inputmode="numeric" id="frac-num-input" placeholder="числ.">
+            <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-3)">числитель</span>
+          </div>
+          <span class="slash">/</span>
+          <div class="frac-input">
+            <input type="text" inputmode="numeric" id="frac-den-input" placeholder="знам.">
+            <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-3)">знаменатель</span>
+          </div>
+          <button class="btn small primary" onclick="checkFrac()">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="hint-row">
+        <button class="btn small" onclick="showHint()">💡 Подсказка</button>
+      </div>
+      <div class="hint-text" id="hint-text"></div>
+    </div>
+
+    <div class="abacus-stage">
+      <div class="abacus-value mono" id="trainer-value">0</div>
+      <div class="abacus-frame"><div id="trainer-abacus"></div></div>
+      <div class="abacus-actions">
+        <button class="btn small" id="check-set-btn" onclick="checkSet()">Проверить</button>
+        <button class="btn small" onclick="trainerAbacus.reset()">Сбросить счёты</button>
+        <button class="btn small" onclick="newProblem()">Другой пример</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ANZAN ================= -->
+  <section class="view" id="view-anzan">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:40px">
+      <h2 class="section-title" style="margin:0">Анзан</h2>
+      <button class="btn small fs-toggle-btn" id="anzan-fs-btn" onclick="toggleAnzanFullscreen()">⛶ На весь экран</button>
+    </div>
+    <p class="section-sub">Числа или косточки показываются по очереди без счётов — считайте сумму в уме. Выберите режим, скорость и сложность.</p>
+
+    <div class="trainer-top">
+      <div class="mode-switch">
+        <button class="tab-btn active" data-anzantype="flash" onclick="setAnzanType('flash')">Флеш-анзан</button>
+        <button class="tab-btn" data-anzantype="crazy" onclick="setAnzanType('crazy')">Крейзи-анзан</button>
+        <button class="tab-btn" data-anzantype="frac" onclick="setAnzanType('frac')">Анзан-дроби</button>
+      </div>
+    </div>
+    <p class="anzan-type-desc" id="anzan-type-desc">Числа или косточки появляются по центру, одно за другим.</p>
+
+    <div class="anzan-settings">
+      <label>Скорость показа
+        <select class="select-ctrl" id="anzan-speed-select" onchange="anzanSpeed=parseInt(this.value,10)">
+          <option value="1800">Очень медленно</option>
+          <option value="1200" selected>Медленно</option>
+          <option value="800">Средне</option>
+          <option value="500">Быстро</option>
+          <option value="300">Очень быстро</option>
+          <option value="180">Экстрим</option>
+        </select>
+      </label>
+      <label>Время на ответ
+        <select class="select-ctrl" id="anzan-answer-time-select" onchange="anzanAnswerTime=parseInt(this.value,10)">
+          <option value="0" selected>Без ограничения</option>
+          <option value="60">60 секунд</option>
+          <option value="30">30 секунд</option>
+          <option value="15">15 секунд</option>
+          <option value="10">10 секунд</option>
+          <option value="5">5 секунд</option>
+          <option value="1">1 секунда</option>
+        </select>
+      </label>
+      <label>Раундов подряд
+        <select class="select-ctrl" id="anzan-rounds-select" onchange="anzanRoundsTotal=parseInt(this.value,10)">
+          <option value="1">1 раунд</option>
+          <option value="3">3 раунда</option>
+          <option value="5" selected>5 раундов</option>
+          <option value="10">10 раундов</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="anzan-settings" id="anzan-numeric-settings">
+      <label>Количество чисел
+        <select class="select-ctrl" id="anzan-terms-select" onchange="anzanTermsCount=parseInt(this.value,10)">
+          <option value="5">5 чисел</option>
+          <option value="8">8 чисел</option>
+          <option value="10" selected>10 чисел</option>
+          <option value="15">15 чисел</option>
+          <option value="20">20 чисел</option>
+          <option value="30">30 чисел</option>
+        </select>
+      </label>
+      <label>Разрядность чисел
+        <select class="select-ctrl" id="anzan-digits-select" onchange="anzanDigits=parseInt(this.value,10)">
+          <option value="1" selected>1 знак (1–9)</option>
+          <option value="2">2 знака (1–99)</option>
+          <option value="3">3 знака (1–999)</option>
+        </select>
+      </label>
+      <label id="anzan-displaytype-row">Как показывать
+        <select class="select-ctrl" id="anzan-displaytype-select" onchange="anzanDisplayType=this.value">
+          <option value="digits" selected>Цифрами</option>
+          <option value="beads">Косточками</option>
+          <option value="mixed">Вперемешку</option>
+        </select>
+      </label>
+    </div>
+    <div class="op-chips" id="anzan-op-chips">
+      <button class="op-chip active" data-op="add" onclick="toggleAnzanOp('add')">+ Сложение</button>
+      <button class="op-chip active" data-op="sub" onclick="toggleAnzanOp('sub')">− Вычитание</button>
+      <button class="op-chip" data-op="mul" onclick="toggleAnzanOp('mul')">× Умножение</button>
+      <button class="op-chip" data-op="div" onclick="toggleAnzanOp('div')">÷ Деление</button>
+      <button class="op-chip" onclick="setAllAnzanOps()">✓ Все операции</button>
+    </div>
+
+    <div class="anzan-settings" id="anzan-frac-settings" style="display:none">
+      <label>Количество дробей
+        <select class="select-ctrl" id="anzan-frac-terms-select" onchange="anzanFracTerms=parseInt(this.value,10)">
+          <option value="3">3 дроби</option>
+          <option value="4" selected>4 дроби</option>
+          <option value="5">5 дробей</option>
+          <option value="6">6 дробей</option>
+          <option value="8">8 дробей</option>
+        </select>
+      </label>
+      <label>Сложность знаменателей
+        <select class="select-ctrl" id="anzan-frac-level-select" onchange="anzanFracLevel=this.value">
+          <option value="easy" selected>Простые (2–5)</option>
+          <option value="medium">Средние (2–8)</option>
+          <option value="hard">Сложные (2–12)</option>
+        </select>
+      </label>
+    </div>
+    <div class="op-chips" id="anzan-frac-op-chips" style="display:none">
+      <button class="op-chip active" data-op="add" onclick="toggleAnzanFracOp('add')">+ Сложение</button>
+      <button class="op-chip" data-op="sub" onclick="toggleAnzanFracOp('sub')">− Вычитание</button>
+      <button class="op-chip" data-op="mul" onclick="toggleAnzanFracOp('mul')">× Умножение</button>
+      <button class="op-chip" data-op="div" onclick="toggleAnzanFracOp('div')">÷ Деление</button>
+      <button class="op-chip" onclick="setAllAnzanFracOps()">✓ Все операции</button>
+    </div>
+
+    <div class="trainer-top">
+      <button class="btn primary small" id="anzan-start-btn" onclick="startAnzan()">Начать пример</button>
+      <button class="btn small" id="anzan-stop-btn" onclick="stopAnzan()" style="display:none">Стоп</button>
+    </div>
+
+    <div class="anzan-stage">
+      <div class="anzan-progress mono" id="anzan-round-indicator" style="color:var(--blue-bright);font-weight:700"></div>
+      <div class="anzan-progress" id="anzan-progress">Нажмите «Начать пример»</div>
+      <div class="anzan-stage-inner" id="anzan-stage-inner"></div>
+    </div>
+
+    <div class="problem-box" id="anzan-answer-box" style="display:none">
+      <div style="color:var(--text-2);font-size:13px;margin-bottom:6px">Чему равен результат? <span class="mono" id="anzan-answer-timer" style="color:var(--blue-bright);font-weight:700"></span></div>
+      <div class="answer-row">
+        <input type="text" inputmode="numeric" id="anzan-answer-input" placeholder="ответ" onkeydown="if(event.key==='Enter')checkAnzanAnswer()">
+        <button class="btn small primary" onclick="checkAnzanAnswer()">Проверить</button>
+      </div>
+    </div>
+    <div class="problem-box" id="anzan-frac-answer-box" style="display:none">
+      <div style="color:var(--text-2);font-size:13px;margin-bottom:6px">Чему равен результат? <span class="mono" id="anzan-frac-answer-timer" style="color:var(--blue-bright);font-weight:700"></span></div>
+      <div class="answer-row">
+        <div class="frac-input">
+          <input type="text" inputmode="numeric" id="anzan-frac-num-input" placeholder="числ.">
+          <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-3)">числитель</span>
+        </div>
+        <span class="slash">/</span>
+        <div class="frac-input">
+          <input type="text" inputmode="numeric" id="anzan-frac-den-input" placeholder="знам." onkeydown="if(event.key==='Enter')checkAnzanFracAnswer()">
+          <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-3)">знаменатель</span>
+        </div>
+        <button class="btn small primary" onclick="checkAnzanFracAnswer()">Проверить</button>
+      </div>
+    </div>
+    <div class="feedback" id="anzan-feedback" style="text-align:center"></div>
+
+    <div class="stats-row">
+      <div class="stat"><div class="lbl">Решено (сессия)</div><div class="val mono" id="anz-solved">0</div></div>
+      <div class="stat"><div class="lbl">Точность (сессия)</div><div class="val mono" id="anz-acc">0%</div></div>
+      <div class="stat"><div class="lbl">Текущая серия</div><div class="val mono" id="anz-streak">0</div></div>
+      <div class="stat"><div class="lbl">Лучшая серия</div><div class="val mono" id="anz-best">0</div></div>
+    </div>
+
+    <div class="roadmap" id="anzan-leaderboard-card" style="margin-top:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:16px">Рейтинг за сегодня</h3>
+          <p style="color:var(--text-2);font-size:13px;margin:0" id="anzan-player-status">Вы играете как гость — результат не попадёт в общий рейтинг.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn small" id="anzan-login-btn" onclick="openAnzanLogin()">Войти в рейтинг</button>
+          <button class="btn small" id="anzan-logout-btn" onclick="anzanLogout()" style="display:none">Выйти</button>
+          <button class="btn small" onclick="loadAnzanLeaderboard()">Обновить</button>
+        </div>
+      </div>
+      <div id="anzan-login-form" style="display:none;margin-bottom:14px">
+        <div class="answer-row" style="justify-content:flex-start">
+          <input type="text" class="mono" id="anzan-nickname-input" placeholder="ваш ник (до 16 символов)" maxlength="16" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text-1);padding:10px 12px;font-family:'JetBrains Mono';font-size:14px" onkeydown="if(event.key==='Enter')saveAnzanNickname()">
+          <button class="btn small primary" onclick="saveAnzanNickname()">Сохранить</button>
+        </div>
+        <p style="color:var(--text-3);font-size:12px;margin:8px 0 0;line-height:1.5">Это просто ник для рейтинга на этом устройстве — без пароля и без личных данных. Один и тот же ник можно ввести с разных устройств, они будут учитываться отдельно.</p>
+      </div>
+
+      <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat"><div class="lbl">Ваши очки сегодня</div><div class="val mono" id="anz-day-score">0</div></div>
+        <div class="stat"><div class="lbl">Решено сегодня</div><div class="val mono" id="anz-day-solved">0</div></div>
+        <div class="stat"><div class="lbl">Точность сегодня</div><div class="val mono" id="anz-day-acc">0%</div></div>
+      </div>
+
+      <div class="help-wrap" style="margin-top:14px">
+        <table class="help-table" id="anzan-leaderboard-table" style="width:100%">
+          <tr><th>#</th><th>Игрок</th><th>Очки</th><th>Решено</th><th>Точность</th></tr>
+        </table>
+      </div>
+      <p style="color:var(--text-3);font-size:11px;margin-top:10px" id="anzan-leaderboard-note">Рейтинг обновляется автоматически и сбрасывается каждый день в полночь.</p>
+    </div>
+  </section>
+
+  <!-- ================= SUDOKU ================= -->
+  <section class="view" id="view-sudoku">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:40px">
+      <h2 class="section-title" style="margin:0">Судоку</h2>
+      <button class="btn small fs-toggle-btn" id="sudoku-fs-btn" onclick="toggleSudokuFullscreen()">⛶ На весь экран</button>
+    </div>
+    <p class="section-sub">Судоку с настраиваемым размером поля и оформлением — от лёгкого до мастера, есть смешанный режим с прогрессом и лабиринтные области вместо обычных блоков.</p>
+
+    <div class="roadmap" style="margin-bottom:16px">
+      <div class="sudoku-diff-row" id="sudoku-diff-buttons"></div>
+      <div class="sudoku-diff-row" id="sudoku-variant-buttons" style="margin-top:10px"></div>
+      <div class="sudoku-diff-row" id="sudoku-skin-buttons" style="margin-top:10px"></div>
+      <label style="display:flex;align-items:center;gap:8px;margin-top:10px;color:var(--text-2);font-size:13px">
+        Размер поля
+        <select class="select-ctrl" id="sudoku-size-select" onchange="onSudokuSizeChange(this.value)"></select>
+      </label>
+    </div>
+
+    <div class="stats-row sudoku-stats">
+      <div class="stat"><div class="lbl">Время</div><div class="val mono" id="sd-time">00:00</div></div>
+      <div class="stat"><div class="lbl">Ошибки</div><div class="val mono" id="sd-mistakes">0</div></div>
+      <div class="stat"><div class="lbl">Заполнено</div><div class="val mono" id="sd-filled">0/81</div></div>
+    </div>
+
+    <div class="sudoku-wrap">
+      <div class="sudoku-board" id="sudoku-board"></div>
+      <div class="sudoku-side">
+        <div class="sudoku-pad" id="sudoku-pad"></div>
+        <div class="sudoku-tools">
+          <button class="btn small" id="sudoku-erase-btn" onclick="sudokuErase()">⌫ Стереть</button>
+          <button class="btn small" id="sudoku-notes-btn" onclick="sudokuToggleNotes()">✏️ Заметки</button>
+          <button class="btn small" id="sudoku-hint-btn" onclick="sudokuHint()">💡 Подсказка</button>
+        </div>
+        <button class="btn primary small" onclick="sudokuNewGame()">Новая игра</button>
+        <p style="color:var(--text-3);font-size:11px;line-height:1.6;margin:0" id="sudoku-best-note"></p>
+        <p style="color:var(--text-3);font-size:11px;line-height:1.6;margin:0">На ПК числа можно вводить с клавиатуры (1–9, стрелки, Backspace).</p>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="donate-card">
+    <h3>Поддержать проект</h3>
+    <p>Если тренажёр пригодился — можно поддержать разработку донатом.</p>
+    <div class="donate-row">
+      <span class="donate-label">USDT (TRC20)</span>
+      <code class="donate-addr">TVz7UzXv1Kcqf5uKWgHuzCpaHhd6Lvfvv9</code>
+      <button class="btn small" onclick="copyAddr(this,'TVz7UzXv1Kcqf5uKWgHuzCpaHhd6Lvfvv9')">Копировать</button>
+    </div>
+    <div class="donate-row">
+      <span class="donate-label">XLM</span>
+      <code class="donate-addr">GAQX5OJRPHUY62MDHOHC7U4XBXMBDQFWNB5XN67BRLNUNJ3TOGAUFU2B</code>
+      <button class="btn small" onclick="copyAddr(this,'GAQX5OJRPHUY62MDHOHC7U4XBXMBDQFWNB5XN67BRLNUNJ3TOGAUFU2B')">Копировать</button>
+    </div>
+    <div class="donate-row">
+      <span class="donate-label">DOGE</span>
+      <code class="donate-addr">DQMjjEAuebRrDxCicWhkb2jtUqj4HKdmDK</code>
+      <button class="btn small" onclick="copyAddr(this,'DQMjjEAuebRrDxCicWhkb2jtUqj4HKdmDK')">Копировать</button>
+    </div>
+    <div class="donate-row">
+      <span class="donate-label">SHIB (ERC20)</span>
+      <code class="donate-addr">0x50B0b1d72d007Fd0C692b2580cbA152011197CE7</code>
+      <button class="btn small" onclick="copyAddr(this,'0x50B0b1d72d007Fd0C692b2580cbA152011197CE7')">Копировать</button>
+    </div>
+  </div>
+
+  <footer>ABACUS.PRO · тренажёр устного счёта на соробане</footer>
+</div>
+
+<div class="celebrate-toast" id="celebrate-toast"></div>
+
+<script>
+/* ============ ABACUS ENGINE ============ */
+function createAbacus(container, rods, opts){
+  opts = opts || {};
+  var interactive = opts.interactive !== false;
+  var showLabels = !!opts.showLabels;
+  var state = [];
+  for(var i=0;i<rods;i++) state.push({heaven:false, earth:0});
+  var onChange = opts.onChange || function(){};
+
+  var rodsEl = document.createElement('div');
+  rodsEl.className = 'rods';
+
+  var rodEls = [];
+  var placeNames = ['ед','дес','сот','тыс','дес.тыс','сот.тыс','млн'];
+
+  for(var r=0;r<rods;r++){
+    var rod = document.createElement('div');
+    rod.className = 'rod' + (interactive ? '' : ' disabled');
+
+    var line = document.createElement('div'); line.className='rod-line'; rod.appendChild(line);
+
+    var hz = document.createElement('div'); hz.className='heaven-zone';
+    var hb = document.createElement('div'); hb.className='bead';
+    hz.appendChild(hb); rod.appendChild(hz);
+
+    var barWrap = document.createElement('div'); barWrap.className='bar-wrap';
+    if(r===0){
+      var bar = document.createElement('div'); bar.className='bar';
+      barWrap.appendChild(bar);
+    }
+    rod.appendChild(barWrap);
+
+    var ez = document.createElement('div'); ez.className='earth-zone';
+    var ebeads = [];
+    for(var i=0;i<4;i++){
+      var eb = document.createElement('div'); eb.className='bead';
+      ez.appendChild(eb); ebeads.push(eb);
+    }
+    rod.appendChild(ez);
+
+    if(showLabels){
+      var lbl = document.createElement('div'); lbl.className='rod-label';
+      var pIdx = rods-1-r;
+      lbl.textContent = pIdx < placeNames.length ? placeNames[pIdx] : ('10^'+pIdx);
+      rod.appendChild(lbl);
+    }
+
+    (function(rIdx, hb, ebeads){
+      if(interactive){
+        hb.addEventListener('click', function(){
+          state[rIdx].heaven = !state[rIdx].heaven;
+          render(); onChange(getValue()); playBeadClick();
+        });
+        ebeads.forEach(function(bead, i){
+          bead.addEventListener('click', function(){
+            var cnt = state[rIdx].earth;
+            state[rIdx].earth = (cnt > i) ? i : i+1;
+            render(); onChange(getValue()); playBeadClick();
+          });
+        });
+      }
+    })(r, hb, ebeads);
+
+    rodEls.push({hb:hb, ebeads:ebeads});
+    rodsEl.appendChild(rod);
+  }
+  container.innerHTML = '';
+  container.appendChild(rodsEl);
+
+  function render(){
+    for(var r=0;r<rods;r++){
+      var s = state[r], els = rodEls[r];
+      els.hb.style.top = s.heaven ? '40px' : '4px';
+      els.hb.classList.toggle('active', s.heaven);
+      for(var i=0;i<4;i++){
+        var top = (i < s.earth) ? i*40 : (i+1)*40;
+        els.ebeads[i].style.top = top + 'px';
+        els.ebeads[i].classList.toggle('active', i < s.earth);
+      }
+    }
+  }
+
+  function getValue(){
+    var digits = '';
+    for(var r=0;r<rods;r++){
+      var s = state[r];
+      digits += String((s.heaven?5:0) + s.earth);
+    }
+    return parseInt(digits, 10);
+  }
+
+  function setValue(n){
+    var max = Math.pow(10, rods) - 1;
+    n = Math.max(0, Math.min(max, Math.floor(n)));
+    var str = String(n).padStart(rods, '0');
+    for(var r=0;r<rods;r++){
+      var d = parseInt(str[r], 10);
+      state[r].heaven = d >= 5;
+      state[r].earth = d - (state[r].heaven ? 5 : 0);
+    }
+    render();
+  }
+
+  function reset(){
+    for(var r=0;r<rods;r++){ state[r].heaven=false; state[r].earth=0; }
+    render(); onChange(getValue());
+  }
+
+  render();
+  return {getValue:getValue, setValue:setValue, reset:reset, rods:rods};
+}
+
+/* ============ SOUND ============ */
+var soundEnabled = true;
+var audioCtx = null;
+function getAudioCtx(){
+  if(!audioCtx){
+    try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){ return null; }
+  }
+  if(audioCtx.state === 'suspended'){ audioCtx.resume(); }
+  return audioCtx;
+}
+function tone(freq, dur, type, vol){
+  if(!soundEnabled) return;
+  var ctx = getAudioCtx();
+  if(!ctx) return;
+  var osc = ctx.createOscillator();
+  var gain = ctx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.value = freq;
+  gain.gain.value = vol || 0.06;
+  osc.connect(gain); gain.connect(ctx.destination);
+  var now = ctx.currentTime;
+  gain.gain.setValueAtTime(gain.gain.value, now);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+  osc.start(now);
+  osc.stop(now + dur);
+}
+function playBeadClick(){ tone(520, 0.06, 'square', 0.03); }
+function playCorrect(){ tone(660, 0.1, 'sine', 0.07); setTimeout(function(){ tone(880, 0.14, 'sine', 0.07); }, 90); }
+function playWrong(){ tone(180, 0.22, 'sawtooth', 0.05); }
+function toggleSound(){
+  soundEnabled = !soundEnabled;
+  document.getElementById('sound-toggle-btn').textContent = soundEnabled ? '🔊 Звук' : '🔇 Звук выкл';
+  if(soundEnabled) getAudioCtx();
+}
+
+/* ============ HERO ABACUS ============ */
+var heroAbacus = createAbacus(document.getElementById('hero-abacus'), 5, {
+  interactive:true, showLabels:true,
+  onChange:function(v){ document.getElementById('hero-value').textContent = v; }
+});
+function heroRandom(){
+  heroAbacus.setValue(Math.floor(Math.random()*100000));
+  document.getElementById('hero-value').textContent = heroAbacus.getValue();
+}
+heroRandom();
+
+/* ============ THEORY ILLUSTRATIONS ============ */
+var a1 = createAbacus(document.getElementById('illus-1'), 1, {interactive:false});
+a1.setValue(8);
+var a2 = createAbacus(document.getElementById('illus-2'), 2, {interactive:false, showLabels:true});
+a2.setValue(46);
+var a3 = createAbacus(document.getElementById('illus-3'), 1, {interactive:false});
+a3.setValue(7);
+var a4 = createAbacus(document.getElementById('illus-4'), 2, {interactive:false, showLabels:true});
+a4.setValue(13);
+var a5 = createAbacus(document.getElementById('illus-5'), 2, {interactive:false, showLabels:true});
+a5.setValue(12);
+var a6 = createAbacus(document.getElementById('illus-6'), 2, {interactive:false, showLabels:true});
+a6.setValue(12);
+
+var fracBar = document.getElementById('fracbar-illus');
+for(var fb=0; fb<4; fb++){
+  var seg = document.createElement('div');
+  seg.className = 'fracbar-seg' + (fb<3 ? ' on' : '');
+  fracBar.appendChild(seg);
+}
+
+/* ---------- таблицы-помощники ---------- */
+function buildPairTable(tableId, sum){
+  var t = document.getElementById(tableId);
+  var head = '<tr><th>Число</th>';
+  var pairs = [];
+  for(var n=1; n<sum; n++){ pairs.push(n); }
+  pairs.forEach(function(n){ head += '<th>'+n+'</th>'; });
+  head += '</tr>';
+  var row = '<tr><td class="dim">Друг (до '+sum+')</td>';
+  pairs.forEach(function(n){ row += '<td class="a">'+(sum-n)+'</td>'; });
+  row += '</tr>';
+  t.innerHTML = head + row;
+}
+buildPairTable('table-friends5', 5);
+buildPairTable('table-friends10', 10);
+
+function buildMultTable(){
+  var t = document.getElementById('table-mult');
+  var html = '<tr><th>×</th>';
+  for(var c=1;c<=9;c++) html += '<th>'+c+'</th>';
+  html += '</tr>';
+  for(var r=1;r<=9;r++){
+    html += '<tr><th>'+r+'</th>';
+    for(var c2=1;c2<=9;c2++){
+      html += '<td>'+(r*c2)+'</td>';
+    }
+    html += '</tr>';
+  }
+  t.innerHTML = html;
+}
+buildMultTable();
+
+/* ---------- 10 наглядных примеров для новичка ---------- */
+var BEGINNER_EXAMPLES = [
+  {n:'01', title:'Умножение: 2 × 3', text:'2 нужно повторить 3 раза: 2 + 2 + 2 = 6. Значит 2 × 3 = 6.', type:'abacus', value:6, rods:1},
+  {n:'02', title:'Умножение: 4 × 3', text:'4 нужно повторить 3 раза: 4 + 4 + 4 = 12. Значит 4 × 3 = 12.', type:'abacus', value:12, rods:2},
+  {n:'03', title:'Умножение: 5 × 6', text:'5 нужно повторить 6 раз: 5+5+5+5+5+5 = 30. Значит 5 × 6 = 30.', type:'abacus', value:30, rods:2},
+  {n:'04', title:'Умножение: 7 × 8', text:'Большие числа проще запомнить по таблице умножения: 7 × 8 = 56.', type:'abacus', value:56, rods:2},
+  {n:'05', title:'Деление: 12 ÷ 4', text:'12 конфет поровну на 4 друзей — по 3 каждому. Значит 12 ÷ 4 = 3.', type:'abacus', value:3, rods:1},
+  {n:'06', title:'Деление: 36 ÷ 6', text:'Вспомни умножение: 6 × 6 = 36, значит обратное действие — 36 ÷ 6 = 6.', type:'abacus', value:6, rods:1},
+  {n:'07', title:'Деление: 63 ÷ 9', text:'9 × 7 = 63, поэтому 63 ÷ 9 = 7.', type:'abacus', value:7, rods:1},
+  {n:'08', title:'Дроби: 1/2 + 1/4', text:'Приведи к общему знаменателю 4: 1/2 это то же самое, что 2/4. Тогда 2/4 + 1/4 = 3/4.', type:'frac', num:3, den:4},
+  {n:'09', title:'Дроби: 3/4 − 1/4', text:'Знаменатели одинаковые — просто вычитаем числители: 3/4 − 1/4 = 2/4, что сокращается до 1/2.', type:'frac', num:1, den:2},
+  {n:'10', title:'Дроби: 2/3 × 3/5', text:'Числители перемножаем между собой, знаменатели — между собой: 2×3=6, 3×5=15, получаем 6/15, что сокращается до 2/5.', type:'frac', num:2, den:5}
+];
+function buildBeginnerExamples(){
+  var wrap = document.getElementById('beginner-examples-wrap');
+  wrap.innerHTML = '';
+  BEGINNER_EXAMPLES.forEach(function(ex, idx){
+    var card = document.createElement('div');
+    card.className = 'tcard';
+    var left = document.createElement('div');
+    left.innerHTML = '<span class="tcard-num">'+ex.n+'</span><h3>'+ex.title+'</h3><p>'+ex.text+'</p>';
+    var illus = document.createElement('div');
+    illus.className = 'illus';
+    illus.id = 'beginner-illus-'+idx;
+    card.appendChild(left);
+    card.appendChild(illus);
+    wrap.appendChild(card);
+    if(ex.type==='abacus'){
+      var mini = createAbacus(illus, ex.rods, {interactive:false, showLabels:true});
+      mini.setValue(ex.value);
+    } else {
+      var holder = document.createElement('div');
+      holder.style.width = '150px';
+      var fb = document.createElement('div');
+      fb.className = 'fracbar';
+      for(var s=0; s<ex.den; s++){
+        var seg = document.createElement('div');
+        seg.className = 'fracbar-seg' + (s<ex.num ? ' on' : '');
+        fb.appendChild(seg);
+      }
+      holder.appendChild(fb);
+      var cap = document.createElement('div');
+      cap.className = 'fracbar-cap';
+      cap.textContent = ex.num+'/'+ex.den;
+      holder.appendChild(cap);
+      illus.appendChild(holder);
+    }
+  });
+}
+buildBeginnerExamples();
+
+/* ============ VIEW SWITCHING ============ */
+function switchView(name){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.tab-btn[data-view]').forEach(function(b){
+    b.classList.toggle('active', b.dataset.view === name);
+  });
+  if(name==='anzan'){ ensureAnzanDailyReset(); updateAnzanDailyUI(); loadAnzanLeaderboard(); }
+  if(name==='sudoku'){ sudokuResumeTimer(); } else { sudokuPauseTimer(); }
+  window.scrollTo({top:0, behavior:'instant'});
+}
+document.querySelectorAll('.tab-btn[data-view]').forEach(function(b){
+  b.addEventListener('click', function(){ switchView(b.dataset.view); });
+});
+
+/* ============ LEVELS ============ */
+var LEVELS = [
+  {id:1,  name:'Новичок',    rods:1, max:9,        ops:['set'],               hint:'чтение бусин'},
+  {id:2,  name:'Ученик',     rods:2, max:99,       ops:['set','add'],        hint:'без переноса'},
+  {id:3,  name:'Практик',    rods:2, max:99,       ops:['add','sub'],        hint:'маленькие друзья'},
+  {id:4,  name:'Специалист', rods:3, max:999,      ops:['add','sub'],        hint:'большие друзья'},
+  {id:5,  name:'Умножатель', rods:3, max:999,      ops:['add','sub','mul'],  hint:'таблица умножения'},
+  {id:6,  name:'Делитель',   rods:4, max:9999,     ops:['add','sub','mul','div'], hint:'деление'},
+  {id:7,  name:'Дробовик',   rods:4, max:9999,     ops:['add','sub','mul','div'], hint:'дроби'},
+  {id:8,  name:'Мастер',     rods:5, max:99999,    ops:['add','sub','mul','div'], hint:'смешанные примеры'},
+  {id:9,  name:'Эксперт',    rods:6, max:999999,   ops:['add','sub','mul','div'], hint:'крупные числа'},
+  {id:10, name:'Свой уровень I',  rods:5, max:99999,      ops:['set','add','sub','mul','div'], hint:'сами выбираете разрядность', custom:true},
+  {id:11, name:'Свой уровень II', rods:7, max:9999999,    ops:['set','add','sub','mul','div'], hint:'сами выбираете разрядность', custom:true},
+  {id:12, name:'Профи',        rods:7, max:9999999,     ops:['add','sub','mul','div'], hint:'на скорость'},
+  {id:13, name:'Гроссмейстер', rods:8, max:99999999,    ops:['add','sub','mul','div'], hint:'очень крупные числа'},
+  {id:14, name:'Легенда',      rods:9, max:999999999,   ops:['add','sub','mul','div'], hint:'предел скорости и точности'}
+];
+
+/* операнды для умножения/деления по уровням: [aMin,aMax,bMin,bMax] */
+var MUL_RANGES = {
+  1:[2,9,2,9],    2:[2,9,2,9],    3:[2,19,2,9],   4:[2,49,2,9],   5:[2,99,2,9],
+  6:[2,99,2,12],  7:[2,199,2,12], 8:[2,499,2,12], 9:[2,999,2,15], 10:[2,999,2,18],
+  11:[2,1999,2,20], 12:[2,2999,2,24], 13:[2,4999,2,28], 14:[2,6999,2,32]
+};
+var DIV_Q_RANGES = {
+  1:[1,9],  2:[2,9],  3:[2,12], 4:[2,20], 5:[2,30],
+  6:[2,50], 7:[2,70], 8:[2,90], 9:[2,120],10:[2,140],
+  11:[2,180],12:[2,200],13:[2,250],14:[2,300]
+};
+var DIV_B_RANGES = {
+  1:[1,9],  2:[2,9],  3:[2,9],  4:[2,12], 5:[2,12],
+  6:[2,12], 7:[2,15], 8:[2,15], 9:[2,20], 10:[2,20],
+  11:[2,24],12:[2,24],13:[2,28],14:[2,30]
+};
+/* пулы знаменателей для дробей по уровням */
+var FRAC_DENOMS = {
+  1:[2,3,4,5], 2:[2,3,4,5], 3:[2,3,4,5,6], 4:[2,3,4,5,6,8], 5:[2,3,4,5,6,8,10],
+  6:[2,3,4,5,6,8,10], 7:[2,3,4,5,6,8,10,12], 8:[2,3,4,5,6,8,10,12], 9:[2,3,4,5,6,8,9,10,12], 10:[2,3,4,5,6,8,9,10,12,15],
+  11:[2,3,4,5,6,8,9,10,12,15,18], 12:[2,3,4,5,6,8,9,10,12,15,18],
+  13:[2,3,4,5,6,8,9,10,12,15,18,20], 14:[2,3,4,5,6,8,9,10,12,15,18,20,24]
+};
+
+var enabledOps = {arith:{add:true,sub:true,mul:false,div:false}, frac:{add:true,sub:false,mul:false,div:false}};
+
+function toggleOp(kind, op){
+  var active = Object.keys(enabledOps[kind]).filter(function(k){return enabledOps[kind][k]});
+  if(active.length===1 && enabledOps[kind][op]) return; /* хотя бы одна операция должна остаться включённой */
+  enabledOps[kind][op] = !enabledOps[kind][op];
+  document.querySelectorAll('#op-chips-'+kind+' .op-chip').forEach(function(btn){
+    btn.classList.toggle('active', enabledOps[kind][btn.dataset.op]);
+  });
+  newProblem();
+}
+
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=b; b=a%b; a=t; } return a || 1; }
+function reduceFrac(n,d){ var g=gcd(n,d); return {num:n/g, den:d/g}; }
+function renderFraction(n,d){
+  if(d===1) return '<span class="mono">'+n+'</span>';
+  return '<span class="frac"><span class="num">'+n+'</span><span class="den">'+d+'</span></span>';
+}
+
+var progress = {};
+LEVELS.forEach(function(l){ progress[l.id] = {solved:0, correct:0, streak:0, best:0}; });
+
+var currentLevelId = 1;
+var currentMode = 'set';
+var timerMode = false;
+var timerLeft = 60;
+var timerHandle = null;
+var selectedRods = null;
+var anzanMode = false;
+var anzanType = 'flash';
+var anzanDisplayType = 'digits';
+var anzanSpeed = 1200;
+var anzanTermsCount = 10;
+var anzanDigits = 1;
+var anzanOpsEnabled = {add:true, sub:true, mul:false, div:false};
+var anzanFracOpsEnabled = {add:true, sub:false, mul:false, div:false};
+var anzanFracTerms = 4;
+var anzanFracLevel = 'easy';
+var ANZAN_MUL_MAX = {1:9, 2:12, 3:15};
+var ANZAN_FRAC_DENOMS = {
+  easy:[2,3,4,5],
+  medium:[2,3,4,5,6,8],
+  hard:[2,3,4,5,6,8,9,10,12]
+};
+var anzanSequence = null;
+var anzanRunning = false;
+var anzanRunToken = 0;
+var anzanStats = {solved:0, correct:0, streak:0, best:0};
+var awaitingAdvance = false;
+var mistakesStore = [];
+var reviewQueue = [];
+var reviewActive = false;
+var unlockedUpTo = 1;
+var placementCheckpoints = [2,4,6,8,10];
+var placementIndex = 0;
+var placementCurrent = null;
+
+/* ---------- anzan: время на ответ + раунды ---------- */
+var anzanAnswerTime = 0;        /* 0 = без ограничения, иначе секунды */
+var anzanRoundsTotal = 5;
+var anzanRoundIndex = 0;
+var anzanAnswerTimerHandle = null;
+var anzanAnswerTimeLeft = 0;
+var anzanSessionRunning = false;
+
+/* ---------- уровни 10/11: свои разряды ---------- */
+var customRods = {10:5, 11:7};
+
+/* ---------- скоростные этапы тренажёра (путь к анзану) ---------- */
+var SPEED_STAGES = [
+  {id:1, label:'Этап 1', sub:'без таймера', time:null},
+  {id:2, label:'Этап 2', sub:'60 сек/пример', time:60},
+  {id:3, label:'Этап 3', sub:'30 сек/пример', time:30},
+  {id:4, label:'Этап 4', sub:'15 сек/пример', time:15},
+  {id:5, label:'Этап 5', sub:'5 сек/пример', time:5}
+];
+var speedStageActive = false;
+var speedLevel = 1;
+var speedProgress = {1:{done:0,correct:0},2:{done:0,correct:0},3:{done:0,correct:0},4:{done:0,correct:0},5:{done:0,correct:0}};
+var speedTimerHandle = null;
+var speedTimeLeft = 0;
+
+/* ---------- persistent storage ---------- */
+async function loadProgress(){
+  var savedLevelId = null;
+  try{
+    var res = await window.storage.get('abacus-progress');
+    if(res && res.value){
+      var saved = JSON.parse(res.value);
+      var savedProgress = saved.progress || saved; /* поддержка старого формата */
+      LEVELS.forEach(function(l){ if(savedProgress[l.id]) progress[l.id] = savedProgress[l.id]; });
+      if(typeof saved.unlockedUpTo === 'number') unlockedUpTo = saved.unlockedUpTo;
+      if(typeof saved.currentLevelId === 'number') savedLevelId = saved.currentLevelId;
+      if(saved.customRods) customRods = saved.customRods;
+    }
+  }catch(e){}
+  /* подстраховка: если уровни уже пройдены по старым данным — открываем их */
+  var inferred = 1;
+  for(var i=1;i<LEVELS.length;i++){
+    if(isMastered(i)) inferred = i+1; else break;
+  }
+  unlockedUpTo = Math.max(unlockedUpTo, inferred);
+  if(savedLevelId && LEVELS.some(function(l){return l.id===savedLevelId;}) && isUnlocked(savedLevelId)){
+    selectLevel(savedLevelId);
+  }
+  renderRoadmaps();
+  updateStats();
+}
+async function saveProgress(){
+  try{ await window.storage.set('abacus-progress', JSON.stringify({progress:progress, unlockedUpTo:unlockedUpTo, currentLevelId:currentLevelId, customRods:customRods})); }catch(e){}
+}
+
+function isMastered(id){
+  var p = progress[id];
+  if(!p) return false;
+  return p.solved >= 30 && (p.correct/Math.max(1,p.solved)) >= 0.65;
+}
+function isUnlocked(id){
+  if(id === 1) return true;
+  if(id <= unlockedUpTo) return true;
+  return isMastered(id-1);
+}
+
+function renderRoadmaps(){
+  ['roadmap','theory-roadmap'].forEach(function(prefix){
+    var nodesEl = document.getElementById(prefix+'-nodes');
+    var labelsEl = document.getElementById(prefix+'-labels');
+    var fillEl = document.getElementById(prefix+'-fill');
+    nodesEl.innerHTML = ''; labelsEl.innerHTML = '';
+    var doneCount = 0;
+    LEVELS.forEach(function(l, idx){
+      var mastered = isMastered(l.id);
+      var unlocked = isUnlocked(l.id);
+      if(mastered) doneCount++;
+      var node = document.createElement('div');
+      node.className = 'rnode' + (mastered ? ' done' : '') + (l.id===currentLevelId ? ' current' : '') + (!unlocked ? ' locked' : '');
+      node.textContent = mastered ? '✓' : (unlocked ? l.id : '🔒');
+      node.title = unlocked ? l.name : (l.name+' — заблокировано, пройдите уровень '+(l.id-1));
+      node.addEventListener('click', function(){
+        if(!unlocked){
+          celebrate('Сначала пройдите уровень '+(l.id-1));
+          return;
+        }
+        switchView('trainer');
+        selectLevel(l.id);
+      });
+      nodesEl.appendChild(node);
+      var lab = document.createElement('span'); lab.textContent = l.name;
+      labelsEl.appendChild(lab);
+    });
+    fillEl.style.width = (doneCount/(LEVELS.length-1)*100) + '%';
+  });
+}
+
+function selectLevel(id){
+  if(!isUnlocked(id)) return;
+  currentLevelId = id;
+  reviewActive = false; reviewQueue = [];
+  var level = LEVELS.find(function(l){return l.id===id});
+  var rodsCount = selectedRods || (level.custom ? (customRods[level.id] || level.rods) : level.rods);
+  document.getElementById('check-set-btn').style.display = currentMode==='set' ? '' : 'none';
+  trainerAbacus = createAbacus(document.getElementById('trainer-abacus'), rodsCount, {
+    interactive:true, showLabels:true,
+    onChange:function(v){
+      document.getElementById('trainer-value').textContent = v;
+      if(currentMode==='set' && !reviewActive && !awaitingAdvance && v===currentTarget){
+        awaitingAdvance = true;
+        checkSet();
+      }
+    }
+  });
+  document.getElementById('trainer-value').textContent = 0;
+  var noteEl = document.getElementById('level-note');
+  if(level.custom){
+    noteEl.style.display = '';
+    noteEl.textContent = '«'+level.name+'» — свой уровень: выберите нужное число разрядов в списке «Косточки» выше, тренажёр запомнит выбор для этого уровня.';
+    var sel = document.getElementById('rods-select');
+    if(sel) sel.value = String(rodsCount);
+  } else {
+    noteEl.style.display = 'none';
+  }
+  renderRoadmaps();
+  updateStats();
+  saveProgress();
+  newProblem();
+}
+
+function onRodsChange(val){
+  selectedRods = (val === 'auto') ? null : parseInt(val, 10);
+  var level = LEVELS.find(function(l){return l.id===currentLevelId});
+  if(level && level.custom && selectedRods){
+    customRods[level.id] = selectedRods;
+    saveProgress();
+  }
+  selectLevel(currentLevelId);
+}
+
+function setModeSilent(mode){
+  currentMode = mode;
+  document.getElementById('placement-box').style.display = 'none';
+  document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.mode===mode);
+  });
+  document.getElementById('problem-set').style.display = mode==='set' ? '' : 'none';
+  document.getElementById('problem-arith').style.display = mode==='arith' ? '' : 'none';
+  document.getElementById('problem-frac').style.display = mode==='frac' ? '' : 'none';
+  document.getElementById('check-set-btn').style.display = mode==='set' ? '' : 'none';
+  document.getElementById('op-chips-arith').style.display = mode==='arith' ? '' : 'none';
+  document.getElementById('op-chips-frac').style.display = mode==='frac' ? '' : 'none';
+}
+function setMode(mode){
+  reviewActive = false; reviewQueue = [];
+  if(mode !== 'arith' && speedStageActive){ stopSpeedStage(); }
+  setModeSilent(mode);
+  newProblem();
+}
+
+var trainerAbacus;
+var currentTarget = 0;
+var currentProblem = null;
+
+function newProblem(forced){
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('hint-text').style.display = 'none';
+  disarmSpeedTimer();
+  if(!speedStageActive) document.getElementById('speed-timer-display').style.display = 'none';
+  awaitingAdvance = false;
+  var level = LEVELS.find(function(l){return l.id===currentLevelId});
+  trainerAbacus.reset();
+  document.getElementById('trainer-value').textContent = 0;
+
+  if(forced){
+    if(forced.mode==='set'){
+      currentTarget = forced.target;
+      document.getElementById('target-number').textContent = currentTarget;
+      document.getElementById('set-instruction').textContent = 'Соберите на счётах число (повтор ошибки)';
+    } else if(forced.mode==='arith'){
+      currentProblem = forced.problem;
+      document.getElementById('problem-expr').textContent = forced.exprText;
+      document.getElementById('answer-input').value = '';
+      document.getElementById('answer-input').focus();
+    } else if(forced.mode==='frac'){
+      currentProblem = forced.problem;
+      document.getElementById('frac-expr').innerHTML = forced.exprHTML;
+      document.getElementById('frac-num-input').value = '';
+      document.getElementById('frac-den-input').value = '';
+      document.getElementById('frac-num-input').focus();
+    }
+    return;
+  }
+
+  if(currentMode==='set'){
+    var setMax = Math.pow(10, trainerAbacus.rods) - 1;
+    currentTarget = 1 + Math.floor(Math.random()*setMax);
+    document.getElementById('target-number').textContent = anzanMode ? currentTarget : currentTarget;
+    document.getElementById('set-instruction').textContent = anzanMode ? 'Запомни число — оно скоро исчезнет' : 'Соберите на счётах число';
+    if(anzanMode){
+      var delay = 900 + trainerAbacus.rods*450;
+      setTimeout(function(){
+        if(currentMode==='set' && currentTarget !== undefined){
+          document.getElementById('target-number').textContent = '?';
+        }
+      }, delay);
+    }
+  } else if(currentMode==='arith'){
+    var active = Object.keys(enabledOps.arith).filter(function(k){return enabledOps.arith[k]});
+    var op = active[Math.floor(Math.random()*active.length)];
+    var a,b,expr,answer;
+    if(op==='mul'){
+      var mr = MUL_RANGES[level.id];
+      a = mr[0] + Math.floor(Math.random()*(mr[1]-mr[0]+1));
+      b = mr[2] + Math.floor(Math.random()*(mr[3]-mr[2]+1));
+      expr = a+' \u00d7 '+b+' ='; answer = a*b;
+    } else if(op==='div'){
+      var qr = DIV_Q_RANGES[level.id], br = DIV_B_RANGES[level.id];
+      var q = qr[0] + Math.floor(Math.random()*(qr[1]-qr[0]+1));
+      b = br[0] + Math.floor(Math.random()*(br[1]-br[0]+1));
+      a = q*b; answer = q;
+      expr = a+' \u00f7 '+b+' =';
+    } else {
+      var half = Math.floor(level.max/2);
+      a = 1 + Math.floor(Math.random()*half);
+      b = 1 + Math.floor(Math.random()*half);
+      if(op==='sub'){
+        if(a<b){ var t=a; a=b; b=t; }
+        expr = a+' \u2212 '+b+' ='; answer = a-b;
+      } else {
+        expr = a+' + '+b+' ='; answer = a+b;
+      }
+    }
+    currentProblem = {a:a,b:b,op:op,answer:answer};
+    document.getElementById('problem-expr').textContent = expr + ' ?';
+    document.getElementById('answer-input').value = '';
+    document.getElementById('answer-input').focus();
+    if(speedStageActive) armSpeedTimer();
+  } else if(currentMode==='frac'){
+    var active2 = Object.keys(enabledOps.frac).filter(function(k){return enabledOps.frac[k]});
+    var fop = active2[Math.floor(Math.random()*active2.length)];
+    var pool = FRAC_DENOMS[level.id];
+    var d1 = pool[Math.floor(Math.random()*pool.length)];
+    var d2 = pool[Math.floor(Math.random()*pool.length)];
+    var n1 = 1 + Math.floor(Math.random()*(d1-1));
+    var n2 = 1 + Math.floor(Math.random()*(d2-1));
+    var resNum, resDen, sym;
+    if(fop==='sub'){
+      sym = '\u2212';
+      if(n1*d2 < n2*d1){ var tn=n1,td=d1; n1=n2; d1=d2; n2=tn; d2=td; }
+      resNum = n1*d2 - n2*d1; resDen = d1*d2;
+    } else if(fop==='mul'){
+      sym = '\u00d7'; resNum = n1*n2; resDen = d1*d2;
+    } else if(fop==='div'){
+      sym = '\u00f7'; resNum = n1*d2; resDen = d1*n2;
+    } else {
+      sym = '+'; resNum = n1*d2 + n2*d1; resDen = d1*d2;
+    }
+    var reduced = reduceFrac(resNum, resDen);
+    currentProblem = {fop:fop, n1:n1,d1:d1,n2:n2,d2:d2, answer:reduced};
+    document.getElementById('frac-expr').innerHTML =
+      renderFraction(n1,d1) + ' <span style="margin:0 8px">'+sym+'</span> ' + renderFraction(n2,d2) + ' <span style="margin:0 8px">=</span> <span class="mono">?</span>';
+    document.getElementById('frac-num-input').value = '';
+    document.getElementById('frac-den-input').value = '';
+    document.getElementById('frac-num-input').focus();
+  }
+}
+
+function checkSet(){
+  var val = trainerAbacus.getValue();
+  var fb = document.getElementById('feedback');
+  var ok = val === currentTarget;
+  registerResult(ok, {mode:'set', target:currentTarget});
+  if(ok){ fb.textContent='Верно! Число собрано правильно.'; fb.className='feedback ok'; }
+  else{ fb.textContent='Пока не то — на счётах сейчас '+val+', нужно '+currentTarget+'.'; fb.className='feedback err'; }
+  var next = reviewActive ? reviewNext : newProblem;
+  setTimeout(next, ok ? 900 : 1600);
+}
+
+function checkArith(timedOut){
+  disarmSpeedTimer();
+  var input = document.getElementById('answer-input');
+  var val = timedOut ? NaN : parseInt(input.value, 10);
+  var fb = document.getElementById('feedback');
+  var ok = !timedOut && val === currentProblem.answer;
+  registerResult(ok, {mode:'arith', problem:currentProblem, exprText:document.getElementById('problem-expr').textContent});
+  registerSpeedStageResult(ok);
+  if(ok){ fb.textContent='Верно!'; fb.className='feedback ok'; }
+  else{ fb.textContent=(timedOut ? 'Время вышло! ' : 'Неверно. ')+'Правильный ответ: '+currentProblem.answer; fb.className='feedback err'; }
+  var next = reviewActive ? reviewNext : newProblem;
+  setTimeout(next, ok ? 700 : 1400);
+}
+
+function checkFrac(){
+  var numV = parseInt(document.getElementById('frac-num-input').value, 10);
+  var denRaw = document.getElementById('frac-den-input').value.trim();
+  var denV = denRaw === '' ? 1 : parseInt(denRaw, 10);
+  var fb = document.getElementById('feedback');
+  var ok = false;
+  if(!isNaN(numV) && !isNaN(denV) && denV !== 0){
+    var userReduced = reduceFrac(numV, denV);
+    ok = userReduced.num === currentProblem.answer.num && userReduced.den === currentProblem.answer.den;
+  }
+  registerResult(ok, {mode:'frac', problem:currentProblem, exprHTML:document.getElementById('frac-expr').innerHTML});
+  var answerStr = currentProblem.answer.den===1 ? currentProblem.answer.num : (currentProblem.answer.num+'/'+currentProblem.answer.den);
+  if(ok){ fb.textContent='Верно!'; fb.className='feedback ok'; }
+  else{ fb.textContent='Неверно. Правильный ответ: '+answerStr; fb.className='feedback err'; }
+  var next = reviewActive ? reviewNext : newProblem;
+  setTimeout(next, ok ? 700 : 1600);
+}
+
+function registerResult(ok, mistakeData){
+  var p = progress[currentLevelId];
+  var wasMastered = isMastered(currentLevelId);
+  p.solved++;
+  if(ok){
+    p.correct++; p.streak++; p.best = Math.max(p.best, p.streak);
+    playCorrect();
+  } else {
+    p.streak = 0;
+    playWrong();
+    if(mistakeData && !reviewActive){ mistakesStore.push(mistakeData); updateMistakeCount(); }
+  }
+  updateStats();
+  renderRoadmaps();
+  saveProgress();
+  var level = LEVELS.find(function(l){return l.id===currentLevelId});
+  if(!wasMastered && isMastered(currentLevelId)){ celebrate('Уровень «'+level.name+'» освоен! 🎉'); }
+}
+
+function updateMistakeCount(){
+  document.getElementById('mistake-count').textContent = mistakesStore.length;
+}
+
+/* ============ SPEED STAGES (путь к анзану) ============ */
+function isSpeedStageUnlocked(n){
+  if(n===1) return true;
+  return speedProgress[n-1] && speedProgress[n-1].done >= 10;
+}
+function renderSpeedStages(){
+  var wrap = document.getElementById('speed-stage-buttons');
+  wrap.innerHTML = '';
+  SPEED_STAGES.forEach(function(st){
+    var unlocked = isSpeedStageUnlocked(st.id);
+    var done = speedProgress[st.id] ? speedProgress[st.id].done : 0;
+    var btn = document.createElement('button');
+    btn.className = 'btn small' + (speedStageActive && speedLevel===st.id ? ' primary' : '');
+    btn.textContent = st.label+' · '+st.sub+' ('+Math.min(done,10)+'/10)';
+    btn.disabled = !unlocked;
+    btn.onclick = function(){ selectSpeedStage(st.id); };
+    wrap.appendChild(btn);
+  });
+  var desc = document.getElementById('speed-stage-desc');
+  var cur = SPEED_STAGES[speedLevel-1];
+  var p = speedProgress[speedLevel];
+  if(speedStageActive){
+    desc.textContent = cur.label+': '+cur.sub+'. Решено '+Math.min(p.done,10)+' из 10 в этом этапе.';
+  } else {
+    desc.textContent = '10 примеров без таймера — разгонитесь постепенно, затем включайте более быстрые этапы.';
+  }
+  document.getElementById('speed-stage-stop-btn').style.display = speedStageActive ? '' : 'none';
+  document.getElementById('speed-stage-progress').textContent = speedStageActive
+    ? ('Точность на этапе: '+(p.done ? Math.round(p.correct/p.done*100) : 0)+'%')
+    : '';
+}
+async function loadSpeedProgress(){
+  try{
+    var res = await window.storage.get('abacus-speed-progress');
+    if(res && res.value){
+      var saved = JSON.parse(res.value);
+      SPEED_STAGES.forEach(function(st){ if(saved[st.id]) speedProgress[st.id] = saved[st.id]; });
+    }
+  }catch(e){}
+  renderSpeedStages();
+}
+async function saveSpeedProgress(){
+  try{ await window.storage.set('abacus-speed-progress', JSON.stringify(speedProgress)); }catch(e){}
+}
+function selectSpeedStage(n){
+  if(!isSpeedStageUnlocked(n)) return;
+  speedStageActive = true;
+  speedLevel = n;
+  setMode('arith');
+  renderSpeedStages();
+}
+function stopSpeedStage(){
+  speedStageActive = false;
+  disarmSpeedTimer();
+  document.getElementById('speed-timer-display').style.display = 'none';
+  renderSpeedStages();
+}
+function disarmSpeedTimer(){
+  clearInterval(speedTimerHandle);
+  speedTimerHandle = null;
+}
+function armSpeedTimer(){
+  disarmSpeedTimer();
+  var stage = SPEED_STAGES[speedLevel-1];
+  var el = document.getElementById('speed-timer-display');
+  if(!stage.time){ el.style.display = 'none'; return; }
+  speedTimeLeft = stage.time;
+  el.style.display = '';
+  el.textContent = 'Осталось: '+speedTimeLeft+' с';
+  speedTimerHandle = setInterval(function(){
+    speedTimeLeft--;
+    if(speedTimeLeft <= 0){
+      disarmSpeedTimer();
+      el.textContent = 'Время вышло!';
+      if(currentMode==='arith' && speedStageActive){ checkArith(true); }
+      return;
+    }
+    el.textContent = 'Осталось: '+speedTimeLeft+' с';
+  }, 1000);
+}
+function registerSpeedStageResult(ok){
+  if(!speedStageActive) return;
+  var p = speedProgress[speedLevel];
+  p.done++;
+  if(ok) p.correct++;
+  saveSpeedProgress();
+  if(p.done >= 10){
+    var next = speedLevel+1;
+    if(SPEED_STAGES[next-1]){
+      celebrate('Этап «'+SPEED_STAGES[speedLevel-1].label+'» пройден! Открыт '+SPEED_STAGES[next-1].label+' 🎉');
+    } else {
+      celebrate('Все скоростные этапы пройдены — вы готовы к анзану! 🏁');
+      speedStageActive = false;
+      disarmSpeedTimer();
+      document.getElementById('speed-timer-display').style.display = 'none';
+    }
+  }
+  renderSpeedStages();
+}
+
+function startReview(){
+  if(mistakesStore.length===0) return;
+  reviewQueue = mistakesStore.slice();
+  mistakesStore = [];
+  updateMistakeCount();
+  reviewActive = true;
+  document.getElementById('feedback').textContent = 'Режим повторения ошибок: '+reviewQueue.length+' примеров.';
+  document.getElementById('feedback').className = 'feedback';
+  reviewNext();
+}
+
+function reviewNext(){
+  if(reviewQueue.length===0){
+    reviewActive = false;
+    document.getElementById('feedback').textContent = 'Все ошибки повторены, отличная работа!';
+    document.getElementById('feedback').className = 'feedback ok';
+    newProblem();
+    return;
+  }
+  var item = reviewQueue.shift();
+  setModeSilent(item.mode);
+  newProblem(item);
+}
+
+/* ---------- anzan (флеш / крейзи / дроби) ---------- */
+function setAnzanType(type){
+  anzanType = type;
+  document.querySelectorAll('.mode-switch [data-anzantype]').forEach(function(b){
+    b.classList.toggle('active', b.dataset.anzantype===type);
+  });
+  var isFrac = type==='frac';
+  document.getElementById('anzan-numeric-settings').style.display = isFrac ? 'none' : '';
+  document.getElementById('anzan-op-chips').style.display = isFrac ? 'none' : '';
+  document.getElementById('anzan-frac-settings').style.display = isFrac ? '' : 'none';
+  document.getElementById('anzan-frac-op-chips').style.display = isFrac ? '' : 'none';
+  document.getElementById('anzan-displaytype-row').style.display = (type==='crazy' || isFrac) ? 'none' : '';
+  document.getElementById('anzan-stage-inner').classList.toggle('crazy', type==='crazy');
+  document.getElementById('anzan-type-desc').textContent = isFrac
+    ? 'Дроби появляются по очереди — считайте результат в уме и введите его как дробь.'
+    : (type==='crazy'
+        ? 'Числа и косточки выскакивают вразброс по всей области — тренирует периферийное зрение и скорость реакции.'
+        : 'Числа или косточки появляются по центру, одно за другим.');
+  stopAnzan();
+}
+
+function anzanClearStage(){
+  document.getElementById('anzan-stage-inner').innerHTML = '';
+}
+
+/* ---- op-chips: целые числа ---- */
+function toggleAnzanOp(op){
+  var active = Object.keys(anzanOpsEnabled).filter(function(k){return anzanOpsEnabled[k]});
+  if(active.length===1 && anzanOpsEnabled[op]) return;
+  anzanOpsEnabled[op] = !anzanOpsEnabled[op];
+  document.querySelectorAll('#anzan-op-chips .op-chip[data-op]').forEach(function(b){
+    b.classList.toggle('active', anzanOpsEnabled[b.dataset.op]);
+  });
+}
+function setAllAnzanOps(){
+  Object.keys(anzanOpsEnabled).forEach(function(k){ anzanOpsEnabled[k]=true; });
+  document.querySelectorAll('#anzan-op-chips .op-chip[data-op]').forEach(function(b){ b.classList.add('active'); });
+}
+/* ---- op-chips: дроби ---- */
+function toggleAnzanFracOp(op){
+  var active = Object.keys(anzanFracOpsEnabled).filter(function(k){return anzanFracOpsEnabled[k]});
+  if(active.length===1 && anzanFracOpsEnabled[op]) return;
+  anzanFracOpsEnabled[op] = !anzanFracOpsEnabled[op];
+  document.querySelectorAll('#anzan-frac-op-chips .op-chip[data-op]').forEach(function(b){
+    b.classList.toggle('active', anzanFracOpsEnabled[b.dataset.op]);
+  });
+}
+function setAllAnzanFracOps(){
+  Object.keys(anzanFracOpsEnabled).forEach(function(k){ anzanFracOpsEnabled[k]=true; });
+  document.querySelectorAll('#anzan-frac-op-chips .op-chip[data-op]').forEach(function(b){ b.classList.add('active'); });
+}
+
+/* ---- генерация последовательности: целые числа ---- */
+function pickAnzanOp(avail, total, mulMax){
+  var a = avail.slice();
+  if(total<=0) a = a.filter(function(o){return o!=='sub' && o!=='div';});
+  if(total*2 > 100000) a = a.filter(function(o){return o!=='mul';});
+  if(a.length===0) a=['add'];
+  return a[Math.floor(Math.random()*a.length)];
+}
+function generateAnzanSequenceOps(termsCount, maxPerTerm, opsEnabled, mulMax){
+  var total = 0;
+  var terms = [];
+  for(var i=0;i<termsCount;i++){
+    var op = (i===0) ? 'add' : pickAnzanOp(opsEnabled, total, mulMax);
+    var mag;
+    if(op==='add'){
+      mag = 1 + Math.floor(Math.random()*maxPerTerm);
+      total += mag;
+    } else if(op==='sub'){
+      var capMag = Math.min(maxPerTerm, total);
+      mag = 1 + Math.floor(Math.random()*capMag);
+      total -= mag;
+    } else if(op==='mul'){
+      mag = 2 + Math.floor(Math.random()*(mulMax-1));
+      total *= mag;
+    } else {
+      var divisors = [];
+      for(var d=2; d<=mulMax; d++){ if(total % d === 0) divisors.push(d); }
+      if(divisors.length===0){
+        op = 'add';
+        mag = 1 + Math.floor(Math.random()*maxPerTerm);
+        total += mag;
+      } else {
+        mag = divisors[Math.floor(Math.random()*divisors.length)];
+        total = total/mag;
+      }
+    }
+    terms.push({op:op, mag:mag});
+  }
+  return {terms:terms, total:total};
+}
+
+/* ---- генерация последовательности: дроби ---- */
+function generateAnzanFracSequence(termsCount, denomPool, opsEnabled){
+  var d1 = denomPool[Math.floor(Math.random()*denomPool.length)];
+  var n1 = 1 + Math.floor(Math.random()*(d1-1));
+  var runNum = n1, runDen = d1;
+  var terms = [{op:'add', n:n1, d:d1}];
+  for(var i=1;i<termsCount;i++){
+    var avail = opsEnabled.slice();
+    if(runDen > 300) avail = avail.filter(function(o){return o==='add'||o==='sub';});
+    if(avail.length===0) avail = ['add'];
+    var op = avail[Math.floor(Math.random()*avail.length)];
+    var d2 = denomPool[Math.floor(Math.random()*denomPool.length)];
+    var n2 = 1 + Math.floor(Math.random()*(d2-1));
+    var resNum, resDen;
+    if(op==='sub'){
+      resNum = runNum*d2 - n2*runDen; resDen = runDen*d2;
+      if(resNum <= 0){ op='add'; resNum = runNum*d2 + n2*runDen; resDen = runDen*d2; }
+    } else if(op==='mul'){
+      resNum = runNum*n2; resDen = runDen*d2;
+    } else if(op==='div'){
+      resNum = runNum*d2; resDen = runDen*n2;
+    } else {
+      resNum = runNum*d2 + n2*runDen; resDen = runDen*d2;
+    }
+    var reduced = reduceFrac(resNum, resDen);
+    runNum = reduced.num; runDen = reduced.den;
+    terms.push({op:op, n:n2, d:d2});
+  }
+  return {terms:terms, resultNum:runNum, resultDen:runDen};
+}
+
+function anzanPickItemType(){
+  if(anzanType==='crazy') return Math.random()<0.5 ? 'digits' : 'beads';
+  if(anzanDisplayType==='mixed') return Math.random()<0.5 ? 'digits' : 'beads';
+  return anzanDisplayType;
+}
+
+var ANZAN_OP_SYMBOL = {add:'+', sub:'\u2212', mul:'\u00d7', div:'\u00f7'};
+
+function anzanShowTerm(term, idx){
+  anzanClearStage();
+  var stage = document.getElementById('anzan-stage-inner');
+  var type = anzanPickItemType();
+  var showSign = idx>0;
+  var sym = ANZAN_OP_SYMBOL[term.op] || '+';
+  var el = document.createElement('div');
+  el.className = 'anzan-item';
+
+  if(type==='digits'){
+    var num = document.createElement('div');
+    num.className = 'anzan-num' + (showSign ? ' op-'+term.op : '');
+    num.textContent = (showSign ? sym : '') + term.mag;
+    if(anzanType==='crazy'){
+      var scale = 0.7 + Math.random()*0.55;
+      num.style.fontSize = Math.round(48*scale)+'px';
+    }
+    el.appendChild(num);
+  } else {
+    var wrap = document.createElement('div');
+    wrap.className = 'anzan-mini-wrap';
+    if(showSign){
+      var badge = document.createElement('div');
+      badge.className = 'anzan-sign-badge op-'+term.op;
+      badge.textContent = sym;
+      wrap.appendChild(badge);
+    }
+    var outer = document.createElement('div');
+    outer.className = 'anzan-mini-outer';
+    var inner = document.createElement('div');
+    inner.className = 'anzan-mini-abacus';
+    inner.id = 'anzan-mini-'+idx;
+    outer.appendChild(inner);
+    wrap.appendChild(outer);
+    el.appendChild(wrap);
+  }
+
+  if(anzanType==='crazy'){
+    var rect = stage.getBoundingClientRect();
+    var padX = 85, padY = 60;
+    var maxW = Math.max(rect.width - padX*2, 30);
+    var maxH = Math.max(rect.height - padY*2, 30);
+    var x = padX + Math.random()*maxW;
+    var y = padY + Math.random()*maxH;
+    var rot = (Math.random()*26-13).toFixed(1);
+    el.style.left = x+'px';
+    el.style.top = y+'px';
+    el.style.transform = 'translate(-50%,-50%) rotate('+rot+'deg)';
+  }
+
+  stage.appendChild(el);
+  if(type==='beads'){
+    var mini = createAbacus(document.getElementById('anzan-mini-'+idx), anzanDigits, {interactive:false});
+    mini.setValue(term.mag);
+  }
+  playBeadClick();
+}
+
+function anzanShowFracTerm(term, idx){
+  anzanClearStage();
+  var stage = document.getElementById('anzan-stage-inner');
+  var el = document.createElement('div');
+  el.className = 'anzan-item';
+  var wrap = document.createElement('div');
+  wrap.className = 'anzan-frac-wrap';
+  if(idx>0){
+    var badge = document.createElement('div');
+    badge.className = 'anzan-sign-badge op-'+term.op;
+    badge.textContent = ANZAN_OP_SYMBOL[term.op] || '+';
+    wrap.appendChild(badge);
+  }
+  var fracEl = document.createElement('div');
+  fracEl.className = 'anzan-frac-big';
+  fracEl.innerHTML = renderFraction(term.n, term.d);
+  wrap.appendChild(fracEl);
+  el.appendChild(wrap);
+  stage.appendChild(el);
+  playBeadClick();
+}
+
+function anzanRunCountdown(n, token, done){
+  if(token !== anzanRunToken) return;
+  anzanClearStage();
+  if(n<=0){ done(); return; }
+  var stage = document.getElementById('anzan-stage-inner');
+  var el = document.createElement('div');
+  el.className = 'anzan-item';
+  var cd = document.createElement('div');
+  cd.className = 'anzan-countdown';
+  cd.textContent = n;
+  el.appendChild(cd);
+  stage.appendChild(el);
+  setTimeout(function(){ anzanRunCountdown(n-1, token, done); }, 600);
+}
+
+function anzanPlaySequence(idx, token){
+  if(token !== anzanRunToken) return;
+  if(idx >= anzanSequence.terms.length){
+    anzanClearStage();
+    anzanRunning = false;
+    document.getElementById('anzan-start-btn').disabled = false;
+    document.getElementById('anzan-start-btn').textContent = 'Начать пример';
+    document.getElementById('anzan-stop-btn').style.display = 'none';
+    document.getElementById('anzan-progress').textContent = 'Готово! Введите ответ.';
+    if(anzanType==='frac'){
+      document.getElementById('anzan-frac-answer-box').style.display = '';
+      document.getElementById('anzan-frac-num-input').value = '';
+      document.getElementById('anzan-frac-den-input').value = '';
+      document.getElementById('anzan-frac-num-input').focus();
+    } else {
+      document.getElementById('anzan-answer-box').style.display = '';
+      document.getElementById('anzan-answer-input').value = '';
+      document.getElementById('anzan-answer-input').focus();
+    }
+    anzanArmAnswerTimer();
+    return;
+  }
+  document.getElementById('anzan-progress').textContent = (idx+1)+' из '+anzanSequence.terms.length;
+  if(anzanType==='frac'){ anzanShowFracTerm(anzanSequence.terms[idx], idx); }
+  else { anzanShowTerm(anzanSequence.terms[idx], idx); }
+  var gap = Math.max(70, Math.round(anzanSpeed*0.18));
+  setTimeout(function(){
+    if(token !== anzanRunToken) return;
+    anzanClearStage();
+    setTimeout(function(){ anzanPlaySequence(idx+1, token); }, gap);
+  }, anzanSpeed);
+}
+
+function startAnzan(){
+  if(anzanRunning) return;
+  anzanSessionRunning = true;
+  anzanRoundIndex = 1;
+  anzanRunRound();
+}
+
+function anzanRunRound(){
+  anzanRunning = true;
+  anzanRunToken++;
+  var token = anzanRunToken;
+  document.getElementById('anzan-start-btn').disabled = true;
+  document.getElementById('anzan-start-btn').textContent = 'Идёт показ…';
+  document.getElementById('anzan-stop-btn').style.display = '';
+  document.getElementById('anzan-answer-box').style.display = 'none';
+  document.getElementById('anzan-frac-answer-box').style.display = 'none';
+  document.getElementById('anzan-feedback').textContent = '';
+  document.getElementById('anzan-feedback').className = 'feedback';
+  document.getElementById('anzan-round-indicator').textContent = anzanRoundsTotal > 1
+    ? ('Раунд '+anzanRoundIndex+' из '+anzanRoundsTotal) : '';
+
+  if(anzanType==='frac'){
+    var pool = ANZAN_FRAC_DENOMS[anzanFracLevel];
+    var fops = Object.keys(anzanFracOpsEnabled).filter(function(k){return anzanFracOpsEnabled[k]});
+    anzanSequence = generateAnzanFracSequence(anzanFracTerms, pool, fops);
+  } else {
+    var maxPerTerm = Math.pow(10, anzanDigits) - 1;
+    var mulMax = ANZAN_MUL_MAX[anzanDigits] || 9;
+    var ops = Object.keys(anzanOpsEnabled).filter(function(k){return anzanOpsEnabled[k]});
+    anzanSequence = generateAnzanSequenceOps(anzanTermsCount, maxPerTerm, ops, mulMax);
+  }
+  anzanRunCountdown(3, token, function(){ anzanPlaySequence(0, token); });
+}
+
+function anzanArmAnswerTimer(){
+  disarmAnzanAnswerTimer();
+  if(!anzanAnswerTime) return;
+  anzanAnswerTimeLeft = anzanAnswerTime;
+  var elId = anzanType==='frac' ? 'anzan-frac-answer-timer' : 'anzan-answer-timer';
+  var el = document.getElementById(elId);
+  el.textContent = '· осталось '+anzanAnswerTimeLeft+' с';
+  anzanAnswerTimerHandle = setInterval(function(){
+    anzanAnswerTimeLeft--;
+    if(anzanAnswerTimeLeft <= 0){
+      disarmAnzanAnswerTimer();
+      el.textContent = '· время вышло';
+      if(anzanType==='frac'){ checkAnzanFracAnswer(true); } else { checkAnzanAnswer(true); }
+      return;
+    }
+    el.textContent = '· осталось '+anzanAnswerTimeLeft+' с';
+  }, 1000);
+}
+function disarmAnzanAnswerTimer(){
+  clearInterval(anzanAnswerTimerHandle);
+  anzanAnswerTimerHandle = null;
+  var t1 = document.getElementById('anzan-answer-timer'); if(t1) t1.textContent = '';
+  var t2 = document.getElementById('anzan-frac-answer-timer'); if(t2) t2.textContent = '';
+}
+
+function anzanAdvanceRoundOrFinish(){
+  if(anzanRoundIndex < anzanRoundsTotal){
+    anzanRoundIndex++;
+    document.getElementById('anzan-start-btn').disabled = true;
+    document.getElementById('anzan-start-btn').textContent = 'Следующий раунд…';
+    setTimeout(function(){ if(anzanSessionRunning) anzanRunRound(); }, 1400);
+  } else {
+    anzanSessionRunning = false;
+    document.getElementById('anzan-round-indicator').textContent = anzanRoundsTotal > 1
+      ? ('Сессия из '+anzanRoundsTotal+' раундов завершена!') : '';
+    if(anzanRoundsTotal > 1) celebrate('Сессия анзана завершена: '+anzanStats.correct+'/'+anzanStats.solved+' верно 🎉');
+  }
+}
+
+function stopAnzan(){
+  anzanRunToken++;
+  anzanRunning = false;
+  anzanSessionRunning = false;
+  disarmAnzanAnswerTimer();
+  anzanClearStage();
+  document.getElementById('anzan-start-btn').disabled = false;
+  document.getElementById('anzan-start-btn').textContent = 'Начать пример';
+  document.getElementById('anzan-stop-btn').style.display = 'none';
+  document.getElementById('anzan-answer-box').style.display = 'none';
+  document.getElementById('anzan-frac-answer-box').style.display = 'none';
+  document.getElementById('anzan-progress').textContent = 'Нажмите «Начать пример»';
+  document.getElementById('anzan-round-indicator').textContent = '';
+}
+
+function anzanExpressionText(seq){
+  return seq.terms.map(function(t,i){
+    if(i===0) return String(t.mag);
+    return ' '+ANZAN_OP_SYMBOL[t.op]+' '+t.mag;
+  }).join('') + ' = ' + seq.total;
+}
+function anzanFracExpressionText(seq){
+  var parts = seq.terms.map(function(t,i){
+    var s = t.n+'/'+t.d;
+    if(i===0) return s;
+    return ' '+ANZAN_OP_SYMBOL[t.op]+' '+s;
+  }).join('');
+  var ans = seq.resultDen===1 ? seq.resultNum : (seq.resultNum+'/'+seq.resultDen);
+  return parts + ' = ' + ans;
+}
+
+function checkAnzanAnswer(timedOut){
+  disarmAnzanAnswerTimer();
+  var val = timedOut ? NaN : parseInt(document.getElementById('anzan-answer-input').value, 10);
+  var ok = !timedOut && val === anzanSequence.total;
+  anzanStats.solved++;
+  if(ok){
+    anzanStats.correct++; anzanStats.streak++; anzanStats.best = Math.max(anzanStats.best, anzanStats.streak);
+    playCorrect();
+  } else {
+    anzanStats.streak = 0;
+    playWrong();
+  }
+  updateAnzanStats();
+  registerAnzanRound(ok);
+  var fb = document.getElementById('anzan-feedback');
+  fb.textContent = (timedOut ? 'Время вышло! ' : (ok ? 'Верно! ' : 'Неверно. ')) + anzanExpressionText(anzanSequence);
+  fb.className = 'feedback ' + (ok ? 'ok' : 'err');
+  document.getElementById('anzan-answer-box').style.display = 'none';
+  anzanAdvanceRoundOrFinish();
+}
+
+function checkAnzanFracAnswer(timedOut){
+  disarmAnzanAnswerTimer();
+  var numV = timedOut ? NaN : parseInt(document.getElementById('anzan-frac-num-input').value, 10);
+  var denRaw = timedOut ? '' : document.getElementById('anzan-frac-den-input').value.trim();
+  var denV = denRaw === '' ? 1 : parseInt(denRaw, 10);
+  var ok = false;
+  if(!timedOut && !isNaN(numV) && !isNaN(denV) && denV !== 0){
+    var userReduced = reduceFrac(numV, denV);
+    ok = userReduced.num === anzanSequence.resultNum && userReduced.den === anzanSequence.resultDen;
+  }
+  anzanStats.solved++;
+  if(ok){
+    anzanStats.correct++; anzanStats.streak++; anzanStats.best = Math.max(anzanStats.best, anzanStats.streak);
+    playCorrect();
+  } else {
+    anzanStats.streak = 0;
+    playWrong();
+  }
+  updateAnzanStats();
+  registerAnzanRound(ok);
+  var fb = document.getElementById('anzan-feedback');
+  fb.textContent = (timedOut ? 'Время вышло! ' : (ok ? 'Верно! ' : 'Неверно. ')) + anzanFracExpressionText(anzanSequence);
+  fb.className = 'feedback ' + (ok ? 'ok' : 'err');
+  document.getElementById('anzan-frac-answer-box').style.display = 'none';
+  anzanAdvanceRoundOrFinish();
+}
+
+function updateAnzanStats(){
+  document.getElementById('anz-solved').textContent = anzanStats.solved;
+  document.getElementById('anz-acc').textContent = anzanStats.solved ? Math.round(anzanStats.correct/anzanStats.solved*100)+'%' : '0%';
+  document.getElementById('anz-streak').textContent = anzanStats.streak;
+  document.getElementById('anz-best').textContent = anzanStats.best;
+}
+
+/* ---------- дневной рейтинг + мини-вход ---------- */
+var anzanPlayerId = null;
+var anzanPlayerName = null;
+var anzanDaily = {date:null, score:0, solved:0, correct:0};
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+function getTodayKey(){
+  var d = new Date();
+  var y = d.getFullYear();
+  var m = String(d.getMonth()+1).padStart(2,'0');
+  var day = String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+
+function genPlayerId(){
+  return 'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+}
+
+async function loadAnzanProfile(){
+  try{
+    var res = await window.storage.get('abacus-player');
+    if(res && res.value){
+      var saved = JSON.parse(res.value);
+      anzanPlayerId = saved.id || null;
+      anzanPlayerName = saved.name || null;
+    }
+  }catch(e){}
+  updateAnzanPlayerUI();
+}
+
+async function saveAnzanNickname(){
+  var input = document.getElementById('anzan-nickname-input');
+  var name = input.value.trim().slice(0,16);
+  if(!name) return;
+  if(!anzanPlayerId) anzanPlayerId = genPlayerId();
+  anzanPlayerName = name;
+  try{ await window.storage.set('abacus-player', JSON.stringify({id:anzanPlayerId, name:anzanPlayerName})); }catch(e){}
+  document.getElementById('anzan-login-form').style.display = 'none';
+  updateAnzanPlayerUI();
+  pushAnzanLeaderboard();
+}
+
+function openAnzanLogin(){
+  var form = document.getElementById('anzan-login-form');
+  form.style.display = (form.style.display === 'none' || !form.style.display) ? '' : 'none';
+  document.getElementById('anzan-nickname-input').value = anzanPlayerName || '';
+  document.getElementById('anzan-nickname-input').focus();
+}
+
+async function anzanLogout(){
+  anzanPlayerName = null;
+  try{ if(anzanPlayerId) await window.storage.set('abacus-player', JSON.stringify({id:anzanPlayerId, name:null})); }catch(e){}
+  updateAnzanPlayerUI();
+  loadAnzanLeaderboard();
+}
+
+function updateAnzanPlayerUI(){
+  var status = document.getElementById('anzan-player-status');
+  var loginBtn = document.getElementById('anzan-login-btn');
+  var logoutBtn = document.getElementById('anzan-logout-btn');
+  if(anzanPlayerName){
+    status.textContent = 'Вы играете как «'+anzanPlayerName+'» — результат виден в общем рейтинге.';
+    loginBtn.textContent = 'Сменить имя';
+    logoutBtn.style.display = '';
+  } else {
+    status.textContent = 'Вы играете как гость — результат не попадёт в общий рейтинг.';
+    loginBtn.textContent = 'Войти в рейтинг';
+    logoutBtn.style.display = 'none';
+  }
+}
+
+function ensureAnzanDailyReset(){
+  var today = getTodayKey();
+  if(anzanDaily.date !== today){
+    anzanDaily = {date:today, score:0, solved:0, correct:0};
+  }
+}
+
+async function loadAnzanDaily(){
+  try{
+    var res = await window.storage.get('abacus-anzan-daily');
+    if(res && res.value){
+      var saved = JSON.parse(res.value);
+      if(saved.date === getTodayKey()) anzanDaily = saved;
+    }
+  }catch(e){}
+  ensureAnzanDailyReset();
+  updateAnzanDailyUI();
+}
+
+async function saveAnzanDaily(){
+  try{ await window.storage.set('abacus-anzan-daily', JSON.stringify(anzanDaily)); }catch(e){}
+}
+
+function updateAnzanDailyUI(){
+  document.getElementById('anz-day-score').textContent = anzanDaily.score;
+  document.getElementById('anz-day-solved').textContent = anzanDaily.solved;
+  document.getElementById('anz-day-acc').textContent = anzanDaily.solved ? Math.round(anzanDaily.correct/anzanDaily.solved*100)+'%' : '0%';
+}
+
+function anzanRoundScore(ok){
+  if(!ok) return 0;
+  var speedMult = Math.min(6, Math.max(1, 2000/anzanSpeed));
+  var sizeMult, levelMult;
+  if(anzanType==='frac'){
+    sizeMult = anzanFracTerms/4;
+    levelMult = anzanFracLevel==='hard' ? 2 : (anzanFracLevel==='medium' ? 1.5 : 1);
+  } else {
+    sizeMult = anzanTermsCount/10;
+    levelMult = anzanDigits;
+  }
+  return Math.max(1, Math.round(10*speedMult*sizeMult*levelMult));
+}
+
+function registerAnzanRound(ok){
+  ensureAnzanDailyReset();
+  anzanDaily.solved++;
+  if(ok){ anzanDaily.correct++; anzanDaily.score += anzanRoundScore(true); }
+  updateAnzanDailyUI();
+  saveAnzanDaily();
+  pushAnzanLeaderboard();
+}
+
+async function pushAnzanLeaderboard(){
+  if(!anzanPlayerName || !anzanPlayerId){ renderAnzanLeaderboard(null); return; }
+  var key = 'anzan-leaderboard:'+getTodayKey();
+  try{
+    var res = await window.storage.get(key, true);
+    var board = {};
+    if(res && res.value){ board = JSON.parse(res.value); }
+    board[anzanPlayerId] = {name:anzanPlayerName, score:anzanDaily.score, solved:anzanDaily.solved, correct:anzanDaily.correct, ts:Date.now()};
+    await window.storage.set(key, JSON.stringify(board), true);
+    renderAnzanLeaderboard(board);
+  }catch(e){
+    renderAnzanLeaderboard(null);
+  }
+}
+
+async function loadAnzanLeaderboard(){
+  var key = 'anzan-leaderboard:'+getTodayKey();
+  try{
+    var res = await window.storage.get(key, true);
+    var board = (res && res.value) ? JSON.parse(res.value) : {};
+    renderAnzanLeaderboard(board);
+  }catch(e){
+    renderAnzanLeaderboard(null);
+  }
+}
+
+var FAKE_NICKNAMES = ['Sorobun','MathNinja','BusinkaPro','Anzan_Star','SchetyMaster','QuickBead','TokyoCounter','MentalMax','FastFingers','Abakusha','BeadRunner','Kira_Счёт','NumberNomad','ZenSchety','SpeedSoroban'];
+function seededRandom(seed){
+  var x = Math.sin(seed)*10000;
+  return x - Math.floor(x);
+}
+function generateFakeLeaderboard(){
+  var daySeed = getTodayKey().split('-').reduce(function(a,c){return a+parseInt(c,10);},0);
+  var count = 5 + Math.floor(seededRandom(daySeed)*4);
+  var names = FAKE_NICKNAMES.slice();
+  var entries = [];
+  for(var i=0;i<count;i++){
+    var idx = Math.floor(seededRandom(daySeed+i*7.13)*names.length);
+    var name = names.splice(idx % names.length, 1)[0] || ('Игрок'+(i+1));
+    var solved = 3 + Math.floor(seededRandom(daySeed+i*3.7)*6);
+    var correct = Math.max(1, solved - Math.floor(seededRandom(daySeed+i*5.1)*2));
+    var score = 5 + Math.floor(seededRandom(daySeed+i*2.3)*20);
+    entries.push({id:'fake'+i, name:name, score:score, solved:solved, correct:correct, fake:true});
+  }
+  return entries;
+}
+
+function renderAnzanLeaderboard(board){
+  var table = document.getElementById('anzan-leaderboard-table');
+  var note = document.getElementById('anzan-leaderboard-note');
+  table.innerHTML = '<tr><th>#</th><th>Игрок</th><th>Очки</th><th>Решено</th><th>Точность</th></tr>';
+  if(board===null){
+    note.textContent = 'Общий рейтинг сейчас недоступен — показана только ваша сегодняшняя статистика выше.';
+    return;
+  }
+  var entries = Object.keys(board).map(function(id){ var e=board[id]; e.id=id; return e; });
+  var hasRealEntries = entries.length > 0;
+  if(!hasRealEntries){
+    entries = generateFakeLeaderboard();
+  }
+  entries.sort(function(a,b){ return b.score - a.score; });
+  entries = entries.slice(0,10);
+  if(!hasRealEntries){
+    note.textContent = 'Пока в рейтинге только примерные результаты для ориентира — сыграйте, чтобы попасть в топ! Рейтинг сбрасывается каждый день в полночь.';
+  } else {
+    note.textContent = 'Рейтинг обновляется автоматически и сбрасывается каждый день в полночь.';
+  }
+  entries.forEach(function(e, idx){
+    var row = document.createElement('tr');
+    if(anzanPlayerId && e.id===anzanPlayerId){ row.style.color = 'var(--blue-bright)'; row.style.fontWeight = '700'; }
+    if(e.fake){ row.style.opacity = '.6'; }
+    var acc = e.solved ? Math.round(e.correct/e.solved*100)+'%' : '0%';
+    row.innerHTML = '<td>'+(idx+1)+'</td><td>'+escapeHtml(e.name)+(e.fake ? ' <span class="chip" style="padding:1px 5px;font-size:9px">пример</span>' : '')+'</td><td>'+e.score+'</td><td>'+e.solved+'</td><td>'+acc+'</td>';
+    table.appendChild(row);
+  });
+}
+
+/* ---------- placement test ---------- */
+function startPlacement(){
+  reviewActive = false; reviewQueue = [];
+  placementIndex = 0;
+  document.getElementById('problem-set').style.display = 'none';
+  document.getElementById('problem-arith').style.display = 'none';
+  document.getElementById('problem-frac').style.display = 'none';
+  document.getElementById('op-chips-arith').style.display = 'none';
+  document.getElementById('op-chips-frac').style.display = 'none';
+  document.getElementById('check-set-btn').style.display = 'none';
+  document.getElementById('placement-total').textContent = placementCheckpoints.length;
+  document.getElementById('placement-box').style.display = '';
+  askPlacementQuestion();
+}
+function askPlacementQuestion(){
+  var lvlId = placementCheckpoints[placementIndex];
+  var level = LEVELS.find(function(l){return l.id===lvlId});
+  var half = Math.max(2, Math.floor(level.max/2));
+  var a = 1 + Math.floor(Math.random()*half);
+  var b = 1 + Math.floor(Math.random()*half);
+  placementCurrent = {answer:a+b};
+  document.getElementById('placement-step').textContent = placementIndex+1;
+  document.getElementById('placement-expr').textContent = a+' + '+b+' = ?';
+  document.getElementById('placement-input').value = '';
+  document.getElementById('placement-feedback').textContent = '';
+  document.getElementById('placement-input').focus();
+}
+function checkPlacement(){
+  var val = parseInt(document.getElementById('placement-input').value, 10);
+  var ok = val === placementCurrent.answer;
+  if(ok){
+    playCorrect();
+    placementIndex++;
+    if(placementIndex >= placementCheckpoints.length){ finishPlacement(10); }
+    else{ askPlacementQuestion(); }
+  } else {
+    playWrong();
+    var recommended = placementIndex===0 ? 1 : placementCheckpoints[placementIndex-1];
+    finishPlacement(recommended);
+  }
+}
+function finishPlacement(recommendedLevel){
+  document.getElementById('placement-box').style.display = 'none';
+  unlockedUpTo = Math.max(unlockedUpTo, recommendedLevel);
+  saveProgress();
+  selectLevel(recommendedLevel);
+  setMode('set');
+  var lvl = LEVELS.find(function(l){return l.id===recommendedLevel});
+  celebrate('Твой уровень: '+lvl.name+' (уровень '+recommendedLevel+' из '+LEVELS.length+')');
+}
+
+function celebrate(text){
+  var el = document.getElementById('celebrate-toast');
+  el.textContent = text;
+  el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 3000);
+}
+
+function copyAddr(btn, text){
+  var orig = btn.textContent;
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = 'Скопировано';
+    setTimeout(function(){ btn.textContent = orig; }, 1500);
+  }).catch(function(){});
+}
+
+function getHint(){
+  if(currentMode==='set'){
+    var digits = String(currentTarget).split('').map(Number);
+    var names = ['ед','дес','сот','тыс','дес.тыс','сот.тыс'];
+    var parts = [];
+    for(var i=0;i<digits.length;i++){
+      var placeIdx = digits.length-1-i;
+      parts.push((names[placeIdx] || ('10^'+placeIdx))+': '+digits[i]);
+    }
+    return parts.join(', ')+'. Начни с левого (самого крупного) разряда.';
+  }
+  if(currentMode==='arith' && currentProblem){
+    var p = currentProblem;
+    if(p.op==='add'){
+      var u1=p.a%10, u2=p.b%10;
+      if(u1+u2>=10) return 'Единицы в сумме дают 10 и больше — используй большого друга: замени +'+u2+' на +10 и −'+(10-u2)+'.';
+      if(Math.max(u1,u2)<5 && u1+u2>=5) return 'Косточек снизу не хватает — используй маленького друга: замени +'+u2+' на +5 и −'+(5-u2)+'.';
+      return 'Складывай начиная со старшего разряда.';
+    }
+    if(p.op==='sub') return 'Вычитай по разрядам, начиная со старшего. Если не хватает — займи 10 у соседнего разряда.';
+    if(p.op==='mul') return 'Разбей множитель на удобные части, например '+p.a+' × '+p.b+' = '+p.a+' × '+(p.b-1)+' + '+p.a+'.';
+    if(p.op==='div') return 'Вспомни таблицу умножения: на какое число нужно умножить '+p.b+', чтобы получить '+p.a+'?';
+  }
+  if(currentMode==='frac' && currentProblem){
+    var fp = currentProblem;
+    if(fp.d1===fp.d2) return 'Знаменатели одинаковые — просто '+(fp.fop==='sub'?'вычти':'сложи или умножь')+' числители.';
+    if(fp.fop==='mul') return 'Перемножь числители между собой и знаменатели между собой.';
+    if(fp.fop==='div') return 'Переверни вторую дробь (числитель и знаменатель местами) и умножь.';
+    return 'Приведи дроби к общему знаменателю: перемножь знаменатели '+fp.d1+' и '+fp.d2+'.';
+  }
+  return 'Подсказка появится, когда начнётся пример.';
+}
+function showHint(){
+  var el = document.getElementById('hint-text');
+  el.textContent = getHint();
+  el.style.display = 'block';
+}
+
+function updateStats(){
+  var p = progress[currentLevelId];
+  document.getElementById('st-solved').textContent = p.solved;
+  document.getElementById('st-acc').textContent = p.solved ? Math.round(p.correct/p.solved*100)+'%' : '0%';
+  document.getElementById('st-streak').textContent = p.streak;
+  document.getElementById('st-best').textContent = p.best;
+}
+
+/* ---------- anzan: полноэкранный режим ---------- */
+function toggleAnzanFullscreen(){
+  var el = document.getElementById('view-anzan');
+  var isFs = document.fullscreenElement || document.webkitFullscreenElement;
+  if(!isFs){
+    var req = el.requestFullscreen || el.webkitRequestFullscreen;
+    if(req) req.call(el);
+  } else {
+    var exit = document.exitFullscreen || document.webkitExitFullscreen;
+    if(exit) exit.call(document);
+  }
+}
+document.addEventListener('fullscreenchange', updateAnzanFsBtn);
+document.addEventListener('webkitfullscreenchange', updateAnzanFsBtn);
+function updateAnzanFsBtn(){
+  var btn = document.getElementById('anzan-fs-btn');
+  if(!btn) return;
+  var isFs = document.fullscreenElement || document.webkitFullscreenElement;
+  btn.textContent = isFs ? '⛶ Выйти из полноэкранного' : '⛶ На весь экран';
+}
+
+/* ---------- anzan mode ---------- */
+function toggleAnzanMode(){
+  anzanMode = document.getElementById('anzan-toggle').checked;
+  if(anzanMode){
+    setMode('set');
+    document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = b.dataset.mode!=='set'; });
+  } else {
+    document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = false; });
+    newProblem();
+  }
+}
+
+/* ---------- timer mode ---------- */
+function toggleTimerMode(){
+  timerMode = document.getElementById('timer-toggle').checked;
+  if(timerMode){
+    setMode('arith');
+    document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = b.dataset.mode==='set'; });
+    startTimer();
+  } else {
+    document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = false; });
+    clearInterval(timerHandle);
+    document.getElementById('timer-out').textContent = '';
+  }
+}
+function startTimer(){
+  timerLeft = 60;
+  document.getElementById('timer-out').textContent = timerLeft+'с';
+  clearInterval(timerHandle);
+  timerHandle = setInterval(function(){
+    timerLeft--;
+    document.getElementById('timer-out').textContent = timerLeft+'с';
+    if(timerLeft<=0){
+      clearInterval(timerHandle);
+      document.getElementById('feedback').textContent = 'Время вышло! Серия: '+progress[currentLevelId].streak+', лучшая: '+progress[currentLevelId].best;
+      document.getElementById('feedback').className = 'feedback';
+      document.getElementById('timer-toggle').checked = false;
+      timerMode = false;
+      document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.disabled = false; });
+    }
+  }, 1000);
+}
+
+/* ============ SUDOKU ============ */
+var SUDOKU_DIFFS = [
+  {id:'easy',   label:'Легко',      ratio:0.47},
+  {id:'medium', label:'Средне',     ratio:0.38},
+  {id:'hard',   label:'Сложно',     ratio:0.32},
+  {id:'master', label:'Мастер',     ratio:0.28},
+  {id:'mixed',  label:'Смешанный',  ratio:null}
+];
+/* прогрессия «смешанного» режима: от простого к сложному, 5 ступеней */
+var SUDOKU_MIXED_STAGES = ['easy','medium','hard','master','expert'];
+var SUDOKU_RATIO_BY_ID = {easy:0.47, medium:0.38, hard:0.32, master:0.28, expert:0.24};
+var SUDOKU_SIZES = [3,4,5,6,7,8,9,10];
+var SUDOKU_VARIANTS = [{id:'classic', label:'Классика'}, {id:'jigsaw', label:'Лабиринт'}];
+var SUDOKU_SKINS = [{id:'digits', label:'Цифры'}, {id:'abacus', label:'Абакус'}];
+
+var sudokuDifficulty = 'easy';
+var sudokuActualDiff = 'easy'; /* реальная сложность текущей партии (для «смешанного») */
+var sudokuMixedStage = 1;      /* 1..5, прогресс «смешанного» режима */
+var sudokuSize = 9;
+var sudokuVariant = 'classic';
+var sudokuSkin = 'digits';
+var sudokuCfg = {N:9, boxW:3, boxH:3, regionMap:null, regionCells:null};
+
+var sudokuSolution = null;
+var sudokuGiven = null;
+var sudokuGrid = null;
+var sudokuNotes = null;
+var sudokuSelected = -1;
+var sudokuNotesMode = false;
+var sudokuMistakes = 0;
+var sudokuElapsed = 0;
+var sudokuTimerHandle = null;
+var sudokuSolved = false;
+var sudokuStats = {};
+var sudokuSolutionByVal = null; /* val -> [indices] в решении, для галочек «собрано» */
+
+function sudokuIdx(r,c){ return r*sudokuCfg.N+c; }
+function sudokuShuffle(arr){
+  for(var i=arr.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=arr[i]; arr[i]=arr[j]; arr[j]=t;
+  }
+  return arr;
+}
+function sudokuComputeBoxDims(N){
+  var best=null;
+  for(var bw=1;bw<=N;bw++){
+    if(N%bw===0){
+      var bh=N/bw;
+      if(!best || Math.abs(bw-bh) < Math.abs(best[0]-best[1])) best=[bw,bh];
+    }
+  }
+  return best;
+}
+function sudokuBuildBoxRegionMap(N, boxW, boxH){
+  var map = new Array(N*N);
+  var boxesAcross = N/boxW;
+  for(var r=0;r<N;r++) for(var c=0;c<N;c++){
+    var br = Math.floor(r/boxH), bc = Math.floor(c/boxW);
+    map[r*N+c] = br*boxesAcross+bc;
+  }
+  return map;
+}
+/* случайные «лабиринтные» области вместо прямоугольных блоков — рост областей от N случайных зёрен */
+function sudokuBuildJigsawRegionMap(N){
+  var attempts=0;
+  while(attempts<250){
+    attempts++;
+    var map = new Array(N*N).fill(-1);
+    var counts = new Array(N).fill(0);
+    var allCells = sudokuShuffle(Array.from({length:N*N}, function(_,i){return i}));
+    var seeds = allCells.slice(0,N);
+    for(var i=0;i<N;i++){ map[seeds[i]] = i; counts[i]=1; }
+    var totalAssigned = N, failed=false;
+    while(totalAssigned < N*N && !failed){
+      var order = sudokuShuffle(Array.from({length:N}, function(_,i){return i}));
+      var progressed=false;
+      for(var oi=0; oi<order.length; oi++){
+        var reg = order[oi];
+        if(counts[reg]>=N) continue;
+        var frontier=[];
+        for(var idx=0; idx<N*N; idx++){
+          if(map[idx]!==reg) continue;
+          var r=Math.floor(idx/N), c=idx%N;
+          var neigh=[];
+          if(r>0) neigh.push(idx-N);
+          if(r<N-1) neigh.push(idx+N);
+          if(c>0) neigh.push(idx-1);
+          if(c<N-1) neigh.push(idx+1);
+          neigh.forEach(function(n){ if(map[n]===-1 && frontier.indexOf(n)===-1) frontier.push(n); });
+        }
+        if(frontier.length===0) continue;
+        var pick = frontier[Math.floor(Math.random()*frontier.length)];
+        map[pick]=reg; counts[reg]++; totalAssigned++;
+        progressed=true;
+      }
+      if(!progressed) failed=true;
+    }
+    if(!failed && totalAssigned===N*N) return map;
+  }
+  var dims = sudokuComputeBoxDims(N);
+  return sudokuBuildBoxRegionMap(N, dims[0], dims[1]);
+}
+function sudokuBuildRegionCells(N, regionMap){
+  var cells=[]; for(var i=0;i<N;i++) cells.push([]);
+  regionMap.forEach(function(reg, idx){ cells[reg].push(idx); });
+  return cells;
+}
+
+function sudokuValidPlacement(grid, r, c, val){
+  var N=sudokuCfg.N;
+  var rowStart=r*N;
+  for(var i=0;i<N;i++) if(grid[rowStart+i]===val) return false;
+  for(var i=0;i<N;i++) if(grid[i*N+c]===val) return false;
+  var region = sudokuCfg.regionMap[r*N+c];
+  var cells = sudokuCfg.regionCells[region];
+  for(var i=0;i<cells.length;i++) if(grid[cells[i]]===val) return false;
+  return true;
+}
+function sudokuGenerateSolved(){
+  var N=sudokuCfg.N;
+  var grid=new Array(N*N).fill(0);
+  var base=Array.from({length:N},function(_,i){return i+1});
+  function fill(pos){
+    if(pos===N*N) return true;
+    var r=Math.floor(pos/N), c=pos%N;
+    var nums=sudokuShuffle(base.slice());
+    for(var i=0;i<nums.length;i++){
+      if(sudokuValidPlacement(grid,r,c,nums[i])){
+        grid[pos]=nums[i];
+        if(fill(pos+1)) return true;
+        grid[pos]=0;
+      }
+    }
+    return false;
+  }
+  fill(0);
+  return grid;
+}
+function sudokuCountSolutions(grid, limit){
+  var N=sudokuCfg.N;
+  var g=grid.slice();
+  var count=0;
+  function solve(pos){
+    if(count>=limit) return;
+    while(pos<N*N && g[pos]!==0) pos++;
+    if(pos===N*N){ count++; return; }
+    var r=Math.floor(pos/N), c=pos%N;
+    for(var v=1;v<=N;v++){
+      if(sudokuValidPlacement(g,r,c,v)){
+        g[pos]=v; solve(pos+1); g[pos]=0;
+        if(count>=limit) return;
+      }
+    }
+  }
+  solve(0);
+  return count;
+}
+function sudokuGeneratePuzzle(ratio){
+  var N=sudokuCfg.N;
+  var solved=sudokuGenerateSolved();
+  var puzzle=solved.slice();
+  var targetClues=Math.max(N+2, Math.round(N*N*ratio));
+  var order=sudokuShuffle(Array.from({length:N*N}, function(_,i){return i}));
+  var removed=0, maxRemove=N*N-targetClues;
+  for(var k=0;k<order.length && removed<maxRemove;k++){
+    var pos=order[k];
+    var backup=puzzle[pos];
+    puzzle[pos]=0;
+    if(sudokuCountSolutions(puzzle,2)===1){ removed++; } else { puzzle[pos]=backup; }
+  }
+  return {solution:solved, puzzle:puzzle};
+}
+
+function renderSudokuDiffButtons(){
+  var wrap = document.getElementById('sudoku-diff-buttons');
+  wrap.innerHTML = '';
+  SUDOKU_DIFFS.forEach(function(d){
+    var btn = document.createElement('button');
+    btn.className = 'sudoku-diff-btn' + (sudokuDifficulty===d.id ? ' active' : '');
+    btn.textContent = d.label;
+    btn.onclick = function(){ setSudokuDifficulty(d.id); };
+    wrap.appendChild(btn);
+  });
+  var sizeWrap = document.getElementById('sudoku-size-select');
+  if(sizeWrap && sizeWrap.options.length===0){
+    SUDOKU_SIZES.forEach(function(n){
+      var opt = document.createElement('option');
+      opt.value = n; opt.textContent = n+'×'+n;
+      if(n===sudokuSize) opt.selected = true;
+      sizeWrap.appendChild(opt);
+    });
+  }
+  var varWrap = document.getElementById('sudoku-variant-buttons');
+  if(varWrap){
+    varWrap.innerHTML = '';
+    SUDOKU_VARIANTS.forEach(function(v){
+      var b = document.createElement('button');
+      b.className = 'sudoku-diff-btn' + (sudokuVariant===v.id ? ' active' : '');
+      b.textContent = v.label;
+      b.onclick = function(){ sudokuVariant = v.id; renderSudokuDiffButtons(); sudokuNewGame(); };
+      varWrap.appendChild(b);
+    });
+  }
+  var skinWrap = document.getElementById('sudoku-skin-buttons');
+  if(skinWrap){
+    skinWrap.innerHTML = '';
+    SUDOKU_SKINS.forEach(function(s){
+      var b = document.createElement('button');
+      b.className = 'sudoku-diff-btn' + (sudokuSkin===s.id ? ' active' : '');
+      b.textContent = s.label;
+      b.onclick = function(){ sudokuSkin = s.id; renderSudokuDiffButtons(); renderSudokuBoard(); renderSudokuPad(); saveSudokuSession(); };
+      skinWrap.appendChild(b);
+    });
+  }
+}
+function onSudokuSizeChange(val){
+  sudokuSize = parseInt(val,10);
+  sudokuNewGame();
+}
+function setSudokuDifficulty(diffId){
+  sudokuDifficulty = diffId;
+  if(diffId==='mixed' && !sudokuStats.mixedStage) sudokuMixedStage = 1;
+  renderSudokuDiffButtons();
+  sudokuNewGame();
+}
+function sudokuPickActualDiff(){
+  if(sudokuDifficulty!=='mixed') return sudokuDifficulty;
+  return SUDOKU_MIXED_STAGES[Math.min(sudokuMixedStage,5)-1];
+}
+
+function sudokuNewGame(){
+  var boardEl = document.getElementById('sudoku-board');
+  boardEl.innerHTML = '<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:var(--text-2);font-family:\'JetBrains Mono\',monospace;font-size:13px">Генерируем судоку…</div>';
+  setTimeout(sudokuNewGameRun, 20);
+}
+function sudokuNewGameRun(){
+  var genDiff = sudokuPickActualDiff();
+  sudokuActualDiff = genDiff;
+  var N = sudokuSize;
+  var dims = sudokuComputeBoxDims(N);
+  sudokuCfg.N = N; sudokuCfg.boxW = dims[0]; sudokuCfg.boxH = dims[1];
+  sudokuCfg.regionMap = sudokuVariant==='jigsaw' ? sudokuBuildJigsawRegionMap(N) : sudokuBuildBoxRegionMap(N, dims[0], dims[1]);
+  sudokuCfg.regionCells = sudokuBuildRegionCells(N, sudokuCfg.regionMap);
+  var ratio = SUDOKU_RATIO_BY_ID[genDiff] || 0.4;
+  var res = sudokuGeneratePuzzle(ratio);
+  sudokuSolution = res.solution;
+  sudokuGrid = res.puzzle.slice();
+  sudokuGiven = res.puzzle.map(function(v){ return v !== 0; });
+  sudokuNotes = new Array(N*N).fill(null).map(function(){ return []; });
+  sudokuSelected = -1;
+  sudokuMistakes = 0;
+  sudokuElapsed = 0;
+  sudokuSolved = false;
+  sudokuNotesMode = false;
+  sudokuBuildSolutionIndex();
+  document.getElementById('sudoku-notes-btn').classList.remove('active');
+  renderSudokuBoard();
+  renderSudokuPad();
+  updateSudokuStats();
+  sudokuResumeTimer();
+  saveSudokuSession();
+}
+function sudokuBuildSolutionIndex(){
+  var N = sudokuCfg.N;
+  sudokuSolutionByVal = {};
+  for(var v=1;v<=N;v++) sudokuSolutionByVal[v] = [];
+  for(var i=0;i<N*N;i++) sudokuSolutionByVal[sudokuSolution[i]].push(i);
+}
+function sudokuDigitComplete(val){
+  var list = sudokuSolutionByVal[val];
+  if(!list) return false;
+  for(var i=0;i<list.length;i++){ if(sudokuGrid[list[i]] !== val) return false; }
+  return true;
+}
+
+/* мини-глиф абакуса для значения 1..9 (небесная и земные косточки) */
+function sudokuAbacusGlyph(val){
+  if(val<1 || val>9) return '<span>'+val+'</span>';
+  var heaven = val>=5 ? 1 : 0;
+  var earthOn = val>=5 ? val-5 : val;
+  var html = '<div class="sudoku-abacus-glyph">';
+  html += '<div class="sag-heaven"><span class="sag-bead'+(heaven?' on':'')+'"></span></div>';
+  html += '<div class="sag-earth">';
+  for(var i=0;i<4;i++){ html += '<span class="sag-bead'+(i<earthOn?' on':'')+'"></span>'; }
+  html += '</div></div>';
+  return html;
+}
+
+function renderSudokuPad(){
+  var pad = document.getElementById('sudoku-pad');
+  pad.innerHTML = '';
+  var N = sudokuCfg.N;
+  pad.style.gridTemplateColumns = 'repeat('+Math.min(N,5)+',1fr)';
+  for(var n=1;n<=N;n++){
+    (function(n){
+      var btn = document.createElement('button');
+      btn.className = 'sudoku-pad-btn';
+      var complete = sudokuGrid ? sudokuDigitComplete(n) : false;
+      if(complete) btn.classList.add('complete');
+      btn.innerHTML = (sudokuSkin==='abacus' ? sudokuAbacusGlyph(n) : n) + (complete ? '<span class="sudoku-check">✓</span>' : '');
+      btn.onclick = function(){ sudokuInputNumber(n); };
+      pad.appendChild(btn);
+    })(n);
+  }
+}
+
+function renderSudokuBoard(){
+  var board = document.getElementById('sudoku-board');
+  var N = sudokuCfg.N;
+  board.innerHTML = '';
+  board.style.gridTemplateColumns = 'repeat('+N+',1fr)';
+  board.style.setProperty('--sudoku-n', N);
+  for(var i=0;i<N*N;i++){
+    var cell = document.createElement('div');
+    cell.className = 'sudoku-cell';
+    var r=Math.floor(i/N), c=i%N;
+    var region = sudokuCfg.regionMap[i];
+    if(c===N-1 || sudokuCfg.regionMap[sudokuIdx(r,c+1)]!==region) cell.style.borderRight = '2px solid var(--text-2)';
+    if(r===N-1 || sudokuCfg.regionMap[sudokuIdx(r+1,c)]!==region) cell.style.borderBottom = '2px solid var(--text-2)';
+    if(c===0) cell.style.borderLeft = '2px solid var(--text-2)';
+    if(r===0) cell.style.borderTop = '2px solid var(--text-2)';
+    cell.dataset.i = i;
+    cell.onclick = (function(idx){ return function(){ sudokuSelectCell(idx); }; })(i);
+    board.appendChild(cell);
+  }
+  sudokuRenderCells();
+}
+
+function sudokuRenderCells(){
+  var board = document.getElementById('sudoku-board');
+  var N = sudokuCfg.N;
+  var selR = sudokuSelected>=0 ? Math.floor(sudokuSelected/N) : -1;
+  var selC = sudokuSelected>=0 ? sudokuSelected%N : -1;
+  var selVal = sudokuSelected>=0 ? sudokuGrid[sudokuSelected] : 0;
+  var selRegion = sudokuSelected>=0 ? sudokuCfg.regionMap[sudokuSelected] : -1;
+  for(var i=0;i<N*N;i++){
+    var cell = board.children[i];
+    if(!cell) continue;
+    cell.classList.remove('given','selected','peer','same-num','conflict','collected');
+    var r = Math.floor(i/N), c = i%N;
+    var val = sudokuGrid[i];
+    if(sudokuGiven[i]) cell.classList.add('given');
+    if(i===sudokuSelected) cell.classList.add('selected');
+    else if(r===selR || c===selC || sudokuCfg.regionMap[i]===selRegion) cell.classList.add('peer');
+    if(selVal && val===selVal && i!==sudokuSelected) cell.classList.add('same-num');
+    var conflict = val!==0 && !sudokuValidInGrid(i, val);
+    if(conflict) cell.classList.add('conflict');
+    if(val && !conflict && sudokuDigitComplete(val)) cell.classList.add('collected');
+    if(val){
+      cell.innerHTML = sudokuSkin==='abacus' ? sudokuAbacusGlyph(val) : val;
+    } else if(sudokuNotes[i] && sudokuNotes[i].length){
+      var notesHtml = '<div class="sudoku-notes" style="grid-template-columns:repeat('+Math.ceil(Math.sqrt(N))+',1fr)">';
+      for(var n=1;n<=N;n++){ notesHtml += '<span>'+(sudokuNotes[i].indexOf(n)>=0 ? n : '')+'</span>'; }
+      notesHtml += '</div>';
+      cell.innerHTML = notesHtml;
+    } else {
+      cell.innerHTML = '';
+    }
+  }
+}
+function sudokuValidInGrid(pos, val){
+  var N = sudokuCfg.N;
+  var r=Math.floor(pos/N), c=pos%N;
+  for(var i=0;i<N;i++){
+    if(i!==c && sudokuGrid[sudokuIdx(r,i)]===val) return false;
+    if(i!==r && sudokuGrid[sudokuIdx(i,c)]===val) return false;
+  }
+  var region = sudokuCfg.regionMap[pos];
+  var cells = sudokuCfg.regionCells[region];
+  for(var i=0;i<cells.length;i++){ if(cells[i]!==pos && sudokuGrid[cells[i]]===val) return false; }
+  return true;
+}
+
+function sudokuSelectCell(i){
+  if(sudokuSolved) return;
+  sudokuSelected = i;
+  sudokuRenderCells();
+}
+function sudokuMoveSelection(dc,dr){
+  if(!sudokuGrid || sudokuSolved) return;
+  var N = sudokuCfg.N;
+  if(sudokuSelected<0){ sudokuSelected=0; sudokuRenderCells(); return; }
+  var r=Math.floor(sudokuSelected/N), c=sudokuSelected%N;
+  r=Math.min(N-1,Math.max(0,r+dr));
+  c=Math.min(N-1,Math.max(0,c+dc));
+  sudokuSelected=r*N+c;
+  sudokuRenderCells();
+}
+
+function sudokuInputNumber(n){
+  if(sudokuSolved || sudokuSelected<0) return;
+  if(sudokuGiven[sudokuSelected]) return;
+  if(sudokuNotesMode){
+    var notes = sudokuNotes[sudokuSelected];
+    var pos = notes.indexOf(n);
+    if(pos>=0) notes.splice(pos,1); else notes.push(n);
+    sudokuRenderCells();
+    saveSudokuSession();
+    return;
+  }
+  sudokuGrid[sudokuSelected] = n;
+  sudokuNotes[sudokuSelected] = [];
+  if(sudokuSolution[sudokuSelected] !== n){
+    sudokuMistakes++;
+  }
+  updateSudokuStats();
+  renderSudokuPad();
+  sudokuRenderCells();
+  saveSudokuSession();
+  sudokuCheckWin();
+}
+function sudokuErase(){
+  if(sudokuSolved || sudokuSelected<0 || sudokuGiven[sudokuSelected]) return;
+  sudokuGrid[sudokuSelected] = 0;
+  sudokuNotes[sudokuSelected] = [];
+  renderSudokuPad();
+  sudokuRenderCells();
+  saveSudokuSession();
+}
+function sudokuToggleNotes(){
+  sudokuNotesMode = !sudokuNotesMode;
+  document.getElementById('sudoku-notes-btn').classList.toggle('active', sudokuNotesMode);
+}
+function sudokuHint(){
+  if(sudokuSolved) return;
+  var N = sudokuCfg.N;
+  var target = sudokuSelected;
+  if(target<0 || sudokuGiven[target] || sudokuGrid[target]===sudokuSolution[target]){
+    var empties = [];
+    for(var i=0;i<N*N;i++){ if(!sudokuGiven[i] && sudokuGrid[i]!==sudokuSolution[i]) empties.push(i); }
+    if(!empties.length) return;
+    target = empties[Math.floor(Math.random()*empties.length)];
+    sudokuSelected = target;
+  }
+  sudokuGrid[target] = sudokuSolution[target];
+  sudokuNotes[target] = [];
+  renderSudokuPad();
+  sudokuRenderCells();
+  saveSudokuSession();
+  sudokuCheckWin();
+}
+
+function updateSudokuStats(){
+  var N = sudokuCfg.N;
+  document.getElementById('sd-mistakes').textContent = sudokuMistakes;
+  var filled = sudokuGrid ? sudokuGrid.filter(function(v){return v!==0}).length : 0;
+  document.getElementById('sd-filled').textContent = filled+'/'+(N*N);
+  var mm = Math.floor(sudokuElapsed/60), ss = sudokuElapsed%60;
+  document.getElementById('sd-time').textContent = (mm<10?'0':'')+mm+':'+(ss<10?'0':'')+ss;
+  var diffLabel = SUDOKU_DIFFS.find(function(d){return d.id===sudokuActualDiff}) || {label:sudokuActualDiff};
+  var best = sudokuStats[sudokuActualDiff] && sudokuStats[sudokuActualDiff].bestTime;
+  var note = document.getElementById('sudoku-best-note');
+  var bits = [];
+  if(sudokuDifficulty==='mixed'){
+    bits.push('Ступень '+sudokuMixedStage+'/5 · сложность: '+diffLabel.label);
+  }
+  if(best){
+    bits.push('Лучшее время: '+Math.floor(best/60)+':'+(best%60<10?'0':'')+(best%60));
+  }
+  note.textContent = bits.join(' · ');
+}
+
+function sudokuCheckWin(){
+  var filled = sudokuGrid.every(function(v,i){ return v===sudokuSolution[i]; });
+  if(!filled) return;
+  sudokuSolved = true;
+  sudokuPauseTimer();
+  var diffLabel = SUDOKU_DIFFS.find(function(d){return d.id===sudokuActualDiff});
+  if(!sudokuStats[sudokuActualDiff]) sudokuStats[sudokuActualDiff] = {wins:0, bestTime:null};
+  sudokuStats[sudokuActualDiff].wins++;
+  if(sudokuStats[sudokuActualDiff].bestTime===null || sudokuElapsed < sudokuStats[sudokuActualDiff].bestTime){
+    sudokuStats[sudokuActualDiff].bestTime = sudokuElapsed;
+  }
+  var msg = 'Судоку («'+(diffLabel?diffLabel.label:sudokuActualDiff)+'») решено за '+Math.floor(sudokuElapsed/60)+':'+(sudokuElapsed%60<10?'0':'')+(sudokuElapsed%60)+' с '+sudokuMistakes+' ошибками! 🎉';
+  if(sudokuDifficulty==='mixed'){
+    if(sudokuMixedStage < 5){
+      sudokuMixedStage++;
+      msg += ' Открыта ступень '+sudokuMixedStage+'/5!';
+    } else {
+      msg = 'Пройдена финальная ступень «Смешанного» режима! 🏆 ' + msg;
+    }
+    sudokuStats.mixedStage = sudokuMixedStage;
+  }
+  saveSudokuStats();
+  updateSudokuStats();
+  celebrate(msg);
+  saveSudokuSession();
+}
+
+function sudokuPauseTimer(){
+  clearInterval(sudokuTimerHandle);
+  sudokuTimerHandle = null;
+}
+function sudokuResumeTimer(){
+  if(!sudokuGrid || sudokuSolved) return;
+  var view = document.getElementById('view-sudoku');
+  if(!view || !view.classList.contains('active')) return;
+  sudokuPauseTimer();
+  sudokuTimerHandle = setInterval(function(){
+    sudokuElapsed++;
+    document.getElementById('sd-time').textContent =
+      (Math.floor(sudokuElapsed/60)<10?'0':'')+Math.floor(sudokuElapsed/60)+':'+((sudokuElapsed%60)<10?'0':'')+(sudokuElapsed%60);
+    if(sudokuElapsed % 20 === 0) saveSudokuSession();
+  }, 1000);
+}
+
+/* ---------- полноэкранный режим судоку ---------- */
+function toggleSudokuFullscreen(){
+  var el = document.getElementById('view-sudoku');
+  var isFs = document.fullscreenElement || document.webkitFullscreenElement;
+  if(!isFs){
+    var req = el.requestFullscreen || el.webkitRequestFullscreen;
+    if(req) req.call(el);
+  } else {
+    var exit = document.exitFullscreen || document.webkitExitFullscreen;
+    if(exit) exit.call(document);
+  }
+}
+document.addEventListener('fullscreenchange', updateSudokuFsBtn);
+document.addEventListener('webkitfullscreenchange', updateSudokuFsBtn);
+function updateSudokuFsBtn(){
+  var btn = document.getElementById('sudoku-fs-btn');
+  if(!btn) return;
+  var isFs = document.fullscreenElement || document.webkitFullscreenElement;
+  btn.textContent = isFs ? '⛶ Выйти из полноэкранного' : '⛶ На весь экран';
+}
+
+/* ---------- клавиатура на ПК ---------- */
+document.addEventListener('keydown', function(e){
+  var view = document.getElementById('view-sudoku');
+  if(!view || !view.classList.contains('active')) return;
+  if(!sudokuGrid) return;
+  if(e.key>='1' && e.key<='9'){
+    var n = parseInt(e.key,10);
+    if(n<=sudokuCfg.N && sudokuSelected>=0){ sudokuInputNumber(n); e.preventDefault(); }
+  } else if(e.key==='Backspace' || e.key==='Delete'){
+    sudokuErase(); e.preventDefault();
+  } else if(e.key==='ArrowUp'){ sudokuMoveSelection(0,-1); e.preventDefault(); }
+  else if(e.key==='ArrowDown'){ sudokuMoveSelection(0,1); e.preventDefault(); }
+  else if(e.key==='ArrowLeft'){ sudokuMoveSelection(-1,0); e.preventDefault(); }
+  else if(e.key==='ArrowRight'){ sudokuMoveSelection(1,0); e.preventDefault(); }
+});
+
+async function saveSudokuSession(){
+  try{
+    await window.storage.set('abacus-sudoku-session', JSON.stringify({
+      difficulty:sudokuDifficulty, actualDiff:sudokuActualDiff, mixedStage:sudokuMixedStage,
+      size:sudokuSize, variant:sudokuVariant, skin:sudokuSkin,
+      regionMap:sudokuCfg.regionMap, solution:sudokuSolution,
+      given:sudokuGiven, grid:sudokuGrid, notes:sudokuNotes, mistakes:sudokuMistakes,
+      elapsed:sudokuElapsed, solved:sudokuSolved
+    }));
+  }catch(e){}
+}
+async function saveSudokuStats(){
+  try{ await window.storage.set('abacus-sudoku-stats', JSON.stringify(sudokuStats)); }catch(e){}
+}
+async function loadSudokuSession(){
+  try{
+    var statsRes = await window.storage.get('abacus-sudoku-stats');
+    if(statsRes && statsRes.value){
+      sudokuStats = JSON.parse(statsRes.value);
+      if(sudokuStats.mixedStage) sudokuMixedStage = sudokuStats.mixedStage;
+    }
+  }catch(e){}
+  try{
+    var res = await window.storage.get('abacus-sudoku-session');
+    if(res && res.value){
+      var s = JSON.parse(res.value);
+      if(s && s.solution && s.grid && s.regionMap){
+        sudokuDifficulty = s.difficulty || 'easy';
+        sudokuActualDiff = s.actualDiff || sudokuDifficulty;
+        sudokuMixedStage = s.mixedStage || sudokuMixedStage;
+        sudokuSize = s.size || 9;
+        sudokuVariant = s.variant || 'classic';
+        sudokuSkin = s.skin || 'digits';
+        var dims = sudokuComputeBoxDims(sudokuSize);
+        sudokuCfg.N = sudokuSize; sudokuCfg.boxW = dims[0]; sudokuCfg.boxH = dims[1];
+        sudokuCfg.regionMap = s.regionMap;
+        sudokuCfg.regionCells = sudokuBuildRegionCells(sudokuSize, sudokuCfg.regionMap);
+        sudokuSolution = s.solution;
+        sudokuGiven = s.given;
+        sudokuGrid = s.grid;
+        sudokuNotes = s.notes || new Array(sudokuSize*sudokuSize).fill(null).map(function(){return [];});
+        sudokuMistakes = s.mistakes || 0;
+        sudokuElapsed = s.elapsed || 0;
+        sudokuSolved = !!s.solved;
+        sudokuBuildSolutionIndex();
+        document.getElementById('sudoku-size-select').value = sudokuSize;
+        renderSudokuDiffButtons();
+        renderSudokuBoard();
+        renderSudokuPad();
+        updateSudokuStats();
+        if(!sudokuSolved) sudokuResumeTimer();
+        return;
+      }
+    }
+  }catch(e){}
+  renderSudokuDiffButtons();
+  sudokuNewGame();
+}
+
+
+/* ============ INIT ============ */
+selectLevel(1);
+setMode('set');
+loadProgress();
+loadSpeedProgress();
+setAnzanType('flash');
+updateAnzanStats();
+loadAnzanProfile();
+loadAnzanDaily();
+loadAnzanLeaderboard();
+renderSudokuPad();
+loadSudokuSession();
+</script>
+</body>
+</html>
